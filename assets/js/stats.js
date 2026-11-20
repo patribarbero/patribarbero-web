@@ -7,6 +7,7 @@
   var F = { int: function(n){ return nf.format(n); }, k1: k1, pct0: function(n){ return Math.round(n) + ' %'; }, pct1: function(n){ return String(n).replace('.', ',') + ' %'; } };
   function date(s, o){ return s ? new Date(s + 'T12:00:00').toLocaleDateString('es-ES', o || {day:'numeric', month:'long', year:'numeric'}) : '—'; }
   document.querySelectorAll('[data-n]').forEach(function(el){ var v = get(el.dataset.n); if (v != null) el.textContent = (el.dataset.pre || '') + (F[el.dataset.f] || F.int)(v); });
+  document.querySelectorAll('[data-txt]').forEach(function(el){ var v = get(el.dataset.txt); if (v != null) el.textContent = v; });
   document.querySelectorAll('[data-date]').forEach(function(el){ el.textContent = date(get(el.dataset.date)); });
   document.querySelectorAll('[data-per]').forEach(function(el){
     var p = el.dataset.per.split('|');

@@ -130,6 +130,17 @@ window.DATOS = {
     ]   // [fecha, título, vistas] de cada vídeo del periodo
   },
 
+  // Reel más visto (fuera del periodo de 28 días). Metricool, a la espera de la lectura directa de Instagram
+  destacado: {
+    plataforma: "Instagram",
+    titulo: "¿Vuelven las Nike Shox?",
+    fecha: "2026-11-18",
+    medido: "2026-11-20",
+    horas: 52,
+    vistas: 168234,
+    url: "https://www.instagram.com/reel/Df4_yVToCd5/"
+  },
+
   // Cifras acumuladas de los trabajos seleccionados (orgánicas)
   trabajos: {
     fecha: "2026-11-10",

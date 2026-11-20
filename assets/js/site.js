@@ -6,6 +6,8 @@
   /* cabecera */
   var top = document.querySelector('.top');
   if (top) addEventListener('scroll', function(){ top.classList.toggle('sc', scrollY > 6); }, {passive:true});
+  function hdr(){ if (top) document.documentElement.style.setProperty('--hdr', Math.round(top.getBoundingClientRect().height) + 'px'); }
+  hdr(); addEventListener('resize', hdr);
 
   /* menú móvil */
   var menu = document.querySelector('.menu'), links = document.getElementById('links');
@@ -22,6 +24,11 @@
   if (dd && sub){
     function set(o){ sub.classList.toggle('open', o); dd.setAttribute('aria-expanded', o); }
     dd.addEventListener('click', function(e){ e.stopPropagation(); set(!sub.classList.contains('open')); });
+    /* en ordenador se abre al pasar el ratón, sin clicar */
+    var li = dd.parentNode, hov = matchMedia('(hover:hover) and (min-width:981px)'), t;
+    li.addEventListener('mouseenter', function(){ if (hov.matches){ clearTimeout(t); set(true); } });
+    li.addEventListener('mouseleave', function(){ if (hov.matches) t = setTimeout(function(){ set(false); }, 180); });
+    li.addEventListener('focusout', function(e){ if (!li.contains(e.relatedTarget)) set(false); });
     document.addEventListener('click', function(e){ if (!sub.contains(e.target)) set(false); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && sub.classList.contains('open')){ set(false); dd.focus(); } });
   }
@@ -60,41 +67,67 @@
   /* imprimir / guardar media kit en PDF */
   document.querySelectorAll('[data-print]').forEach(function(b){ b.addEventListener('click', function(){ window.print(); }); });
 
-  /* formulario de contacto */
+  /* formulario de contacto: valida los obligatorios y envía el mensaje al email de Patri */
   var f = document.getElementById('contact');
   if (f){
     var tipo = new URLSearchParams(location.search).get('tipo');
-    var map = {colaboracion:'Colabora en mis redes', ugc:'Contenido UGC', redes:'Gestión de redes'};
-    function showGroups(){
+    var map = {colaboracion:'Colabora en mis redes', ugc:'Contenido UGC', redes:'Gestión de redes', otra:'Otra cosa'};
+    var sector = f.querySelector('select[name=sector]'), otro = f.querySelector('[data-otro]');
+    function sync(){
       var v = (f.querySelector('input[name=tipo]:checked') || {}).value || '';
       f.querySelectorAll('[data-for]').forEach(function(g){ var on = g.dataset.for.split('|').indexOf(v) > -1; g.hidden = !on; g.querySelectorAll('input,select,textarea').forEach(function(i){ i.disabled = !on; }); });
+      if (otro){ var o = !sector.disabled && sector.value === 'Otro'; otro.hidden = !o; otro.querySelector('input').disabled = !o; }
     }
     if (tipo && map[tipo]){ var r = f.querySelector('input[name=tipo][value="' + map[tipo] + '"]'); if (r) r.checked = true; }
-    f.querySelectorAll('input[name=tipo]').forEach(function(r){ r.addEventListener('change', showGroups); });
-    showGroups();
-    var err = f.querySelector('.err');
-    f.addEventListener('submit', function(e){
-      e.preventDefault(); err.textContent = '';
-      if (f.querySelector('.hp input').value) return;
-      var bad = [].slice.call(f.querySelectorAll('input,select,textarea')).filter(function(i){ return !i.disabled && !i.checkValidity(); })[0];
-      if (!f.querySelector('input[name=tipo]:checked')) bad = f.querySelector('input[name=tipo]');
-      if (bad){ err.textContent = bad.dataset.msg || 'Revisa este campo, por favor.'; bad.focus(); return; }
+    f.querySelectorAll('input[name=tipo]').forEach(function(r){ r.addEventListener('change', sync); });
+    if (sector) sector.addEventListener('change', sync);
+    sync();
+    var err = f.querySelector('.err'), btn = f.querySelector('[type=submit]'), btnHTML = btn.innerHTML;
+    function fields(){ return [].slice.call(f.querySelectorAll('input,select,textarea')).filter(function(i){ return !i.disabled && i.name !== 'web_site'; }); }
+    f.addEventListener('input', function(e){ var el = e.target.closest('.fld,.consent,.opts'); if (el) el.classList.remove('bad'); err.textContent = ''; });
+    f.addEventListener('change', function(e){ var el = e.target.closest('.fld,.consent'); if (el) el.classList.remove('bad'); });
+    function compose(){
       var d = new FormData(f), lines = [], seen = {};
       f.querySelectorAll('[name]').forEach(function(el){
         var n = el.name; if (seen[n] || el.disabled || n === 'web_site' || n === 'acepto') return; seen[n] = 1;
         var v = d.getAll(n).filter(Boolean).join(', ');
-        var lab = el.closest('[data-label]'); if (v) lines.push((lab ? lab.dataset.label : n) + ': ' + v);
+        var lab = el.closest('[data-label]'); lines.push({k: lab ? lab.dataset.label : n, v: v || '—'});
       });
-      var to = f.dataset.to, subject = (d.get('tipo') || 'Contacto') + ' · ' + (d.get('empresa') || d.get('nombre') || '');
-      var body = lines.join('\n'), href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      var done = document.getElementById('done');
-      f.hidden = true; done.hidden = false;
-      done.querySelector('[data-mail]').href = href;
-      done.querySelector('[data-copy]').onclick = function(){
-        var t = 'Para: ' + to + '\nAsunto: ' + subject + '\n\n' + body;
-        if (navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ done.querySelector('.note').textContent = 'Copiado. Pégalo en un correo a ' + to + '.'; });
+      return {d: d, lines: lines, subject: 'Web · ' + (d.get('tipo') || 'Contacto') + ' · ' + (d.get('empresa') || d.get('nombre') || '')};
+    }
+    function fail(m){
+      var to = f.dataset.to, body = m.lines.map(function(l){ return l.k + ': ' + l.v; }).join('\n');
+      var box = document.getElementById('fail'); f.hidden = true; box.hidden = false; box.focus();
+      box.querySelector('[data-mail]').href = 'mailto:' + to + '?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(body);
+      box.querySelector('[data-copy]').onclick = function(){
+        var t = 'Para: ' + to + '\nAsunto: ' + m.subject + '\n\n' + body;
+        if (navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ box.querySelector('.note').textContent = 'Copiado. Pégalo en un correo a ' + to + '.'; });
       };
-      location.href = href;
+    }
+    f.addEventListener('submit', function(e){
+      e.preventDefault(); err.textContent = '';
+      if (f.querySelector('.hp input').value) return;              // robot: no se envía
+      f.querySelectorAll('.bad').forEach(function(x){ x.classList.remove('bad'); });
+      var bad = fields().filter(function(i){ if (i.type === 'text' || i.type === 'email' || i.tagName === 'TEXTAREA') i.value = i.value.trim(); return !i.checkValidity(); });
+      var names = {}; bad = bad.filter(function(i){ if (names[i.name]) return false; names[i.name] = 1; return true; });
+      if (bad.length){
+        bad.forEach(function(i){ var w = i.type === 'radio' ? i.closest('.opts') : i.closest('.fld,.consent'); if (w) w.classList.add('bad'); i.setAttribute('aria-invalid', 'true'); });
+        err.textContent = (bad[0].dataset.msg || 'Revisa este campo, por favor.') + (bad.length > 1 ? ' Te faltan ' + bad.length + ' campos obligatorios.' : '');
+        bad[0].focus(); return;
+      }
+      fields().forEach(function(i){ i.removeAttribute('aria-invalid'); });
+      var m = compose(), payload = {};
+      m.lines.forEach(function(l){ payload[l.k] = l.v; });
+      payload._subject = m.subject; payload._replyto = m.d.get('email'); payload._template = 'table'; payload._captcha = 'false';
+      btn.disabled = true; btn.textContent = 'Enviando…';
+      fetch('https://formsubmit.co/ajax/' + f.dataset.to, {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(payload)})
+        .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, j: j}; }); })
+        .then(function(x){
+          if (x.ok && String(x.j.success) === 'true'){ var done = document.getElementById('done'); f.hidden = true; done.hidden = false; done.focus(); }
+          else fail(m);
+        })
+        .catch(function(){ fail(m); })
+        .then(function(){ btn.disabled = false; btn.innerHTML = btnHTML; });
     });
   }
 })();

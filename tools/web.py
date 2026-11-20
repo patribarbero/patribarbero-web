@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261120a'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261120c'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -91,13 +91,32 @@ def vid(yt, img, title, meta='', vertical=False):
     dv = ' data-v="1"' if vertical else ''
     return f'<button class="vid{v}" type="button" data-yt="{yt}"{dv} data-title="{H.escape(title)}"><span class="th"><img src="/img/{img}" alt="" loading="lazy">{PLAY}</span><b>{title}</b>' + (f'<small>{meta}</small>' if meta else '') + '</button>'
 
+def short_card(kind, ref, img, title, meta):
+    if kind == 'yt':
+        return vid(ref, img, title, meta, True)
+    th = f'<img src="/img/{img}" alt="" loading="lazy">' if img else f'<span class="ph-cover vichy"><span class="T">{H.escape(title)}</span></span>'
+    return f'<a class="vid v" href="{ref}" target="_blank" rel="noopener"><span class="th">{th}{PLAY}</span><b>{title} <span class="ext">Instagram ↗</span></b><small>{meta}</small></a>'
+
 def band(title_html, text, btns):
     return f'<section class="sec tight"><div class="wrap"><div class="band rv"><div><h2 class="T h2">{title_html}</h2><p>{text}</p></div><div class="ctas" style="margin:0">{btns}</div></div></div></section>'
 
-COLLABS = [('zBPboLQZKAo', 'zBPboLQZKAo.jpg', 'Vivaia · Tips para vestir con estilo en otoño', 'Integración en YouTube · agosto 2025'),
-           ('gKLj2hae2ww', 'gKLj2hae2ww.jpg', 'Vivaia · Esto en la moda no es normal', 'Segunda integración en YouTube'),
-           ('pYXWRYBJd9s', 'pYXWRYBJd9s.jpg', 'The Colour Nook · Colorimetría', 'Taller contado en vídeo · abril 2026'),
-           ('CecPikzWLI8', 'CecPikzWLI8.jpg', 'Modibodi · Vlog del evento', 'Evento de lanzamiento · mayo 2024')]
+COLLABS = [('zBPboLQZKAo', 'zBPboLQZKAo.jpg', 'Tips para vestir con estilo en otoño', 'Integración en YouTube · agosto 2025', 'logo_vivaia.svg', 'Vivaia'),
+           ('gKLj2hae2ww', 'gKLj2hae2ww.jpg', 'Esto en la moda no es normal', 'Segunda integración en YouTube', 'logo_vivaia.svg', 'Vivaia'),
+           ('pYXWRYBJd9s', 'pYXWRYBJd9s.jpg', 'Colorimetría con The Colour Nook', 'Taller contado en vídeo · abril 2026', 'logo_colournook.jpg', 'The Colour Nook'),
+           ('CecPikzWLI8', 'CecPikzWLI8.jpg', 'Vlog del evento de lanzamiento', 'Evento · mayo 2024', 'logo_modibodi.svg', 'Modibodi')]
+# Los más vistos en vídeo corto (la portada de Nike Shox llega cuando Patri la pase; mientras, tarjeta con el titular)
+TOP_SHORTS = [
+    ('ig', 'https://www.instagram.com/reel/Df4_yVToCd5/', '', '¿Vuelven las Nike Shox?', 'Reel · 168 mil reproducciones en 2 días'),
+    ('yt', 'u0GktqmTMh8', 'oversized.jpg', 'Oversized y femenina', 'Short · 35,7 mil visualizaciones'),
+    ('yt', 'MKhsAIKXquk', 'broches.jpg', 'Vuelven los broches', 'Short · 19,8 mil visualizaciones'),
+    ('yt', 'wu2mG4YX1dI', 'abc.jpg', 'Elige A, B o C', 'Reel · 13,5 mil reproducciones'),
+]
+# Tipos de vídeo del canal (listas de YouTube)
+TYPES = [('tendencias 🔥', 'Tendencias', 'Qué se lleva esta temporada, por qué aparece y cómo llevarlo cómoda y mona.', 'yt4.jpg'),
+         ('outfits fáciles ✨', 'Outfits fáciles', 'Guías para combinar sin pensar mucho: looks de diario, de invierno y sin repetir.', 'yt3.jpg'),
+         ('prendas y armario 👗', 'Prendas y armario', 'Una prenda o un calzado a fondo: cuál elegir, con qué y para qué estilo.', 'yt1.jpg'),
+         ('moda como identidad 💗', 'Moda como identidad', 'Qué dice de ti lo que te pones y cómo encontrar tu estilo sin seguir reglas.', 'yt2.jpg'),
+         ('el lenguaje de los colores 🎨', 'El lenguaje de los colores', 'Qué transmite cada color y cómo combinarlos en tus outfits.', '')]
 SHORTS = [('u0GktqmTMh8', 'oversized.jpg', 'Oversized y femenina', 'Short · 35,7 mil visualizaciones'),
           ('MKhsAIKXquk', 'broches.jpg', 'Vuelven los broches', 'Short · 19,8 mil visualizaciones'),
           ('wu2mG4YX1dI', 'abc.jpg', 'Elige A, B o C', 'Reel · formato interactivo')]
@@ -105,10 +124,13 @@ LONG = [('yt1.jpg', 'Invierno: ¿qué zapatilla eres?'), ('yt2.jpg', '¿Cuáles?
 
 # =================================================== INICIO
 home = f'''<section class="home-hero"><div class="wrap hh">
-  <div>
+  <div class="hh-txt">
+    <div class="hh-id">
     <p class="kicker rv">Creadora de contenido de moda · Madrid</p>
     <h1 class="T h1 rv">Patri<br>Barbero</h1>
-    <span class="rib rv" aria-hidden="true" style="margin-top:22px"></span>
+    <span class="rib rv" aria-hidden="true"></span>
+    </div>
+    <div class="hh-more">
     <p class="lead rv">Te enseño a vestirte <span class="hl">sporty sin dejar de sentirte femenina</span>. Tendencias, cómo combinarlas y qué dicen de ti, en YouTube, Instagram y TikTok.</p>
     <div class="ctas rv"><a class="btn p" href="/trabaja-conmigo/">Trabaja conmigo {ARR}</a><a class="btn s" href="/contenido/">Ver mi contenido</a></div>
     <div class="proof rv">
@@ -116,12 +138,13 @@ home = f'''<section class="home-hero"><div class="wrap hh">
       <a href="/estadisticas/"><b data-n="youtube.vis" data-f="k1">—</b><small>visualizaciones en 28 días</small></a>
       <a href="/estadisticas/"><b data-n="youtube.audiencia.mujeres" data-f="pct0">—</b><small>de mi audiencia son mujeres</small></a>
     </div>
+    </div>
   </div>
   <div class="orb-wrap">
     <div class="orb" data-phrase="Moda como identidad" data-reps="2" data-dur="26" aria-hidden="true">
       <div class="floor"></div>
       <div class="scene back"><div class="tilt"><div class="ring-b"></div></div></div>
-      <img class="me" src="/img/patri-espejo-1100.webp" srcset="/img/patri-espejo-1100.webp 432w, /img/patri-espejo-1800.webp 708w" sizes="(max-width:860px) 46vw, 340px" alt="" width="708" height="1800" fetchpriority="high">
+      <img class="me" src="/img/patri-espejo-1100.webp" srcset="/img/patri-espejo-1100.webp 432w, /img/patri-espejo-1800.webp 708w" sizes="(max-width:860px) 30vw, 340px" alt="" width="708" height="1800" fetchpriority="high">
       <div class="scene front"><div class="tilt"><div class="ring-f"></div></div></div>
     </div>
     <p class="sr">Moda como identidad. Patri frente al espejo con top blanco, pantalón negro y bolso rojo.</p>
@@ -140,7 +163,7 @@ home = f'''<section class="home-hero"><div class="wrap hh">
 </div></section>
 
 <section class="sec tight"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Vídeo nuevo cada domingo</p><h2 class="T h2 rv">En el canal</h2></div><p class="lead rv">Mis vídeos de YouTube: tendencias pasadas por mi filtro y guías para combinar.</p></div>
+  <div class="sec-head"><div><p class="kicker rv">YouTube · vídeo largo cada domingo</p><h2 class="T h2 rv">En el canal</h2></div><p class="lead rv">Mis vídeos de YouTube: tendencias pasadas por mi filtro y guías para combinar.</p></div>
   <div class="rv">{win('youtube · patri barbero', '<div class="grid4">' + ''.join(f'<a class="vid" href="{YT}" target="_blank" rel="noopener"><span class="th"><img src="/img/{img}" alt="" loading="lazy">{PLAY}</span><b>{t}</b></a>' for img, t in LONG) + f'</div><p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ir al canal de YouTube ↗</a></p>')}</div>
 </div></section>
 
@@ -155,7 +178,7 @@ cont = f'''<section class="page-hero"><div class="wrap">
   {crumbs(('/', 'Inicio'), ('', 'Contenido'))}
   <div class="ph-grid"><div><h1 class="T h1 rv">Mi contenido</h1><p class="lead rv">Hablo de moda para chicas que viven en zapatillas y también quieren ir monas. Cada tendencia pasa por el mismo filtro: <span class="hl">cómoda y femenina a la vez</span>.</p>
     <div class="ctas rv"><a class="btn d" href="{YT}" target="_blank" rel="noopener">YouTube ↗</a><a class="btn s" href="{IG}" target="_blank" rel="noopener">Instagram ↗</a><a class="btn s" href="{TT}" target="_blank" rel="noopener">TikTok ↗</a></div></div>
-    <div class="rv"><div class="chips" style="gap:10px"><span class="chip"><i></i>Tendencias con filtro</span><span class="chip"><i></i>Cómo combinar</span><span class="chip"><i></i>Identidad y comunidad</span><span class="chip on">Vídeo nuevo cada domingo</span></div></div></div>
+    <div class="rv"><div class="chips" style="gap:10px"><span class="chip"><i></i>Tendencias con filtro</span><span class="chip"><i></i>Cómo combinar</span><span class="chip"><i></i>Identidad y comunidad</span></div><div class="chips" style="gap:10px;margin-top:10px"><span class="chip on">YouTube · vídeo largo cada domingo</span><span class="chip on">6 vídeos cortos a la semana en Reels, TikTok y Shorts</span></div></div></div>
 </div></section>
 
 <section class="sec tight"><div class="wrap">
@@ -168,8 +191,8 @@ cont = f'''<section class="page-hero"><div class="wrap">
 
 <section class="sec tight"><div class="wrap">
   <div class="tabs" role="tablist" aria-label="Plataforma"><button role="tab" aria-selected="true" aria-controls="p-yt" id="t-yt">YouTube</button><button role="tab" aria-selected="false" aria-controls="p-sh" id="t-sh">Reels, TikTok y Shorts</button></div>
-  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt">{win('youtube · últimos vídeos', '<div class="grid4">' + ''.join(f'<a class="vid" href="{YT}" target="_blank" rel="noopener"><span class="th"><img src="/img/{img}" alt="" loading="lazy">{PLAY}</span><b>{t}</b></a>' for img, t in LONG) + '</div>')}</div>
-  <div id="p-sh" role="tabpanel" aria-labelledby="t-sh" hidden>{win('vídeos cortos', '<div class="grid3">' + ''.join(vid(y, i, t, m, True) for y, i, t, m in SHORTS) + '</div>')}</div>
+  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt">{win('youtube · qué vas a encontrar en el canal', '<p class="muted" style="margin-bottom:20px">Un vídeo largo cada domingo, de 10 a 20 minutos. Estos son los tipos de vídeo que hago:</p><div class="types">' + ''.join(f'<a class="type" href="{YT}/playlists" target="_blank" rel="noopener"><span class="th">' + (f'<img src="/img/{img}" alt="" loading="lazy">' if img else '<span class="sw" aria-hidden="true"><i style="background:var(--fr)"></i><i style="background:var(--co)"></i><i style="background:var(--ma)"></i><i style="background:var(--ch)"></i></span>') + f'</span><span class="chip">{lst}</span><b>{t}</b><small>{d}</small></a>' for lst, t, d, img in TYPES) + f'</div><p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ver el canal ↗</a></p>')}</div>
+  <div id="p-sh" role="tabpanel" aria-labelledby="t-sh" hidden>{win('vídeos cortos · los más vistos', '<div class="grid4 shorts">' + ''.join(short_card(*x) for x in TOP_SHORTS) + '</div><p class="note" style="margin-top:16px">Reproducciones en la plataforma donde se publicó cada uno. Subo los mismos vídeos a Instagram, TikTok y YouTube Shorts.</p>')}</div>
 </div></section>
 
 {band('¿Quieres salir en <em>mis vídeos</em>?', 'Integro marcas en mis vídeos como parte de la conversación, no como un anuncio pegado.', f'<a class="btn p" href="/colaboraciones/">Colabora en mis redes {ARR}</a>')}
@@ -193,6 +216,12 @@ stats = f'''<section class="page-hero"><div class="wrap">
     {kpi('ig', 'instagram', 'instagram.seguidores', 'int', 'seguidores', [('Reproducciones de Reels · 28 días', 'instagram.reproducciones', 'int'), ('Interacción sobre alcance', 'instagram.interaccion', 'pct1'), ('Guardados', 'instagram.guardados', 'int')], 'Datos de Metricool, a la espera de la lectura directa de Instagram')}
     {kpi('tt', 'tiktok', 'tiktok.seguidores', 'int', 'seguidores', [('Vistas · 28 días', 'tiktok.vistas', 'int'), ('Vídeo más visto', 'tiktok.top', 'int'), ('Vídeos publicados', 'tiktok.videos', 'int')], 'Datos de Metricool, a la espera de la lectura directa de TikTok')}
   </div>
+</div></section>
+
+<section class="sec tight"><div class="wrap">
+  <div class="star rv"><div class="star-n"><span class="T" data-n="destacado.vistas" data-f="k1">—</span><small>reproducciones</small></div>
+    <div><p class="kicker" style="margin:0 0 6px">Reel más visto · Instagram</p><h2 class="h3">«<span data-txt="destacado.titulo">—</span>»</h2><p class="muted">Publicado el <span data-date="destacado.fecha">—</span>. Cifra a las <span data-n="destacado.horas">—</span> horas, medida el <span data-date="destacado.medido">—</span> con Metricool. Es posterior al periodo de 28 días, por eso aún no está en el gráfico de abajo.</p>
+    <p style="margin-top:12px"><a href="https://www.instagram.com/reel/Df4_yVToCd5/" target="_blank" rel="noopener" style="color:var(--co);font-weight:600">Ver el Reel en Instagram ↗</a></p></div></div>
 </div></section>
 
 <section class="sec tight"><div class="wrap">
@@ -257,7 +286,7 @@ colab = f'''<section class="page-hero"><div class="wrap">
 <section class="sec tight"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Formatos</p><h2 class="T h2 rv">Cómo aparece tu marca</h2></div><p class="lead rv">Cada colaboración se adapta a lo que quieres contar. Sin tarifas públicas: te preparo una propuesta.</p></div>
   <div class="grid4">
-    <article class="feat rv"><h3 class="h3">Integración en YouTube</h3><p>Tu producto dentro de un vídeo largo, en los primeros minutos y explicado en contexto.</p><span class="meta">Vídeo cada domingo</span></article>
+    <article class="feat rv"><h3 class="h3">Integración en YouTube</h3><p>Tu producto dentro de un vídeo largo, en los primeros minutos y explicado en contexto.</p><span class="meta">Vídeo largo cada domingo</span></article>
     <article class="feat rv"><h3 class="h3">Vídeo dedicado</h3><p>Un vídeo completo construido alrededor de tu producto o de tu campaña.</p><span class="meta">YouTube</span></article>
     <article class="feat rv"><h3 class="h3">Reels, TikTok y Shorts</h3><p>Piezas cortas nativas de cada plataforma, con una idea clara desde el primer segundo.</p><span class="meta">Instagram · TikTok · YouTube</span></article>
     <article class="feat rv"><h3 class="h3">Eventos y experiencias</h3><p>Lanzamientos, talleres o presentaciones contados desde dentro.</p><span class="meta">Vlog o vídeo corto</span></article>
@@ -265,8 +294,8 @@ colab = f'''<section class="page-hero"><div class="wrap">
 </div></section>
 
 <section class="sec tight"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Experiencia</p><h2 class="T h2 rv">Ya lo he hecho</h2></div><p class="lead rv">Algunas colaboraciones publicadas en mi canal.</p></div>
-  <div class="grid4">{''.join('<div class="rv">' + vid(y, i, t, m) + '</div>' for y, i, t, m in COLLABS)}</div>
+  <div class="sec-head"><div><p class="kicker rv">Experiencia</p><h2 class="T h2 rv">Ya lo he hecho</h2></div><p class="lead rv">Marcas con las que ya he colaborado en mi canal.</p></div>
+  <div class="grid4">{''.join(f'<div class="rv xp"><div class="xp-logo"><img src="/img/{lg}" alt="{al}"></div>' + vid(y, i, t, m) + '</div>' for y, i, t, m, lg, al in COLLABS)}</div>
 </div></section>
 
 <section class="sec tight"><div class="wrap">
@@ -289,19 +318,22 @@ ugc = f'''<section class="page-hero"><div class="wrap">
   <div class="ph-grid">
     <div><h1 class="T h1 rv">Contenido UGC</h1>
       <p class="lead rv">Vídeos para que <span class="hl">los publique tu marca</span> en sus redes o en sus anuncios: gancho desde el primer segundo, producto en contexto y un mensaje claro. No dependen de mis seguidores, sino de cómo está contado.</p>
-      <div class="ctas rv"><a class="btn p" href="/contacto/?tipo=ugc">Pedir contenido {ARR}</a><a class="btn s" href="#portfolio">Ver ejemplos</a></div></div>
+      <div class="ctas rv"><a class="btn p" href="/contacto/?tipo=ugc">Pedir contenido {ARR}</a><a class="btn s" href="#marcas">Marcas con las que he trabajado</a></div></div>
     <div class="rv"><div class="chips" style="gap:10px"><span class="chip"><i></i>Moda</span><span class="chip"><i></i>Belleza</span><span class="chip"><i></i>Lifestyle</span><span class="chip"><i></i>Alimentación</span><span class="chip"><i></i>Apps y servicios</span><span class="chip dark">Vertical 9:16 listo para publicar</span></div></div>
   </div>
+</div></section>
+
+<section class="sec tight" id="marcas"><div class="wrap">
+  <div class="rv card" style="padding:24px 26px"><p class="subh">Experiencia · He creado contenido UGC para</p><div class="logos"><img src="/img/logo_miravia.svg" alt="Miravia"><img src="/img/logo_modibodi.svg" alt="Modibodi"><img src="/img/logo_perfumerias.png" alt="Perfumerías.com" class="dk"><img src="/img/logo_eggo.jpg" alt="Eggo"><img src="/img/logo_impress.svg" alt="Impress"><img src="/img/logo_matchaflix.svg" alt="Matchaflix"><img src="/img/logo_matchaandco.svg" alt="Matcha &amp; Co" class="tall"><img src="/img/logo_acelero.jpg" alt="Acelero"></div></div>
 </div></section>
 
 <section class="sec tight" id="portfolio"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Ejemplos</p><h2 class="T h2 rv">Cómo grabo</h2></div><p class="lead rv">Cada pieza indica qué es, para que sepas exactamente qué estás viendo.</p></div>
   <div class="grid3">{''.join('<div class="rv">' + vid(y, i, t, '<span class="tag own">Contenido propio</span>', True) + '</div>' for y, i, t, m in SHORTS)}</div>
-  <div class="rv card" style="padding:22px;margin-top:26px"><p class="subh">He creado contenido UGC para</p><div class="logos"><img src="/img/logo_miravia.svg" alt="Miravia"><img src="/img/logo_modibodi.svg" alt="Modibodi"><img src="/img/logo_perfumerias.png" alt="Perfumerías.com" class="dk"><img src="/img/logo_eggo.jpg" alt="Eggo"><img src="/img/logo_impress.svg" alt="Impress"><img src="/img/logo_matchaflix.svg" alt="Matchaflix"><img src="/img/logo_matchaandco.svg" alt="Matcha &amp; Co" class="tall"><img src="/img/logo_acelero.jpg" alt="Acelero"></div></div>
 </div></section>
 
 <section class="sec tight"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Formatos</p><h2 class="T h2 rv">Qué grabo</h2></div><p class="lead rv">Cada pieza se entrega editada, con subtítulos y una ronda de revisión incluida.</p></div>
+  <div class="sec-head"><div><p class="kicker rv">Formatos</p><h2 class="T h2 rv">Qué grabo</h2></div><p class="lead rv">Cada pieza se entrega editada y con subtítulos, con al menos una ronda de revisión.</p></div>
   <div class="grid3">
     <article class="feat rv"><h3 class="h3">Vídeo de producto</h3><p>El producto en uso, con gancho, beneficio y llamada a la acción.</p><span class="meta">15–45 s · anuncios y redes</span></article>
     <article class="feat rv"><h3 class="h3">Hablando a cámara</h3><p>Testimonio o explicación en primera persona, natural y creíble.</p><span class="meta">20–60 s · anuncios</span></article>
@@ -310,18 +342,18 @@ ugc = f'''<section class="page-hero"><div class="wrap">
     <article class="feat rv"><h3 class="h3">Lifestyle</h3><p>El producto dentro de un momento real: un look, una mañana, un plan.</p><span class="meta">15–30 s · marca</span></article>
     <article class="feat rv"><h3 class="h3">Fotos de producto</h3><p>Fotografías en contexto para redes, web o fichas de producto.</p><span class="meta">Pack de fotos</span></article>
   </div>
-  <div class="rv" style="margin-top:22px">{win('extras bajo petición', '<div class="chips"><span class="chip">Variaciones de gancho</span><span class="chip">Formatos 1:1 y 4:5</span><span class="chip">Versión sin subtítulos</span><span class="chip">Material bruto</span><span class="chip">Uso en anuncios por periodo</span><span class="chip">Exclusividad por periodo</span><span class="chip">Entrega urgente</span></div>')}</div>
+  <div class="rv" style="margin-top:22px">{win('si lo necesitas, pídemelo', '<p style="margin-bottom:14px">Además de la pieza final, te puedo enviar <b>cualquiera de estas versiones</b>. Solo tienes que pedírmelo en el brief:</p><div class="chips"><span class="chip"><i></i>Variaciones de gancho</span><span class="chip"><i></i>Formatos 1:1 y 4:5</span><span class="chip"><i></i>Versión sin subtítulos</span><span class="chip"><i></i>Material en bruto</span></div><p class="note" style="margin-top:14px">El uso en anuncios, la exclusividad y los plazos urgentes se acuerdan en la propuesta.</p>')}</div>
 </div></section>
 
 <section class="sec tight"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Proceso</p><h2 class="T h2 rv">Del brief a la entrega</h2></div><p class="lead rv">Antes de empezar acordamos por escrito qué se entrega, cuántas revisiones incluye y dónde y cuánto tiempo puedes usar el contenido.</p></div>
+  <div class="sec-head"><div><p class="kicker rv">Proceso</p><h2 class="T h2 rv">Del brief a la entrega</h2></div><p class="lead rv">Antes de empezar acordamos por escrito qué se entrega, las revisiones y dónde y cuánto tiempo puedes usar el contenido.</p></div>
   <ol class="steps" style="--n:3">
     <li class="rv"><b>Brief</b><p>Me cuentas producto, objetivo y dónde se usará.</p></li>
     <li class="rv"><b>Propuesta</b><p>Enfoque, entregables, plazos, derechos de uso y presupuesto cerrado.</p></li>
     <li class="rv"><b>Producto</b><p>Me envías el producto o el acceso al servicio.</p></li>
     <li class="rv"><b>Ideas y guion</b><p>Te paso los ganchos y el guion antes de grabar.</p></li>
     <li class="rv"><b>Grabación y edición</b><p>Grabo, edito, subtitulo y adapto a cada formato.</p></li>
-    <li class="rv"><b>Entrega</b><p>Archivos finales con una ronda de revisión incluida.</p></li>
+    <li class="rv"><b>Entrega</b><p>Archivos finales, con al menos una ronda de revisión.</p></li>
   </ol>
 </div></section>
 
@@ -336,19 +368,19 @@ redes = f'''<section class="page-hero"><div class="wrap">
     <div><h1 class="T h1 rv">Gestión de redes</h1>
       <p class="lead rv">Llevo las redes de tu negocio con estrategia y constancia, para que no tengas que pensar cada día qué subir. <span class="hl">Tú te ocupas de tu negocio; yo, de que se vea.</span></p>
       <div class="ctas rv"><a class="btn p" href="/contacto/?tipo=redes">Pedir presupuesto {ARR}</a><a class="btn s" href="#metodo">Cómo trabajo</a></div></div>
-    <div class="rv">{win('un mes conmigo', '<ul class="ticks arrow"><li><span><b>Semana 1 · Plan</b><small>Reunión corta, calendario del mes y materiales que necesito.</small></span></li><li><span><b>Semana 2 · Creación</b><small>Diseño, edición de vídeo y copys.</small></span></li><li><span><b>Semana 3 · Aprobación</b><small>Te lo paso todo junto. Una ronda de cambios incluida.</small></span></li><li><span><b>Semana 4 · Publicación e informe</b><small>Programo, publico y te envío el resumen.</small></span></li></ul>')}</div>
+    <div class="rv">{win('un mes conmigo', '<ul class="ticks arrow"><li><span><b>Semana 1 · Plan</b><small>Reunión corta, calendario del mes y materiales que necesito.</small></span></li><li><span><b>Semana 2 · Creación</b><small>Diseño, edición de vídeo y copys.</small></span></li><li><span><b>Semana 3 · Aprobación</b><small>Te lo paso todo junto para revisarlo, con al menos una ronda de cambios.</small></span></li><li><span><b>Semana 4 · Publicación e informe</b><small>Programo, publico y te envío el resumen.</small></span></li></ul>')}</div>
   </div>
 </div></section>
 
 <section class="sec tight" id="metodo"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Método</p><h2 class="T h2 rv">Paso a paso</h2></div><p class="lead rv">Seis pasos que se repiten cada mes para que tus redes mejoren con el tiempo.</p></div>
+  <div class="sec-head"><div><p class="kicker rv">Método</p><h2 class="T h2 rv">Paso a paso</h2></div><p class="lead rv">Seis pasos que se repiten cada mes, siempre a partir de <span class="hl">tus objetivos y tu público</span>. Nada de plantillas genéricas.</p></div>
   <ol class="steps" style="--n:3">
-    <li class="rv"><b>Análisis</b><p>Revisamos tus redes, tu competencia y lo que ya funciona.</p></li>
-    <li class="rv"><b>Estrategia</b><p>Objetivos, tono, temas y formatos para tu negocio.</p></li>
-    <li class="rv"><b>Calendario</b><p>Qué se publica, cuándo y con qué objetivo.</p></li>
-    <li class="rv"><b>Creación</b><p>Diseño de publicaciones, edición de vídeo y copys.</p></li>
-    <li class="rv"><b>Publicación</b><p>Programo y publico. Tú solo apruebas.</p></li>
-    <li class="rv"><b>Medición</b><p>Informe mensual: qué ha funcionado y qué ajustamos.</p></li>
+    <li class="rv"><b>Análisis</b><p>Qué quieres conseguir, a quién te diriges, cómo están tus redes y qué hace tu competencia.</p></li>
+    <li class="rv"><b>Estrategia</b><p>Basada en tus objetivos y en tu público objetivo: tono, temas y formatos pensados para tu negocio.</p></li>
+    <li class="rv"><b>Calendario</b><p>Qué se publica y cuándo, y a qué objetivo responde cada publicación.</p></li>
+    <li class="rv"><b>Creación</b><p>Diseño, edición de vídeo y copys con la imagen de tu marca y para tu público.</p></li>
+    <li class="rv"><b>Publicación</b><p>Programo y publico en los momentos en que tu público está más activo. Tú solo apruebas.</p></li>
+    <li class="rv"><b>Medición</b><p>Informe mensual comparado con tus objetivos: qué ha funcionado y qué ajustamos.</p></li>
   </ol>
 </div></section>
 
@@ -356,10 +388,10 @@ redes = f'''<section class="page-hero"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Claridad</p><h2 class="T h2 rv">Qué incluye</h2></div><p class="lead rv">Hay planes según el volumen de publicaciones, Stories y redes. El presupuesto se ajusta a tu negocio.</p></div>
   <div class="grid3">
     <div class="rv">{win('incluye', '<ul class="ticks"><li>Estrategia y calendario mensual</li><li>Diseño de publicaciones y edición de vídeo</li><li>Copys y hashtags</li><li>Programación y publicación</li><li>Stories según el plan</li><li>Informe mensual y ajustes</li></ul>')}</div>
-    <div class="rv">{win('no incluye', '<ul class="ticks no"><li><span>Desplazamientos para grabar<small>Se presupuestan aparte</small></span></li><li><span>Publicidad de pago<small>Gestión opcional, aparte</small></span></li><li>Atención a mensajes directos</li><li>Cambios ilimitados</li></ul>')}</div>
-    <div class="rv">{win('necesito de ti', '<ul class="ticks arrow"><li>Fotos y vídeos de tu negocio, o acceso para grabarlos</li><li>Acceso a tus redes</li><li>Una persona que apruebe</li><li>Novedades y promociones con antelación</li></ul>')}</div>
+    <div class="rv">{win('necesito de ti', '<ul class="ticks arrow"><li>Fotos y vídeos de tu negocio, o que pueda ir a grabarlos</li><li>Acceso a tus redes</li><li><span>Una persona de contacto<small>Con quien reunirme y que revise y apruebe los contenidos</small></span></li><li>Novedades y promociones con antelación</li></ul>')}</div>
+    <div class="rv">{win('no incluye', '<ul class="ticks no"><li><span>Desplazamientos para grabar<small>Si hay que ir a tu negocio a grabar, se presupuestan aparte</small></span></li><li><span>Publicidad de pago<small>Gestión opcional, aparte</small></span></li><li>Atención a mensajes directos</li><li>Cambios ilimitados</li></ul>')}</div>
   </div>
-  <div class="rv card" style="padding:22px 24px;margin-top:22px;max-width:820px"><p><b>Con quién trabajas.</b> <span class="muted">Estudié Digital Business en ESIC y he trabajado en comunicación y en una agencia de influencer marketing. Gestiono mis propias redes cada semana y aplico el mismo método a las de tu negocio. Trabajo con pocos negocios a la vez para dedicarles el tiempo que necesitan.</span></p></div>
+  <div class="rv card" style="padding:22px 24px;margin-top:22px;max-width:820px"><p><b>Con quién trabajas.</b> <span class="muted">Estudié Digital Business en ESIC, he trabajado en comunicación de marca en una empresa multinacional y en campañas con creadores en una agencia. Gestiono mis propias redes cada semana y aplico el mismo método a las de tu negocio. Trabajo con pocos negocios a la vez para dedicarles el tiempo que necesitan.</span></p></div>
 </div></section>
 
 {band('¿Ponemos tus redes <em>en orden</em>?', 'Cuéntame tu negocio y te propongo un plan mensual a medida. Madrid y en remoto.', f'<a class="btn p" href="/contacto/?tipo=redes">Pedir presupuesto {ARR}</a>')}
@@ -370,7 +402,7 @@ page('/gestion-de-redes/', 'redes', 'Gestión de redes sociales para negocios ·
 sobre = f'''<section class="page-hero"><div class="wrap">
   {crumbs(('/', 'Inicio'), ('', 'Sobre mí'))}
   <div class="ph-grid">
-    <div class="rv"><img class="photo" src="/img/broches.jpg" alt="Patri Barbero con chaqueta de rayas y broches" style="aspect-ratio:4/5;max-width:440px;object-position:50% 28%"></div>
+    <div class="rv cutout"><img src="/img/patri-espejo-1100.webp" srcset="/img/patri-espejo-1100.webp 432w, /img/patri-espejo-1800.webp 708w" sizes="(max-width:860px) 60vw, 360px" alt="Patri Barbero frente al espejo con top blanco, pantalón negro y bolso rojo" width="708" height="1800"></div>
     <div><h1 class="T h1 rv">Sobre mí</h1>
       <p class="lead rv">Soy Patri. Siempre voy en zapatillas y priorizo ir cómoda, pero me encanta verme mona y femenina. Por eso hablo de moda desde los dos lados: <span class="hl">no hay que sufrir para ir mona</span>.</p>
       <p class="rv" style="margin-top:16px;color:var(--gr)">No me quedo en qué se lleva: explico qué transmite, por qué aparece ahora y cómo llevarlo siendo tú. Porque para mí, vestirse también es <span class="serif" style="font-size:1.15em;color:var(--ch)">construirse</span>.</p></div>
@@ -390,7 +422,7 @@ sobre = f'''<section class="page-hero"><div class="wrap">
 
 <section class="sec tight"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Trayectoria</p><h2 class="T h2 rv">De dónde vengo</h2></div><p class="lead rv">Conozco las campañas desde los dos lados: el de la creadora y el de la marca.</p></div>
-  <div class="rv" style="max-width:820px">{win('ficha · patri barbero', '<dl class="ficha"><div><dt>Formación</dt><dd>Grado en Digital Business · ESIC</dd></div><div><dt>Formación</dt><dd>Diploma en Herramientas Digitales y Multimedia</dd></div><div><dt>Comunicación</dt><dd>Comunicación de marca en González Byass</dd></div><div><dt>Agencia</dt><dd>Campañas con creadores en una agencia de influencer marketing</dd></div><div><dt>Creadora</dt><dd>YouTube, Instagram y TikTok · vídeo nuevo cada domingo</dd></div></dl>')}</div>
+  <div class="rv" style="max-width:820px">{win('ficha · patri barbero', '<dl class="ficha"><div><dt>Formación</dt><dd>Grado universitario en Digital Business · ESIC</dd></div><div><dt>Formación</dt><dd>Diploma universitario en Herramientas Digitales y Multimedia</dd></div><div><dt>Comunicación</dt><dd>Comunicación de marca en una empresa multinacional</dd></div><div><dt>Agencia</dt><dd>Influencer marketing y campañas con creadores en una agencia</dd></div><div><dt>Creadora</dt><dd>Un vídeo largo en YouTube cada domingo y vídeos cortos varias veces por semana en Instagram, TikTok y YouTube Shorts</dd></div></dl>')}</div>
 </div></section>
 
 {band('¿Hablamos?', 'Para colaboraciones, contenido UGC o gestión de redes, escríbeme.', f'<a class="btn p" href="/contacto/">Contacto {ARR}</a><a class="btn s" href="/trabaja-conmigo/">Trabaja conmigo</a>')}
@@ -398,46 +430,50 @@ sobre = f'''<section class="page-hero"><div class="wrap">
 page('/sobre-mi/', 'sobre', 'Sobre mí · Patri Barbero', 'Quién es Patri Barbero: creadora de contenido de moda sporty y femenina, graduada en Digital Business por ESIC, con experiencia en comunicación e influencer marketing.', sobre)
 
 # =================================================== CONTACTO
-def fld(label, inp, small='', grp=''):
+def fld(label, inp, req=False, small=''):
+    star = ' <b class="req" aria-hidden="true">*</b>' if req else ''
     sm = f' <small>{small}</small>' if small else ''
-    return f'<label class="fld" data-label="{label}"><span>{label}{sm}</span>{inp}</label>'
+    return f'<label class="fld" data-label="{label}"><span>{label}{star}{sm}</span>{inp}</label>'
+SECT = ''.join(f'<option>{x}</option>' for x in ['Hostelería (bar, cafetería, restaurante)', 'Moda y complementos', 'Belleza y estética', 'Salud y bienestar', 'Deporte y fitness', 'Comercio local', 'Tienda online', 'Servicios profesionales', 'Educación y formación', 'Turismo y alojamiento', 'Inmobiliaria'])
 contacto = f'''<section class="page-hero"><div class="wrap">
   {crumbs(('/', 'Inicio'), ('', 'Contacto'))}
   <div class="ph-grid" style="align-items:start">
     <div><h1 class="T h1 rv">Hablemos</h1>
-      <p class="lead rv">Cuéntame qué necesitas y te respondo en 24–48 h laborables. Si lo prefieres, escríbeme directamente.</p>
+      <p class="lead rv">Cuéntame qué necesitas y te respondo en 24–48 h laborables.</p>
       <div class="ctas rv" style="flex-direction:column;align-items:flex-start"><a class="btn s" href="mailto:{EMAIL}">{EMAIL}</a>
       <div class="chips"><a class="chip" href="{YT}" target="_blank" rel="noopener">YouTube ↗</a><a class="chip" href="{IG}" target="_blank" rel="noopener">Instagram ↗</a><a class="chip" href="{TT}" target="_blank" rel="noopener">TikTok ↗</a></div></div>
       <p class="note rv" style="margin-top:22px">Sin tarifas públicas: cada propuesta se adapta al proyecto.</p></div>
     <div class="rv">{win('mensaje nuevo · para patri', f"""
       <form class="form" id="contact" novalidate data-to="{EMAIL}">
-        <div class="fld" data-label="Me interesa"><span>Me interesa</span><div class="opts">
-          <label class="opt"><input type="radio" name="tipo" value="Colabora en mis redes" data-msg="Elige qué te interesa."><span>Colabora en mis redes</span></label>
+        <p class="note legend-req"><b class="req">*</b> Campo obligatorio</p>
+        <div class="fld" data-label="Me interesa"><span>Me interesa <b class="req" aria-hidden="true">*</b></span><div class="opts" role="radiogroup" aria-required="true">
+          <label class="opt"><input type="radio" name="tipo" value="Colabora en mis redes" required data-msg="Elige qué te interesa."><span>Colabora en mis redes</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Contenido UGC"><span>Contenido UGC</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Gestión de redes"><span>Gestión de redes</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Otra cosa"><span>Otra cosa</span></label></div></div>
-        <div class="f2">{fld('Nombre', '<input type="text" name="nombre" required autocomplete="name" data-msg="Dime tu nombre.">')}{fld('Email', '<input type="email" name="email" required autocomplete="email" data-msg="Necesito un email válido para responderte.">')}</div>
-        {fld('Marca, agencia o negocio', '<input type="text" name="empresa" autocomplete="organization">')}
+        <div class="f2">{fld('Nombre', '<input type="text" name="nombre" required autocomplete="name" data-msg="Dime tu nombre.">', True)}{fld('Email', '<input type="email" name="email" required autocomplete="email" data-msg="Necesito un email válido para responderte.">', True)}</div>
+        {fld('Marca, agencia o negocio', '<input type="text" name="empresa" required autocomplete="organization" data-msg="Dime el nombre de tu marca, agencia o negocio.">', True)}
         <div data-for="Colabora en mis redes" hidden class="form">
-          <div class="f2">{fld('Plataformas', '<select name="plataformas"><option>Aún no lo sé</option><option>YouTube</option><option>Instagram</option><option>TikTok</option><option>Varias</option></select>')}{fld('Fecha de publicación', '<input type="text" name="fecha" placeholder="p. ej. 2.ª quincena de enero">')}</div>
-          {fld('Presupuesto orientativo', '<select name="presupuesto"><option value="">Prefiero hablarlo</option><option>Menos de 300 €</option><option>300–700 €</option><option>700–1.500 €</option><option>Más de 1.500 €</option></select>', 'opcional')}
+          <div class="f2">{fld('Plataformas', '<select name="plataformas"><option selected>Aún no lo sé</option><option>YouTube</option><option>Instagram</option><option>TikTok</option><option>Varias</option></select>')}{fld('Fecha de publicación', '<input type="text" name="fecha" placeholder="p. ej. 2.ª quincena de enero">')}</div>
+          {fld('Presupuesto orientativo', '<select name="presupuesto"><option value="">Prefiero hablarlo</option><option>Menos de 300 €</option><option>300–700 €</option><option>700–1.500 €</option><option>Más de 1.500 €</option></select>')}
         </div>
         <div data-for="Contenido UGC" hidden class="form">
-          <div class="f2">{fld('Número de piezas', '<select name="piezas"><option>1</option><option>2–3</option><option>4–6</option><option>Más de 6</option><option>No lo sé aún</option></select>')}{fld('¿Dónde se usará?', '<select name="uso"><option>Redes de la marca</option><option>Anuncios</option><option>Las dos cosas</option><option>Web o tienda online</option><option>No lo sé aún</option></select>')}</div>
+          <div class="f2">{fld('Número de piezas', '<select name="piezas"><option selected>No lo sé aún</option><option>1</option><option>2–3</option><option>4–6</option><option>Más de 6</option></select>')}{fld('¿Dónde se usará?', '<select name="uso"><option selected>No lo sé aún</option><option>Redes de la marca</option><option>Anuncios</option><option>Las dos cosas</option><option>Web o tienda online</option></select>')}</div>
           {fld('Plazo', '<input type="text" name="plazo" placeholder="p. ej. antes del 15 de diciembre">')}
         </div>
         <div data-for="Gestión de redes" hidden class="form">
-          <div class="f2">{fld('Sector y ciudad', '<input type="text" name="sector" placeholder="Cafetería en Madrid, tienda online…">')}{fld('Tus redes', '<input type="text" name="redes" placeholder="@tunegocio">')}</div>
-          {fld('¿Tienes fotos y vídeos?', '<select name="materiales"><option>Sí, te los paso</option><option>Algunos</option><option>No, necesito que se graben</option></select>')}
+          <div class="f2">{fld('Sector', '<select name="sector" required data-msg="Elige el sector de tu negocio."><option value="" selected>—</option>' + SECT + '<option>Otro</option></select>', True)}{fld('Ciudad', '<input type="text" name="ciudad" required autocomplete="address-level2" placeholder="p. ej. Madrid" data-msg="Dime en qué ciudad está tu negocio.">', True)}</div>
+          <div data-otro hidden>{fld('¿Qué sector?', '<input type="text" name="sector_otro" required placeholder="Cuéntame a qué se dedica tu negocio" data-msg="Dime a qué se dedica tu negocio.">', True)}</div>
+          <div class="f2">{fld('Tus redes', '<input type="text" name="redes" placeholder="@tunegocio (si ya las tienes)">')}{fld('¿Tienes fotos y vídeos?', '<select name="materiales" required data-msg="Dime si tienes fotos y vídeos."><option value="" selected>—</option><option>Sí, te los paso</option><option>Algunos</option><option>No, necesito que se graben</option></select>', True)}</div>
         </div>
-        {fld('Cuéntame', '<textarea name="mensaje" required placeholder="Qué quieres conseguir, producto, fechas…" data-msg="Cuéntame un poco qué necesitas."></textarea>')}
+        {fld('Cuéntame', '<textarea name="mensaje" placeholder="Qué quieres conseguir, producto, fechas…"></textarea>')}
         <div class="hp" aria-hidden="true"><label>No rellenar <input name="web_site" tabindex="-1" autocomplete="off"></label></div>
-        <label class="consent"><input type="checkbox" name="acepto" required data-msg="Necesito tu permiso para usar estos datos y responderte."><span>Acepto que Patri Barbero use estos datos solo para responder a mi mensaje. <a href="/privacidad/">Privacidad</a></span></label>
+        <label class="consent"><input type="checkbox" name="acepto" required data-msg="Necesito tu permiso para usar estos datos y responderte."><span>Acepto que Patri Barbero use estos datos solo para responder a mi mensaje. <a href="/privacidad/">Privacidad</a> <b class="req" aria-hidden="true">*</b></span></label>
         <p class="err" role="alert"></p>
-        <button class="btn p" type="submit">Preparar mi mensaje {ARR}</button>
-        <p class="note">Al pulsar se abre tu correo con el mensaje ya escrito; solo tienes que enviarlo.</p>
+        <button class="btn p" type="submit">Enviar mensaje {ARR}</button>
       </form>
-      <div class="done" id="done" hidden><div class="seal"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7" fill="none" stroke="#2B140C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2 class="h3">Tu mensaje está listo</h2><p class="muted">Se ha abierto tu correo con todo escrito. Solo tienes que pulsar enviar.</p><a class="btn d" data-mail href="#">Abrir mi correo</a><button class="btn s" type="button" data-copy>¿No se abre? Copiar el texto</button><p class="note"></p></div>
+      <div class="done" id="done" hidden tabindex="-1"><div class="seal"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7" fill="none" stroke="#2B140C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2 class="h3">¡Mensaje enviado!</h2><p class="muted">Gracias. Te respondo en 24–48 h laborables al email que me has dejado.</p></div>
+      <div class="done" id="fail" hidden tabindex="-1"><h2 class="h3">No se ha podido enviar</h2><p class="muted">Algo ha fallado con la conexión. Puedes enviármelo desde tu correo, con el texto ya escrito:</p><a class="btn d" data-mail href="#">Abrir mi correo</a><button class="btn s" type="button" data-copy>Copiar el texto</button><p class="note"></p></div>
     """)}</div>
   </div>
 </div></section>

@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#FFF5F1">
 <link rel="preload" href="/assets/f/anton.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/f/rubik.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css?v=20261120a">
+<link rel="stylesheet" href="/assets/css/site.css?v=20261120c">
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -37,39 +37,41 @@
   <nav class="crumbs" aria-label="Estás en"><a href="/">Inicio</a> <span aria-hidden="true">›</span> <span aria-current="page">Contacto</span></nav>
   <div class="ph-grid" style="align-items:start">
     <div><h1 class="T h1 rv">Hablemos</h1>
-      <p class="lead rv">Cuéntame qué necesitas y te respondo en 24–48 h laborables. Si lo prefieres, escríbeme directamente.</p>
+      <p class="lead rv">Cuéntame qué necesitas y te respondo en 24–48 h laborables.</p>
       <div class="ctas rv" style="flex-direction:column;align-items:flex-start"><a class="btn s" href="mailto:patribarberoinfo@gmail.com">patribarberoinfo@gmail.com</a>
       <div class="chips"><a class="chip" href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener">YouTube ↗</a><a class="chip" href="https://www.instagram.com/patribarbero_/" target="_blank" rel="noopener">Instagram ↗</a><a class="chip" href="https://www.tiktok.com/@patribarbero_" target="_blank" rel="noopener">TikTok ↗</a></div></div>
       <p class="note rv" style="margin-top:22px">Sin tarifas públicas: cada propuesta se adapta al proyecto.</p></div>
     <div class="rv"><div class="win "><div class="win-bar"><i></i><i></i><i></i><b>mensaje nuevo · para patri</b></div><div class="win-rib"></div><div class="win-body">
       <form class="form" id="contact" novalidate data-to="patribarberoinfo@gmail.com">
-        <div class="fld" data-label="Me interesa"><span>Me interesa</span><div class="opts">
-          <label class="opt"><input type="radio" name="tipo" value="Colabora en mis redes" data-msg="Elige qué te interesa."><span>Colabora en mis redes</span></label>
+        <p class="note legend-req"><b class="req">*</b> Campo obligatorio</p>
+        <div class="fld" data-label="Me interesa"><span>Me interesa <b class="req" aria-hidden="true">*</b></span><div class="opts" role="radiogroup" aria-required="true">
+          <label class="opt"><input type="radio" name="tipo" value="Colabora en mis redes" required data-msg="Elige qué te interesa."><span>Colabora en mis redes</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Contenido UGC"><span>Contenido UGC</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Gestión de redes"><span>Gestión de redes</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Otra cosa"><span>Otra cosa</span></label></div></div>
-        <div class="f2"><label class="fld" data-label="Nombre"><span>Nombre</span><input type="text" name="nombre" required autocomplete="name" data-msg="Dime tu nombre."></label><label class="fld" data-label="Email"><span>Email</span><input type="email" name="email" required autocomplete="email" data-msg="Necesito un email válido para responderte."></label></div>
-        <label class="fld" data-label="Marca, agencia o negocio"><span>Marca, agencia o negocio</span><input type="text" name="empresa" autocomplete="organization"></label>
+        <div class="f2"><label class="fld" data-label="Nombre"><span>Nombre <b class="req" aria-hidden="true">*</b></span><input type="text" name="nombre" required autocomplete="name" data-msg="Dime tu nombre."></label><label class="fld" data-label="Email"><span>Email <b class="req" aria-hidden="true">*</b></span><input type="email" name="email" required autocomplete="email" data-msg="Necesito un email válido para responderte."></label></div>
+        <label class="fld" data-label="Marca, agencia o negocio"><span>Marca, agencia o negocio <b class="req" aria-hidden="true">*</b></span><input type="text" name="empresa" required autocomplete="organization" data-msg="Dime el nombre de tu marca, agencia o negocio."></label>
         <div data-for="Colabora en mis redes" hidden class="form">
-          <div class="f2"><label class="fld" data-label="Plataformas"><span>Plataformas</span><select name="plataformas"><option>Aún no lo sé</option><option>YouTube</option><option>Instagram</option><option>TikTok</option><option>Varias</option></select></label><label class="fld" data-label="Fecha de publicación"><span>Fecha de publicación</span><input type="text" name="fecha" placeholder="p. ej. 2.ª quincena de enero"></label></div>
-          <label class="fld" data-label="Presupuesto orientativo"><span>Presupuesto orientativo <small>opcional</small></span><select name="presupuesto"><option value="">Prefiero hablarlo</option><option>Menos de 300 €</option><option>300–700 €</option><option>700–1.500 €</option><option>Más de 1.500 €</option></select></label>
+          <div class="f2"><label class="fld" data-label="Plataformas"><span>Plataformas</span><select name="plataformas"><option selected>Aún no lo sé</option><option>YouTube</option><option>Instagram</option><option>TikTok</option><option>Varias</option></select></label><label class="fld" data-label="Fecha de publicación"><span>Fecha de publicación</span><input type="text" name="fecha" placeholder="p. ej. 2.ª quincena de enero"></label></div>
+          <label class="fld" data-label="Presupuesto orientativo"><span>Presupuesto orientativo</span><select name="presupuesto"><option value="">Prefiero hablarlo</option><option>Menos de 300 €</option><option>300–700 €</option><option>700–1.500 €</option><option>Más de 1.500 €</option></select></label>
         </div>
         <div data-for="Contenido UGC" hidden class="form">
-          <div class="f2"><label class="fld" data-label="Número de piezas"><span>Número de piezas</span><select name="piezas"><option>1</option><option>2–3</option><option>4–6</option><option>Más de 6</option><option>No lo sé aún</option></select></label><label class="fld" data-label="¿Dónde se usará?"><span>¿Dónde se usará?</span><select name="uso"><option>Redes de la marca</option><option>Anuncios</option><option>Las dos cosas</option><option>Web o tienda online</option><option>No lo sé aún</option></select></label></div>
+          <div class="f2"><label class="fld" data-label="Número de piezas"><span>Número de piezas</span><select name="piezas"><option selected>No lo sé aún</option><option>1</option><option>2–3</option><option>4–6</option><option>Más de 6</option></select></label><label class="fld" data-label="¿Dónde se usará?"><span>¿Dónde se usará?</span><select name="uso"><option selected>No lo sé aún</option><option>Redes de la marca</option><option>Anuncios</option><option>Las dos cosas</option><option>Web o tienda online</option></select></label></div>
           <label class="fld" data-label="Plazo"><span>Plazo</span><input type="text" name="plazo" placeholder="p. ej. antes del 15 de diciembre"></label>
         </div>
         <div data-for="Gestión de redes" hidden class="form">
-          <div class="f2"><label class="fld" data-label="Sector y ciudad"><span>Sector y ciudad</span><input type="text" name="sector" placeholder="Cafetería en Madrid, tienda online…"></label><label class="fld" data-label="Tus redes"><span>Tus redes</span><input type="text" name="redes" placeholder="@tunegocio"></label></div>
-          <label class="fld" data-label="¿Tienes fotos y vídeos?"><span>¿Tienes fotos y vídeos?</span><select name="materiales"><option>Sí, te los paso</option><option>Algunos</option><option>No, necesito que se graben</option></select></label>
+          <div class="f2"><label class="fld" data-label="Sector"><span>Sector <b class="req" aria-hidden="true">*</b></span><select name="sector" required data-msg="Elige el sector de tu negocio."><option value="" selected>—</option><option>Hostelería (bar, cafetería, restaurante)</option><option>Moda y complementos</option><option>Belleza y estética</option><option>Salud y bienestar</option><option>Deporte y fitness</option><option>Comercio local</option><option>Tienda online</option><option>Servicios profesionales</option><option>Educación y formación</option><option>Turismo y alojamiento</option><option>Inmobiliaria</option><option>Otro</option></select></label><label class="fld" data-label="Ciudad"><span>Ciudad <b class="req" aria-hidden="true">*</b></span><input type="text" name="ciudad" required autocomplete="address-level2" placeholder="p. ej. Madrid" data-msg="Dime en qué ciudad está tu negocio."></label></div>
+          <div data-otro hidden><label class="fld" data-label="¿Qué sector?"><span>¿Qué sector? <b class="req" aria-hidden="true">*</b></span><input type="text" name="sector_otro" required placeholder="Cuéntame a qué se dedica tu negocio" data-msg="Dime a qué se dedica tu negocio."></label></div>
+          <div class="f2"><label class="fld" data-label="Tus redes"><span>Tus redes</span><input type="text" name="redes" placeholder="@tunegocio (si ya las tienes)"></label><label class="fld" data-label="¿Tienes fotos y vídeos?"><span>¿Tienes fotos y vídeos? <b class="req" aria-hidden="true">*</b></span><select name="materiales" required data-msg="Dime si tienes fotos y vídeos."><option value="" selected>—</option><option>Sí, te los paso</option><option>Algunos</option><option>No, necesito que se graben</option></select></label></div>
         </div>
-        <label class="fld" data-label="Cuéntame"><span>Cuéntame</span><textarea name="mensaje" required placeholder="Qué quieres conseguir, producto, fechas…" data-msg="Cuéntame un poco qué necesitas."></textarea></label>
+        <label class="fld" data-label="Cuéntame"><span>Cuéntame</span><textarea name="mensaje" placeholder="Qué quieres conseguir, producto, fechas…"></textarea></label>
         <div class="hp" aria-hidden="true"><label>No rellenar <input name="web_site" tabindex="-1" autocomplete="off"></label></div>
-        <label class="consent"><input type="checkbox" name="acepto" required data-msg="Necesito tu permiso para usar estos datos y responderte."><span>Acepto que Patri Barbero use estos datos solo para responder a mi mensaje. <a href="/privacidad/">Privacidad</a></span></label>
+        <label class="consent"><input type="checkbox" name="acepto" required data-msg="Necesito tu permiso para usar estos datos y responderte."><span>Acepto que Patri Barbero use estos datos solo para responder a mi mensaje. <a href="/privacidad/">Privacidad</a> <b class="req" aria-hidden="true">*</b></span></label>
         <p class="err" role="alert"></p>
-        <button class="btn p" type="submit">Preparar mi mensaje <svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <p class="note">Al pulsar se abre tu correo con el mensaje ya escrito; solo tienes que enviarlo.</p>
+        <button class="btn p" type="submit">Enviar mensaje <svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </form>
-      <div class="done" id="done" hidden><div class="seal"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7" fill="none" stroke="#2B140C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2 class="h3">Tu mensaje está listo</h2><p class="muted">Se ha abierto tu correo con todo escrito. Solo tienes que pulsar enviar.</p><a class="btn d" data-mail href="#">Abrir mi correo</a><button class="btn s" type="button" data-copy>¿No se abre? Copiar el texto</button><p class="note"></p></div>
+      <div class="done" id="done" hidden tabindex="-1"><div class="seal"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7" fill="none" stroke="#2B140C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2 class="h3">¡Mensaje enviado!</h2><p class="muted">Gracias. Te respondo en 24–48 h laborables al email que me has dejado.</p></div>
+      <div class="done" id="fail" hidden tabindex="-1"><h2 class="h3">No se ha podido enviar</h2><p class="muted">Algo ha fallado con la conexión. Puedes enviármelo desde tu correo, con el texto ya escrito:</p><a class="btn d" data-mail href="#">Abrir mi correo</a><button class="btn s" type="button" data-copy>Copiar el texto</button><p class="note"></p></div>
     </div></div></div>
   </div>
 </div></section>
@@ -81,7 +83,7 @@
   <div class="legal"><span>© 2026 Patri Barbero</span><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a><a href="https://www.instagram.com/patribarbero_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@patribarbero_" target="_blank" rel="noopener">TikTok</a></div>
 </div></footer>
 <dialog class="vd" id="vd" aria-label="Vídeo"><div class="box"><div class="frame"></div></div><button class="x" type="button">Cerrar ✕</button></dialog>
-<script src="/assets/js/site.js?v=20261120a" defer></script>
+<script src="/assets/js/site.js?v=20261120c" defer></script>
 
 </body>
 </html>
