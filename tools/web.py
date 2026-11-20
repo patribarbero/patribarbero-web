@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261121a'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261121b'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -43,7 +43,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 <meta property="og:type" content="website"><meta property="og:site_name" content="Patri Barbero"><meta property="og:locale" content="es_ES">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}"><meta property="og:url" content="{BASE}{path}">
 <meta property="og:image" content="{BASE}/img/og.jpg"><meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.ico" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg?v=r13" type="image/svg+xml"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#FFF5F1">
 <link rel="preload" href="/assets/f/anton.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/f/rubik.woff2" as="font" type="font/woff2" crossorigin>{pre}
