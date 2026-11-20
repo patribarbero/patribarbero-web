@@ -1,104 +1,69 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light only">
-<title>Mi contenido · Patri Barbero</title><meta name="description" content="Vídeos de moda sporty y femenina en YouTube, Reels y TikTok: tendencias con filtro, cómo combinar e identidad."><link rel="canonical" href="https://patribarbero.com/contenido/">
-<meta property="og:title" content="Mi contenido · Patri Barbero"><meta property="og:description" content="Vídeos de moda sporty y femenina en YouTube, Reels y TikTok: tendencias con filtro, cómo combinar e identidad."><meta property="og:url" content="https://patribarbero.com/contenido/"><meta property="og:type" content="website"><meta property="og:image" content="https://patribarbero.com/img/og.jpg">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>
-@font-face{font-family:'Anton';src:url('/assets/f/Anton.ttf') format('truetype');font-display:swap}
-@font-face{font-family:'Rubik';src:url('/assets/f/Rubik.ttf') format('truetype');font-weight:300 900;font-display:swap}
-:root{--le:#FFF5F1;--w:#fff;--ch:#2B140C;--fr:#FF5C9D;--co:#2346FF;--ma:#FFE15A;--ni:#FFD3E4;--gr:#7A665E;color-scheme:light only}
-*{box-sizing:border-box}
-body{margin:0;background:var(--le);color:var(--ch);font:400 17px/1.55 'Rubik',system-ui,sans-serif;overflow-x:hidden}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-.proto{background:var(--ch);color:var(--le);font-size:13px;text-align:center;padding:7px 14px}
-.proto b{color:var(--ma)}
-header{position:sticky;top:0;z-index:20;background:rgba(255,245,241,.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(43,20,12,.08)}
-.nav{display:flex;align-items:center;gap:16px;height:68px}
-.logo{font-family:'Anton';font-size:26px;text-decoration:none;text-transform:uppercase;white-space:nowrap}
-.logo span{color:var(--fr)}
-.links{display:flex;align-items:center;gap:2px;margin:0 0 0 auto;padding:0;list-style:none}
-.links>li{position:relative}
-.links a,.links .dd{display:block;text-decoration:none;font:600 15px 'Rubik';padding:10px 12px;border-radius:10px;position:relative;background:none;border:0;color:var(--ch);cursor:pointer}
-.links a:hover,.links .dd:hover{background:var(--w)}
-.links [aria-current=page]::after,.links .dd.cur::after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:7px;background:linear-gradient(var(--fr) 0 2.5px,transparent 2.5px 4.5px,var(--co) 4.5px 7px)}
-.dd::before{content:"";float:right;width:7px;height:7px;margin:6px 0 0 8px;border-right:2px solid;border-bottom:2px solid;transform:rotate(45deg)}
-.sub{position:absolute;top:calc(100% + 8px);left:-8px;width:330px;background:var(--w);border-radius:22px;box-shadow:0 18px 40px rgba(43,20,12,.16);padding:10px;list-style:none;margin:0;display:none}
-.sub.open{display:block}
-.sub a{padding:12px 14px;border-radius:12px}
-.sub a b{display:block;font-size:15.5px}
-.sub a small{display:block;font-weight:400;color:var(--gr);font-size:13.5px;margin-top:2px}
-.sub a[aria-current=page]{background:var(--le)}
-.sub a[aria-current=page]::after{display:none}
-.sub .all{border-top:1px solid rgba(43,20,12,.08);margin-top:6px;padding-top:12px;font-size:14px;color:var(--co)}
-.menu{display:none;margin-left:auto;border:0;background:var(--ch);color:var(--le);font:600 15px 'Rubik';padding:10px 16px;border-radius:999px;cursor:pointer}
-.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;font:600 16px 'Rubik';text-decoration:none;border:0;cursor:pointer}
-.btn.p{background:var(--fr);color:var(--ch)}
-.btn.s{background:var(--w);box-shadow:inset 0 0 0 2px var(--ch)}
-:focus-visible{outline:3px solid var(--co);outline-offset:3px;border-radius:8px}
-.m-only{display:none}
-@media (max-width:960px){
- .links{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;align-items:stretch;background:var(--le);padding:8px 16px 20px;border-bottom:1px solid rgba(43,20,12,.1);max-height:calc(100vh - 68px);overflow:auto}
- .links.open{display:flex}.links a,.links .dd{font-size:18px;padding:13px 8px;text-align:left;width:100%}
- .dd{pointer-events:none}.dd::before{display:none}
- .sub{position:static;display:block;width:auto;box-shadow:none;background:transparent;padding:0 0 0 10px}
- .sub a{padding:10px 8px}.sub a small{display:none}
- .menu{display:block}.nav>.btn{display:none}.m-only{display:block}
-}
-main{padding:28px 0 64px}
-.crumbs{font-size:13.5px;color:var(--gr);margin-bottom:14px}
-.crumbs a{text-decoration:none}
-.T{font-family:'Anton';text-transform:uppercase;line-height:.92;font-weight:400;margin:0}
-h1.T{font-size:clamp(48px,8vw,104px)}
-.goal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0 30px}
-.goal div{background:var(--w);border-radius:12px;padding:14px 16px;font-size:14.5px}
-.goal b{display:block;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--gr);margin-bottom:4px}
-@media (max-width:760px){.goal{grid-template-columns:1fr}}
-.blocks{display:grid;gap:14px}
-.blk{border:2px dashed rgba(43,20,12,.22);border-radius:22px;padding:20px 22px;background:rgba(255,255,255,.55);display:grid;gap:6px;align-content:start}
-.blk h2{margin:0;font:700 19px/1.25 'Rubik'}
-.blk p{margin:0;color:var(--gr);font-size:15px}
-.blk .tag{justify-self:start;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px}
-.blk .tag.ok{background:#E3F3E6}.blk .tag.prop{background:var(--ni)}.blk .tag.pend{background:var(--ma)}
-.blk.hero{background:var(--w);border-style:solid;border-color:transparent;box-shadow:0 10px 28px rgba(43,20,12,.08)}
-.links-int{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.links-int a{font-weight:600;font-size:14.5px;color:var(--co)}
-footer{border-top:1px solid rgba(43,20,12,.08);padding:28px 0 48px;color:var(--gr);font-size:14px}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 22px;justify-content:space-between}
-footer nav{display:flex;flex-wrap:wrap;gap:14px}
-footer a{text-decoration:none}
-/* portada con texto orbital */
-.home-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center;margin-bottom:30px}
-.home-hero .lead{font-size:clamp(19px,2vw,23px);line-height:1.4;max-width:30ch;margin:20px 0 26px}
-.home-hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
-.orb-wrap{position:relative;display:grid;place-items:center}
-.orb{--H:min(78vh,108vw,820px);position:relative;height:var(--H);width:calc(var(--H)*.78);font-size:calc(var(--H)/100)}
-.orb .me{position:absolute;left:50%;bottom:0;height:94%;width:auto;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 1.4em 1.6em rgba(43,20,12,.14));pointer-events:none}
-.orb .scene{position:absolute;inset:0;perspective:calc(var(--H)*3.2);perspective-origin:50% 44%;pointer-events:none}
-.orb .back{z-index:1}.orb .front{z-index:3}
-.orb .tilt{position:absolute;left:50%;top:44%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-14deg) rotateZ(-4deg)}
-.orb .ring-f,.orb .ring-b{position:absolute;left:0;top:0;transform-style:preserve-3d;will-change:transform}
-.orb .l{position:absolute;left:0;top:0;transform-style:preserve-3d;font:400 var(--fs,11em)/1 'Anton',Impact,sans-serif;text-transform:uppercase;white-space:pre}
-.orb .l>i{display:block;font-style:normal;transform:translate(-50%,-50%);backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.orb .front .l>i{color:var(--fr);text-shadow:0 0 .06em rgba(43,20,12,.25)}
-.orb .back .l>i{color:var(--ch);opacity:.85;transform:translate(-50%,-50%) rotateY(180deg)}
-.orb-pause{position:absolute;right:8px;bottom:8px;z-index:5;border:0;border-radius:999px;background:var(--w);color:var(--ch);font:600 14px 'Rubik';padding:9px 14px;box-shadow:0 6px 18px rgba(43,20,12,.14);cursor:pointer}
-@media (max-width:860px){.home-hero{grid-template-columns:1fr}.orb-wrap{order:-1}}
-</style></head>
+<html lang="es" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>Mi contenido · Patri Barbero</title>
+<meta name="description" content="Vídeos de moda sporty y femenina en YouTube, Reels y TikTok: tendencias con filtro, cómo combinar e identidad.">
+<link rel="canonical" href="https://patribarbero.com/contenido/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Patri Barbero"><meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Mi contenido · Patri Barbero"><meta property="og:description" content="Vídeos de moda sporty y femenina en YouTube, Reels y TikTok: tendencias con filtro, cómo combinar e identidad."><meta property="og:url" content="https://patribarbero.com/contenido/">
+<meta property="og:image" content="https://patribarbero.com/img/og.jpg"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.ico" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#FFF5F1">
+<link rel="preload" href="/assets/f/anton.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/f/rubik.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css?v=20261120a">
+</head>
 <body>
-<div class="proto">Maqueta de <b>arquitectura</b> v2 (RIBETE 1.3, baja fidelidad). No es la web publicada.</div>
-<header><nav class="wrap nav" aria-label="Principal"><a class="logo" href="/" aria-label="Patri Barbero, inicio">Patri <span>Barbero</span></a>
-<button class="menu" type="button" aria-expanded="false" aria-controls="links">Menú</button>
-<ul class="links" id="links"><li class="m-only"><a href="/">Inicio</a></li><li><a href="/contenido/" aria-current="page">Contenido</a></li><li><a href="/estadisticas/">Estadísticas</a></li><li><button class="dd" type="button" aria-expanded="false" aria-controls="sub">Trabaja conmigo</button><ul class="sub" id="sub"><li><a href="/colaboraciones/"><b>Colaboraciones</b><small>Tu marca en mis vídeos de YouTube, Reels y TikTok</small></a></li><li><a href="/ugc/"><b>UGC</b><small>Vídeos para las redes y anuncios de tu marca</small></a></li><li><a href="/gestion-de-redes/"><b>Gestión de redes</b><small>Llevo las redes de tu negocio</small></a></li><li><a class="all" href="/trabaja-conmigo/">Ver las tres opciones →</a></li></ul></li><li><a href="/sobre-mi/">Sobre mí</a></li><li class="m-only"><a href="/contacto/">Contacto</a></li></ul><a class="btn p" href="/contacto/">Contacto</a></nav></header>
-<main id="main"><div class="wrap">
-<p class="crumbs"><a href="/">Inicio</a> › <a href="/contenido/">Contenido</a></p>
-<h1 class="T">Mi contenido</h1>
-<div class="goal"><div><b>Para quién</b>Comunidad nueva y marcas que quieren ver cómo trabajo.</div><div><b>Objetivo</b>Enseñar el contenido real y llevar a los canales.</div><div><b>Acción principal</b>Suscribirse en YouTube / seguir en IG y TikTok.</div></div>
-<div class="blocks"><section class="blk hero"><span class="tag ok">Existe / aprobado</span><h2>Tres pilares</h2><p>Tendencias pasadas por el filtro · Cómo combinar · Identidad y comunidad, con 2–3 piezas reales cada uno.</p></section><section class="blk"><span class="tag prop">Propuesta</span><h2>YouTube</h2><p>Último vídeo y más vistos (vídeo nuevo cada domingo). El vídeo solo se carga al pulsar.</p></section><section class="blk"><span class="tag prop">Propuesta</span><h2>Reels y TikTok</h2><p>4–6 piezas verticales y enlaces a los perfiles.</p></section><section class="blk"><span class="tag prop">Propuesta</span><h2>Para marcas</h2><p>«¿Quieres aparecer en mis vídeos?» → Colaboraciones.</p><div class="links-int"><a href="/colaboraciones/">Colaboraciones →</a></div></section></div>
-</div></main>
-<footer><div class="wrap"><span>© Patri Barbero · Moda como identidad</span>
-<nav aria-label="Pie"><a href="/estadisticas/">Estadísticas</a><a href="/colaboraciones/">Colaboraciones</a><a href="/ugc/">UGC</a><a href="/gestion-de-redes/">Gestión de redes</a><a href="/contacto/">Contacto</a><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a></nav></div></footer>
-<script>(function(){var m=document.querySelector('.menu'),l=document.getElementById('links');m.addEventListener('click',function(){var o=l.classList.toggle('open');m.setAttribute('aria-expanded',o);m.textContent=o?'Cerrar':'Menú'});
-var d=document.querySelector('.dd'),s=document.getElementById('sub');d.addEventListener('click',function(e){e.stopPropagation();var o=s.classList.toggle('open');d.setAttribute('aria-expanded',o)});
-document.addEventListener('click',function(e){if(!s.contains(e.target)&&innerWidth>960){s.classList.remove('open');d.setAttribute('aria-expanded',false)}});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){s.classList.remove('open');d.setAttribute('aria-expanded',false);d.focus()}});})();</script>
-</body></html>
+<a class="skip" href="#main">Saltar al contenido</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="yt" viewBox="0 0 576 512"><path fill="currentColor" d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6C14.9 167 14.9 256.4 14.9 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6V175.2l142.7 81.2-142.7 81.2z"/></symbol>
+  <symbol id="ig" viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></symbol>
+  <symbol id="tt" viewBox="0 0 448 512"><path fill="currentColor" d="M448 209.9a210.1 210.1 0 0 1-122.8-39.3v178.8A162.6 162.6 0 1 1 185 188.3v89.9a74.6 74.6 0 1 0 52.2 71.2V0h88a121.2 121.2 0 0 0 1.9 22.2 122.2 122.2 0 0 0 53.9 80.2 121.4 121.4 0 0 0 67 20.1z"/></symbol>
+  <symbol id="play" viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></symbol>
+  <symbol id="arrow" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4.5 11.5l7-7M5.5 4.5h6v6"/></symbol>
+  <symbol id="mail" viewBox="0 0 20 20"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M3 5h14v10H3zM3.5 5.5 10 11l6.5-5.5"/></symbol>
+</svg>
+<header class="top"><div class="wrap bar">
+  <a class="logo" href="/" aria-label="Patri Barbero, inicio">Patri <span>Barbero</span></a>
+  <button class="menu" type="button" aria-expanded="false" aria-controls="links">Menú</button>
+  <ul class="links" id="links"><li class="m-only"><a href="/">Inicio</a></li><li><a href="/contenido/" aria-current="page">Contenido</a></li><li><a href="/estadisticas/">Estadísticas</a></li><li><button class="dd" type="button" aria-expanded="false" aria-controls="sub">Trabaja conmigo<span aria-hidden="true"></span></button><ul class="sub" id="sub"><li><a href="/colaboraciones/"><b>Colabora en mis redes</b><small>Tu marca en mis vídeos de YouTube, Reels y TikTok</small></a></li><li><a href="/ugc/"><b>Contenido UGC</b><small>Vídeos para las redes y anuncios de tu marca</small></a></li><li><a href="/gestion-de-redes/"><b>Gestión de redes</b><small>Llevo las redes de tu negocio</small></a></li><li><a class="all" href="/trabaja-conmigo/">Ver las tres opciones</a></li></ul></li><li><a href="/sobre-mi/">Sobre mí</a></li><li class="m-only"><a href="/contacto/">Contacto</a></li></ul>
+  <a class="btn p" href="/contacto/">Contacto</a>
+</div></header>
+<main id="main">
+<section class="page-hero"><div class="wrap">
+  <nav class="crumbs" aria-label="Estás en"><a href="/">Inicio</a> <span aria-hidden="true">›</span> <span aria-current="page">Contenido</span></nav>
+  <div class="ph-grid"><div><h1 class="T h1 rv">Mi contenido</h1><p class="lead rv">Hablo de moda para chicas que viven en zapatillas y también quieren ir monas. Cada tendencia pasa por el mismo filtro: <span class="hl">cómoda y femenina a la vez</span>.</p>
+    <div class="ctas rv"><a class="btn d" href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener">YouTube ↗</a><a class="btn s" href="https://www.instagram.com/patribarbero_/" target="_blank" rel="noopener">Instagram ↗</a><a class="btn s" href="https://www.tiktok.com/@patribarbero_" target="_blank" rel="noopener">TikTok ↗</a></div></div>
+    <div class="rv"><div class="chips" style="gap:10px"><span class="chip"><i></i>Tendencias con filtro</span><span class="chip"><i></i>Cómo combinar</span><span class="chip"><i></i>Identidad y comunidad</span><span class="chip on">Vídeo nuevo cada domingo</span></div></div></div>
+</div></section>
+
+<section class="sec tight"><div class="wrap">
+  <div class="grid3">
+    <article class="feat rv"><p class="kicker" style="margin:0">Pilar 1</p><h2 class="h3">Tendencias pasadas por el filtro</h2><p>Qué se lleva, qué transmite, por qué aparece ahora y cómo llevarlo cómoda y femenina.</p></article>
+    <article class="feat rv"><p class="kicker" style="margin:0">Pilar 2</p><h2 class="h3">Cómo combinar</h2><p>Guías prácticas para mezclar lo deportivo con lo femenino, en las dos direcciones.</p></article>
+    <article class="feat rv"><p class="kicker" style="margin:0">Pilar 3</p><h2 class="h3">Identidad y comunidad</h2><p>Qué dice de ti cada elección y qué chica construye la mezcla. Vestirse también es construirse.</p></article>
+  </div>
+</div></section>
+
+<section class="sec tight"><div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Plataforma"><button role="tab" aria-selected="true" aria-controls="p-yt" id="t-yt">YouTube</button><button role="tab" aria-selected="false" aria-controls="p-sh" id="t-sh">Reels, TikTok y Shorts</button></div>
+  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt"><div class="win "><div class="win-bar"><i></i><i></i><i></i><b>youtube · últimos vídeos</b></div><div class="win-rib"></div><div class="win-body"><div class="grid4"><a class="vid" href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener"><span class="th"><img src="/img/yt1.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>Invierno: ¿qué zapatilla eres?</b></a><a class="vid" href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener"><span class="th"><img src="/img/yt2.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>¿Cuáles? No depende solo de tu cara</b></a><a class="vid" href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener"><span class="th"><img src="/img/yt3.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>Viste bien en invierno sin repetir looks</b></a><a class="vid" href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener"><span class="th"><img src="/img/yt4.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>Tendencias de otoño</b></a></div></div></div></div>
+  <div id="p-sh" role="tabpanel" aria-labelledby="t-sh" hidden><div class="win "><div class="win-bar"><i></i><i></i><i></i><b>vídeos cortos</b></div><div class="win-rib"></div><div class="win-body"><div class="grid3"><button class="vid v" type="button" data-yt="u0GktqmTMh8" data-v="1" data-title="Oversized y femenina"><span class="th"><img src="/img/oversized.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>Oversized y femenina</b><small>Short · 35,7 mil visualizaciones</small></button><button class="vid v" type="button" data-yt="MKhsAIKXquk" data-v="1" data-title="Vuelven los broches"><span class="th"><img src="/img/broches.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>Vuelven los broches</b><small>Short · 19,8 mil visualizaciones</small></button><button class="vid v" type="button" data-yt="wu2mG4YX1dI" data-v="1" data-title="Elige A, B o C"><span class="th"><img src="/img/abc.jpg" alt="" loading="lazy"><span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span></span><b>Elige A, B o C</b><small>Reel · formato interactivo</small></button></div></div></div></div>
+</div></section>
+
+<section class="sec tight"><div class="wrap"><div class="band rv"><div><h2 class="T h2">¿Quieres salir en <em>mis vídeos</em>?</h2><p>Integro marcas en mis vídeos como parte de la conversación, no como un anuncio pegado.</p></div><div class="ctas" style="margin:0"><a class="btn p" href="/colaboraciones/">Colabora en mis redes <svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div></section>
+
+</main>
+<footer class="foot"><div class="wrap">
+  <div><a class="logo" href="/">Patri <span>Barbero</span></a><p>Moda como identidad · Madrid<br><a href="mailto:patribarberoinfo@gmail.com">patribarberoinfo@gmail.com</a></p></div>
+  <nav aria-label="Pie"><a href="/contenido/">Contenido</a><a href="/estadisticas/">Estadísticas</a><a href="/trabaja-conmigo/">Trabaja conmigo</a><a href="/colaboraciones/">Colabora en mis redes</a><a href="/ugc/">Contenido UGC</a><a href="/gestion-de-redes/">Gestión de redes</a><a href="/sobre-mi/">Sobre mí</a><a href="/contacto/">Contacto</a><a href="https://www.youtube.com/@patribarbero" target="_blank" rel="noopener">YouTube ↗</a></nav>
+  <div class="legal"><span>© 2026 Patri Barbero</span><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a><a href="https://www.instagram.com/patribarbero_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@patribarbero_" target="_blank" rel="noopener">TikTok</a></div>
+</div></footer>
+<dialog class="vd" id="vd" aria-label="Vídeo"><div class="box"><div class="frame"></div></div><button class="x" type="button">Cerrar ✕</button></dialog>
+<script src="/assets/js/site.js?v=20261120a" defer></script>
+
+</body>
+</html>

@@ -7,8 +7,8 @@
 <meta name="robots" content="noindex">
 <title>Texto orbital 3D · prototipo</title>
 <style>
-@font-face{font-family:'Anton';src:url('/assets/f/Anton.ttf') format('truetype');font-display:block}
-@font-face{font-family:'Rubik';src:url('/assets/f/Rubik.ttf') format('truetype');font-weight:300 900;font-display:swap}
+@font-face{font-family:'Anton';src:url('/assets/f/anton.woff2') format('woff2');font-display:block}
+@font-face{font-family:'Rubik';src:url('/assets/f/rubik.woff2') format('woff2');font-weight:300 900;font-display:swap}
 :root{--le:#FFF5F1;--w:#fff;--ch:#2B140C;--fr:#FF5C9D;--co:#2346FF;--ma:#FFE15A;--ni:#FFD3E4;--gr:#7A665E;color-scheme:light}
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -28,8 +28,8 @@ body{background:var(--le);color:var(--ch);font:400 17px/1.5 'Rubik',system-ui,sa
 .scene.back{z-index:1}.scene.front{z-index:3}
 .tilt{position:absolute;left:50%;top:var(--cy,44%);width:0;height:0;transform-style:preserve-3d;transform:rotateX(var(--tilt,-14deg)) rotateZ(var(--roll,-4deg))}
 .ring{position:absolute;left:0;top:0;transform-style:preserve-3d;will-change:transform}
-.l{position:absolute;left:0;top:0;transform-style:preserve-3d;font:400 var(--fs,11em)/1 'Anton',Impact,sans-serif;text-transform:uppercase;white-space:pre}
-.l>i{display:block;font-style:normal;transform:translate(-50%,-50%);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.l{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transform-style:preserve-3d;font:400 var(--fs,11em)/1 'Anton',Impact,sans-serif;text-transform:uppercase;white-space:pre}
+.l>i{display:block;width:max-content;font-style:normal;transform:translate(-50%,-50%);backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .front .l>i{color:var(--c-front,var(--fr));text-shadow:0 0 .06em rgba(43,20,12,.25)}
 .back .l>i{color:var(--c-back,var(--ch));transform:translate(-50%,-50%) rotateY(180deg);opacity:var(--o-back,.85)}
 .debug .back .l>i{outline:1px dashed var(--co)}
@@ -125,6 +125,7 @@ input[type=range]{width:100%;accent-color:var(--fr)}
       html+='<span class="l" style="transform:rotateY('+a.toFixed(2)+'deg) translateZ('+R.toFixed(1)+'px)"><i>'+(txt[i]===' '?' ':txt[i])+'</i></span>';
     }
     F.innerHTML=html; B.innerHTML=html;
+    var e=0; for(var j=0;j<one.length-5;j++) e+=widths[j]*scale; STILL=-(e/2)/circ*360;
   }
 
   /* giro controlado por JavaScript (funciona igual en todos los navegadores) */

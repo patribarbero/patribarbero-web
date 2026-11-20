@@ -1,8 +1,8 @@
-# patribarbero.com
+# patribarbero.com · RIBETE 1.3
 
-Web y media kit de Patri Barbero. Web estática (sin compilación ni base de datos), publicada automáticamente con Cloudflare Pages en cada cambio de la rama `main`.
+Web multipágina estática (sin compilación). Se genera con `python3 tools/web.py` y se publica con Cloudflare Pages.
 
-- `index.html` · diseño y textos
-- `datos.js` · estadísticas (lo único que hay que cambiar para actualizarlas)
-- `img/` · fotos y logos
-- `favicon.*`, `apple-touch-icon.png`, `icon-*.png`, `site.webmanifest` · iconos
+- Rama `main` = web pública. Rama `ribete` = versión nueva en prueba (no se publica sin aprobación de Patri).
+- `datos.js` = estadísticas (única fuente de cifras en la web).
+- `assets/css/site.css`, `assets/js/` (site, stats, orbital), `assets/f/` (Anton, Rubik, Instrument Serif · woff2).
+- `laboratorio/` = pruebas (noindex).
