@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261120d'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261121a'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -27,6 +27,7 @@ def nav(key):
             + a('/sobre-mi/', 'Sobre mí', 'sobre')
             + '<li class="m-only"><a href="/contacto/"' + (' aria-current="page"' if key == 'contacto' else '') + '>Contacto</a></li>')
 
+PAGES = []
 def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''):
     rob = '<meta name="robots" content="noindex">' if noindex else ''
     pre = f'<link rel="preload" as="image" href="{preload_img}" fetchpriority="high">' if preload_img else ''
@@ -55,6 +56,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
   <a class="logo" href="/" aria-label="Patri Barbero, inicio">Patri <span>Barbero</span></a>
   <button class="menu" type="button" aria-expanded="false" aria-controls="links">Menú</button>
   <ul class="links" id="links">{nav(key)}</ul>
+  <a class="lang" href="@@LANG@@">EN</a>
   <a class="btn p" href="/contacto/">Contacto</a>
 </div></header>
 <main id="main">
@@ -73,6 +75,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 '''
     f = R / 'index.html' if path == '/' else (R / path.strip('/') if path.endswith('.html') else R / path.strip('/') / 'index.html')
     f.parent.mkdir(parents=True, exist_ok=True); f.write_text(out)
+    PAGES.append((path, out))
 
 STATS = f'<script src="/datos.js?v={V}" defer></script><script src="/assets/js/stats.js?v={V}" defer></script>'
 
@@ -328,7 +331,7 @@ ugc = f'''<section class="page-hero"><div class="wrap">
 </div></section>
 
 <section class="sec tight" id="marcas"><div class="wrap">
-  <div class="rv card" style="padding:24px 26px"><p class="subh">Experiencia · He creado contenido UGC para</p><div class="logos"><img src="/img/logo_miravia.svg" alt="Miravia"><img src="/img/logo_modibodi.svg" alt="Modibodi"><img src="/img/logo_perfumerias.png" alt="Perfumerías.com" class="dk"><img src="/img/logo_eggo.jpg" alt="Eggo"><img src="/img/logo_impress.svg" alt="Impress"><img src="/img/logo_matchaflix.svg" alt="Matchaflix"><img src="/img/logo_matchaandco.svg" alt="Matcha &amp; Co" class="tall"><img src="/img/logo_acelero.jpg" alt="Acelero"><span class="wordmark" role="img" aria-label="Mooves Studio">MOOVES<small>studio</small></span></div></div>
+  <div class="rv card" style="padding:24px 26px"><p class="subh">Experiencia · He creado contenido UGC para</p><div class="logos"><img src="/img/logo_miravia.svg" alt="Miravia"><img src="/img/logo_modibodi.svg" alt="Modibodi"><img src="/img/logo_perfumerias.png" alt="Perfumerías.com" class="dk"><img src="/img/logo_eggo.jpg" alt="Eggo"><img src="/img/logo_impress.svg" alt="Impress"><img src="/img/logo_matchaflix.svg" alt="Matchaflix"><img src="/img/logo_matchaandco.svg" alt="Matcha &amp; Co" class="tall"><img src="/img/logo_acelero.jpg" alt="Acelero"><img src="/img/logo_mooves.png" alt="Mooves Studio"></div></div>
 </div></section>
 
 <section class="sec tight" id="portfolio"><div class="wrap">
@@ -499,5 +502,6 @@ for old in ('marcas',):
 (R / '_redirects').write_text('\n'.join(['/media-kit /estadisticas/ 301', '/media-kit/ /estadisticas/ 301', '/marcas /trabaja-conmigo/ 301', '/marcas/ /trabaja-conmigo/ 301', '/marcas/ugc/ /ugc/ 301', '/influencer /colaboraciones/ 301', '/influencer/ /colaboraciones/ 301', '/colabora /colaboraciones/ 301', '/community-manager /gestion-de-redes/ 301', '/community-manager/ /gestion-de-redes/ 301', '']))
 (R / '_headers').write_text('/assets/f/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n/img/*\n  Cache-Control: public, max-age=2592000\n/datos.js\n  Cache-Control: public, max-age=300\n')
 (R / 'robots.txt').write_text('User-agent: *\nDisallow: /laboratorio/\nSitemap: https://patribarbero.com/sitemap.xml\n')
-(R / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{BASE}{p}</loc></url>\n' for p in ['/', '/contenido/', '/estadisticas/', '/trabaja-conmigo/', '/colaboraciones/', '/ugc/', '/gestion-de-redes/', '/sobre-mi/', '/contacto/']) + '</urlset>\n')
+(R / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{BASE}{p}</loc></url>\n' for p in ['/', '/contenido/', '/estadisticas/', '/trabaja-conmigo/', '/colaboraciones/', '/ugc/', '/gestion-de-redes/', '/sobre-mi/', '/contacto/', '/en/', '/en/content/', '/en/stats/', '/en/work-with-me/', '/en/collaborations/', '/en/ugc/', '/en/social-media-management/', '/en/about/', '/en/contact/']) + '</urlset>\n')
+import sys; sys.path.insert(0, str(pathlib.Path(__file__).parent)); import en; en.build(PAGES, R)
 print('ok')

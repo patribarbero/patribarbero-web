@@ -58,7 +58,7 @@
   function syncBtn(){ if (btn) btn.hidden = reduce; }
   if (mq.addEventListener) mq.addEventListener('change', function(){ reduce = mq.matches; syncBtn(); });
   syncBtn();
-  if (btn) btn.addEventListener('click', function(){ paused = !paused; btn.setAttribute('aria-pressed', paused); btn.textContent = paused ? '▶ Reanudar' : '❚❚ Pausar'; });
+  if (btn) btn.addEventListener('click', function(){ paused = !paused; btn.setAttribute('aria-pressed', paused); var en = document.documentElement.lang === 'en'; btn.textContent = paused ? (en ? '▶ Play' : '▶ Reanudar') : (en ? '❚❚ Pause' : '❚❚ Pausar'); });
   if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[0].isIntersecting; }).observe(stage);
   setTimeout(function(){ visible = true; }, 500);
 })();

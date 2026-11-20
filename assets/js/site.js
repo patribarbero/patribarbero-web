@@ -2,6 +2,8 @@
 (function(){
   document.documentElement.classList.remove('no-js');
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var EN = document.documentElement.lang === 'en';
+  function L(es, en){ return EN ? en : es; }
 
   /* cabecera */
   var top = document.querySelector('.top');
@@ -14,7 +16,7 @@
   if (menu && links){
     menu.addEventListener('click', function(){
       var o = links.classList.toggle('open');
-      menu.setAttribute('aria-expanded', o); menu.textContent = o ? 'Cerrar' : 'Menú';
+      menu.setAttribute('aria-expanded', o); menu.textContent = o ? L('Cerrar', 'Close') : L('Menú', 'Menu');
       document.body.style.overflow = o ? 'hidden' : '';
     });
   }
@@ -56,7 +58,7 @@
       var b = e.target.closest('[data-yt]'); if (!b || !vd.showModal) return;
       e.preventDefault();
       frame.classList.toggle('v', b.dataset.v === '1');
-      frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + b.dataset.yt + '?autoplay=1&rel=0&playsinline=1" title="' + (b.dataset.title || 'Vídeo') + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+      frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + b.dataset.yt + '?autoplay=1&rel=0&playsinline=1" title="' + (b.dataset.title || L('Vídeo', 'Video')) + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
       vd.showModal();
     });
     vd.querySelector('.x').addEventListener('click', function(){ vd.close(); });
@@ -76,7 +78,7 @@
     function sync(){
       var v = (f.querySelector('input[name=tipo]:checked') || {}).value || '';
       f.querySelectorAll('[data-for]').forEach(function(g){ var on = g.dataset.for.split('|').indexOf(v) > -1; g.hidden = !on; g.querySelectorAll('input,select,textarea').forEach(function(i){ i.disabled = !on; }); });
-      if (otro){ var o = !sector.disabled && sector.value === 'Otro'; otro.hidden = !o; otro.querySelector('input').disabled = !o; }
+      if (otro){ var o = !sector.disabled && sector.selectedIndex === sector.options.length - 1; otro.hidden = !o; otro.querySelector('input').disabled = !o; }
     }
     if (tipo && map[tipo]){ var r = f.querySelector('input[name=tipo][value="' + map[tipo] + '"]'); if (r) r.checked = true; }
     f.querySelectorAll('input[name=tipo]').forEach(function(r){ r.addEventListener('change', sync); });
@@ -93,17 +95,17 @@
         var v = d.getAll(n).filter(Boolean).join(', ');
         var lab = el.closest('[data-label]'); lines.push({k: lab ? lab.dataset.label : n, v: v || '—'});
       });
-      return {d: d, lines: lines, subject: 'Web · ' + (d.get('tipo') || 'Contacto') + ' · ' + (d.get('empresa') || d.get('nombre') || '')};
+      return {d: d, lines: lines, subject: 'Web' + (EN ? ' (EN)' : '') + ' · ' + (d.get('tipo') || 'Contacto') + ' · ' + (d.get('empresa') || d.get('nombre') || '')};
     }
     function fail(m, why){
       if (why && console) console.warn('Formulario:', why);
       var to = f.dataset.to, body = m.lines.map(function(l){ return l.k + ': ' + l.v; }).join('\n');
       var box = document.getElementById('fail'); f.hidden = true; box.hidden = false; box.focus();
-      var det = box.querySelector('.why'); if (det) det.textContent = why ? 'Detalle técnico: ' + why : '';
+      var det = box.querySelector('.why'); if (det) det.textContent = why ? L('Detalle técnico: ', 'Technical detail: ') + why : '';
       box.querySelector('[data-mail]').href = 'mailto:' + to + '?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(body);
       box.querySelector('[data-copy]').onclick = function(){
-        var t = 'Para: ' + to + '\nAsunto: ' + m.subject + '\n\n' + body;
-        if (navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ box.querySelector('.note').textContent = 'Copiado. Pégalo en un correo a ' + to + '.'; });
+        var t = L('Para: ', 'To: ') + to + L('\nAsunto: ', '\nSubject: ') + m.subject + '\n\n' + body;
+        if (navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ box.querySelector('.note').textContent = L('Copiado. Pégalo en un correo a ', 'Copied. Paste it into an email to ') + to + '.'; });
       };
     }
     f.addEventListener('submit', function(e){
@@ -114,14 +116,14 @@
       var names = {}; bad = bad.filter(function(i){ if (names[i.name]) return false; names[i.name] = 1; return true; });
       if (bad.length){
         bad.forEach(function(i){ var w = i.type === 'radio' ? i.closest('.opts') : i.closest('.fld,.consent'); if (w) w.classList.add('bad'); i.setAttribute('aria-invalid', 'true'); });
-        err.textContent = (bad[0].dataset.msg || 'Revisa este campo, por favor.') + (bad.length > 1 ? ' Te faltan ' + bad.length + ' campos obligatorios.' : '');
+        err.textContent = (bad[0].dataset.msg || L('Revisa este campo, por favor.', 'Please check this field.')) + (bad.length > 1 ? L(' Te faltan ', ' ') + bad.length + L(' campos obligatorios.', ' required fields are missing.') : '');
         bad[0].focus(); return;
       }
       fields().forEach(function(i){ i.removeAttribute('aria-invalid'); });
       var m = compose(), payload = {};
       m.lines.forEach(function(l){ payload[l.k] = l.v; });
       payload._subject = m.subject; payload._replyto = m.d.get('email'); payload._template = 'table'; payload._captcha = 'false';
-      btn.disabled = true; btn.textContent = 'Enviando…';
+      btn.disabled = true; btn.textContent = L('Enviando…', 'Sending…');
       fetch('https://formsubmit.co/ajax/' + f.dataset.to, {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(payload)})
         .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, j: j}; }); })
         .then(function(x){

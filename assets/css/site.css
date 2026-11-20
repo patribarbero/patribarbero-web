@@ -269,8 +269,9 @@ main{display:block}
 .tag.client{background:var(--ch);color:var(--le)}.tag.collab{background:var(--ni)}.tag.own{background:var(--le);box-shadow:inset 0 0 0 1px var(--line)}
 
 /* logos */
-.logos{display:flex;flex-wrap:wrap;gap:20px 36px;align-items:center}
-.logos img{height:26px;width:auto;max-width:124px;object-fit:contain;filter:grayscale(1);opacity:.75;transition:filter .2s,opacity .2s}
+.logos{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:22px 28px;align-items:center;justify-items:center}
+@media (max-width:980px){.logos{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 20px}}
+.logos img{height:26px;width:auto;max-width:100%;object-fit:contain;filter:grayscale(1);opacity:.75;transition:filter .2s,opacity .2s}
 .logos img:hover{filter:none;opacity:1}
 .logos img.tall{height:40px}
 .logos .dk{background:var(--ch);border-radius:6px;padding:5px 8px;height:30px}
@@ -368,6 +369,11 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .cutout{display:grid;place-items:end center;background:var(--ni);border-radius:var(--r-win);max-width:440px;aspect-ratio:4/5;overflow:hidden;position:relative}
 .cutout::before{content:"";position:absolute;inset:auto 0 0;height:9px;background:var(--rib)}
 .cutout img{height:96%;width:auto;filter:drop-shadow(0 18px 24px rgba(43,20,12,.16))}
+
+/* selector de idioma */
+.lang{margin-left:10px;font:600 13.5px/1 var(--f-r);text-decoration:none;padding:9px 11px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--ch);color:var(--ch)}
+.lang:hover{background:var(--ch);color:var(--le)}
+@media (max-width:980px){.lang{margin-left:auto;margin-right:8px}.menu{margin-left:0;order:3}}
 
 /* pestañas que se desplazan en horizontal si no caben */
 .tabs.scroll{display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
