@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /laboratorio/
+Sitemap: https://patribarbero.com/sitemap.xml

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex">
+<title>Texto orbital 3D · prototipo</title>
+<style>
+@font-face{font-family:'Anton';src:url('/assets/f/Anton.ttf') format('truetype');font-display:block}
+@font-face{font-family:'Rubik';src:url('/assets/f/Rubik.ttf') format('truetype');font-weight:300 900;font-display:swap}
+:root{--le:#FFF5F1;--w:#fff;--ch:#2B140C;--fr:#FF5C9D;--co:#2346FF;--ma:#FFE15A;--ni:#FFD3E4;--gr:#7A665E;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--le);color:var(--ch);font:400 17px/1.5 'Rubik',system-ui,sans-serif;overflow-x:hidden}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.note{background:var(--ch);color:var(--le);font-size:13px;text-align:center;padding:7px 14px}
+.note b{color:var(--ma)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;min-height:calc(100vh - 34px)}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+/* ---------- ESCENA ---------- */
+.hero{position:relative;display:grid;place-items:center;overflow:hidden;padding:24px 16px}
+.stage{--H:min(84vh,112vw,900px);position:relative;height:var(--H);width:calc(var(--H)*.78);font-size:calc(var(--H)/100)}
+.floor{position:absolute;left:22%;right:22%;bottom:1.2em;height:4em;border-radius:50%;background:radial-gradient(closest-side,rgba(43,20,12,.18),transparent);z-index:0}
+.me{position:absolute;left:50%;bottom:0;height:92%;width:auto;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 1.4em 1.6em rgba(43,20,12,.14));pointer-events:none;user-select:none}
+.scene{position:absolute;inset:0;perspective:calc(var(--H)*3.2);perspective-origin:50% var(--cy,46%);pointer-events:none}
+.scene.back{z-index:1}.scene.front{z-index:3}
+.tilt{position:absolute;left:50%;top:var(--cy,46%);width:0;height:0;transform-style:preserve-3d;transform:rotateX(var(--tilt,-14deg)) rotateZ(var(--roll,-4deg))}
+.ring{position:absolute;left:0;top:0;transform-style:preserve-3d;animation:spin var(--dur,22s) linear infinite;animation-play-state:var(--play,running)}
+@keyframes spin{from{transform:rotateY(0deg)}to{transform:rotateY(-360deg)}}
+.l{position:absolute;left:0;top:0;transform-style:preserve-3d;font:400 var(--fs,11em)/1 'Anton',Impact,sans-serif;text-transform:uppercase;white-space:pre}
+.l>i{display:block;font-style:normal;transform:translate(-50%,-50%);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.front .l>i{color:var(--c-front,var(--ch))}
+.back .l>i{color:var(--c-back,var(--fr));transform:translate(-50%,-50%) rotateY(180deg);opacity:var(--o-back,.9)}
+/* capas visibles (modo inspección) */
+.debug .back .l>i{outline:1px dashed var(--co)}
+.debug .me{outline:2px dashed var(--fr)}
+.debug .front .l>i{outline:1px dashed var(--ch)}
+
+/* estático (movimiento reducido): misma composición, sin giro */
+.static .ring{animation:none;transform:rotateY(var(--still,28deg))}
+@media (prefers-reduced-motion:reduce){.ring{animation:none;transform:rotateY(var(--still,28deg))}}
+
+.pause{position:absolute;right:18px;bottom:18px;z-index:5;border:0;border-radius:999px;background:var(--w);color:var(--ch);font:600 14px 'Rubik';padding:10px 16px;box-shadow:0 6px 18px rgba(43,20,12,.14);cursor:pointer;display:flex;align-items:center;gap:8px}
+.pause:focus-visible,.panel :focus-visible{outline:3px solid var(--co);outline-offset:3px}
+
+/* ---------- PANEL DE PRUEBA ---------- */
+.panel{background:var(--w);border-left:1px solid rgba(43,20,12,.08);padding:24px 22px 40px;display:grid;gap:18px;align-content:start}
+@media (max-width:900px){.panel{border-left:0;border-top:1px solid rgba(43,20,12,.08)}}
+.panel h1{font:400 34px/.95 'Anton';text-transform:uppercase;margin:0}
+.rib{display:block;height:7px;width:90px;background:linear-gradient(var(--fr) 0 2.5px,transparent 2.5px 4.5px,var(--co) 4.5px 7px)}
+.panel p{margin:0;color:var(--gr);font-size:14.5px}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}
+legend{font-weight:700;font-size:14px;margin-bottom:6px;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chips span{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--le);font-weight:600;font-size:13.5px}
+.chips input:checked+span{background:var(--fr);color:var(--ch)}
+.chips input:focus-visible+span{outline:3px solid var(--co);outline-offset:2px}
+input[type=range]{width:100%;accent-color:var(--fr)}
+.row{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600}
+.row output{color:var(--gr);font-weight:500}
+.check{display:flex;gap:10px;align-items:center;font-size:14.5px;font-weight:600}
+.check input{width:18px;height:18px;accent-color:var(--fr)}
+.facts{font-size:13.5px;color:var(--gr);background:var(--le);border-radius:12px;padding:12px 14px;display:grid;gap:4px}
+.facts b{color:var(--ch)}
+</style>
+</head>
+<body>
+<div class="note">Prototipo de laboratorio · <b>no está en la web</b> ni aprobado. Foto real recortada; el texto es HTML (no una imagen).</div>
+<div class="layout">
+  <main class="hero" id="hero">
+    <h2 class="sr" id="phrase-sr">Vestirse también es construirse</h2>
+    <div class="stage" id="stage">
+      <div class="floor" aria-hidden="true"></div>
+      <div class="scene back" aria-hidden="true"><div class="tilt"><div class="ring" id="ringB"></div></div></div>
+      <img class="me" src="i/patri-recorte.webp" alt="Patri Barbero frente al espejo con top blanco, pantalón negro y bolso rojo" width="353" height="896">
+      <div class="scene front" aria-hidden="true"><div class="tilt"><div class="ring" id="ringF"></div></div></div>
+    </div>
+    <button class="pause" id="pause" type="button" aria-pressed="false">❚❚ Pausar</button>
+  </main>
+
+  <aside class="panel" aria-label="Opciones del prototipo">
+    <div><h1>Texto orbital</h1><span class="rib" aria-hidden="true" style="margin-top:10px"></span></div>
+    <p>Prueba las variantes y fíjate en la legibilidad, en el paso por delante y por detrás y en cómo se ve en tu móvil.</p>
+    <fieldset><legend>Frase</legend><div class="chips">
+      <label><input type="radio" name="ph" value="Vestirse también es construirse" checked><span>Vestirse también es construirse</span></label>
+      <label><input type="radio" name="ph" value="Moda como identidad"><span>Moda como identidad</span></label>
+      <label><input type="radio" name="ph" value="Cómoda y mona · siempre"><span>Cómoda y mona · siempre</span></label>
+      <label><input type="radio" name="ph" value="Patri Barbero"><span>Patri Barbero</span></label>
+    </div></fieldset>
+    <fieldset><legend>Color</legend><div class="chips">
+      <label><input type="radio" name="col" value="a" checked><span>Chocolate delante · fresa detrás</span></label>
+      <label><input type="radio" name="col" value="b"><span>Fresa delante · chocolate detrás</span></label>
+      <label><input type="radio" name="col" value="c"><span>Chocolate · detrás tenue</span></label>
+    </div></fieldset>
+    <div><div class="row"><span>Velocidad</span><output id="o-dur">22 s por vuelta</output></div><input id="dur" type="range" min="10" max="40" value="22" aria-label="Segundos por vuelta"></div>
+    <div><div class="row"><span>Inclinación de la órbita</span><output id="o-tilt">14°</output></div><input id="tilt" type="range" min="0" max="30" value="14" aria-label="Inclinación"></div>
+    <div><div class="row"><span>Altura</span><output id="o-cy">cadera</output></div><input id="cy" type="range" min="30" max="70" value="46" aria-label="Altura de la órbita"></div>
+    <label class="check"><input type="checkbox" id="rm"> Ver como «movimiento reducido»</label>
+    <label class="check"><input type="checkbox" id="dbg"> Ver capas</label>
+    <div class="facts" id="facts"><span><b>Capas:</b> texto trasero · recorte · texto delantero</span><span><b>Recorte:</b> 353 × 896 px (foto original 1100 × 1467)</span><span id="perf"><b>Rendimiento:</b> midiendo…</span></div>
+  </aside>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage'), F=document.getElementById('ringF'), B=document.getElementById('ringB');
+  var hero=document.getElementById('hero'), sr=document.getElementById('phrase-sr');
+  var phrase='Vestirse también es construirse';
+  var ctx=document.createElement('canvas').getContext('2d');
+
+  function build(){
+    var H=stage.getBoundingClientRect().height, em=H/100;
+    var R=31*em;                        // radio de la órbita
+    var circ=2*Math.PI*R;
+    var txt=phrase.toUpperCase()+'   ·   ';
+    // tamaño de letra para que la frase ocupe ~1 vuelta
+    var fs=11*em; ctx.font='400 '+fs+'px Anton';
+    var w=ctx.measureText(txt).width, track=0.06*fs;
+    var total=w+track*txt.length;
+    var k=circ/total; if(k<0.55) k=0.55; if(k>1.25) k=1.25;
+    fs*=k; ctx.font='400 '+fs+'px Anton'; track*=k;
+    var widths=[].map.call(txt,function(ch){return ctx.measureText(ch).width+track});
+    var sum=widths.reduce(function(a,b){return a+b},0);
+    var scale=circ/sum;                 // reparte exactamente la vuelta
+    stage.style.setProperty('--fs',fs+'px');
+    var html='',acc=0;
+    for(var i=0;i<txt.length;i++){
+      var a=(acc+widths[i]*scale/2)/circ*360; acc+=widths[i]*scale;
+      var ch=txt[i]===' '?' ':txt[i];
+      html+='<span class="l" style="transform:rotateY('+a.toFixed(2)+'deg) translateZ('+R.toFixed(1)+'px)"><i>'+ch+'</i></span>';
+    }
+    F.innerHTML=html; B.innerHTML=html;
+    // en estático, la frase empieza a la izquierda del cuerpo para leerse
+    stage.style.setProperty('--still', (-(sum*scale*0.18)/circ*360+40).toFixed(1)+'deg');
+  }
+  function sync(){ // mantiene las dos órbitas en la misma fase
+    B.style.animationDelay=F.style.animationDelay='0s';
+  }
+  var ro=new ResizeObserver(function(){build()});
+  document.fonts.load('400 40px Anton').then(function(){build();ro.observe(stage);sync()});
+
+  // controles
+  function setVar(n,v){stage.style.setProperty(n,v)}
+  document.querySelectorAll('input[name=ph]').forEach(function(r){r.addEventListener('change',function(){phrase=r.value;sr.textContent=phrase;build()})});
+  var cols={a:['#2B140C','#FF5C9D','.9'],b:['#FF5C9D','#2B140C','.85'],c:['#2B140C','#2B140C','.28']};
+  document.querySelectorAll('input[name=col]').forEach(function(r){r.addEventListener('change',function(){var c=cols[r.value];setVar('--c-front',c[0]);setVar('--c-back',c[1]);setVar('--o-back',c[2])})});
+  var dur=document.getElementById('dur');dur.addEventListener('input',function(){setVar('--dur',dur.value+'s');document.getElementById('o-dur').textContent=dur.value+' s por vuelta'});
+  var tilt=document.getElementById('tilt');tilt.addEventListener('input',function(){setVar('--tilt',(-tilt.value)+'deg');document.getElementById('o-tilt').textContent=tilt.value+'°'});
+  var cy=document.getElementById('cy');cy.addEventListener('input',function(){setVar('--cy',cy.value+'%');document.getElementById('o-cy').textContent=cy.value<40?'cintura alta':cy.value<52?'cadera':'rodillas'});
+  document.getElementById('rm').addEventListener('change',function(e){hero.classList.toggle('static',e.target.checked)});
+  document.getElementById('dbg').addEventListener('change',function(e){hero.classList.toggle('debug',e.target.checked)});
+  var pause=document.getElementById('pause'),paused=false;
+  function setPlay(){var run=!paused&&visible&&!document.hidden;setVar('--play',run?'running':'paused')}
+  pause.addEventListener('click',function(){paused=!paused;pause.setAttribute('aria-pressed',paused);pause.textContent=paused?'▶ Reanudar':'❚❚ Pausar';setPlay()});
+  var visible=true;
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;setPlay()}).observe(stage);
+  document.addEventListener('visibilitychange',setPlay);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){pause.hidden=true;document.getElementById('rm').checked=true}
+
+  // medición sencilla de fluidez (fps) durante 2 s
+  var n=0,t0=performance.now();
+  (function f(t){n++; if(t-t0<2000) requestAnimationFrame(f); else document.getElementById('perf').innerHTML='<b>Rendimiento:</b> '+Math.round(n/((t-t0)/1000))+' fotogramas/s en este dispositivo';})(t0);
+})();
+</script>
+</body>
+</html>
