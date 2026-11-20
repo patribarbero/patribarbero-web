@@ -95,9 +95,11 @@
       });
       return {d: d, lines: lines, subject: 'Web · ' + (d.get('tipo') || 'Contacto') + ' · ' + (d.get('empresa') || d.get('nombre') || '')};
     }
-    function fail(m){
+    function fail(m, why){
+      if (why && console) console.warn('Formulario:', why);
       var to = f.dataset.to, body = m.lines.map(function(l){ return l.k + ': ' + l.v; }).join('\n');
       var box = document.getElementById('fail'); f.hidden = true; box.hidden = false; box.focus();
+      var det = box.querySelector('.why'); if (det) det.textContent = why ? 'Detalle técnico: ' + why : '';
       box.querySelector('[data-mail]').href = 'mailto:' + to + '?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(body);
       box.querySelector('[data-copy]').onclick = function(){
         var t = 'Para: ' + to + '\nAsunto: ' + m.subject + '\n\n' + body;
@@ -124,9 +126,9 @@
         .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, j: j}; }); })
         .then(function(x){
           if (x.ok && String(x.j.success) === 'true'){ var done = document.getElementById('done'); f.hidden = true; done.hidden = false; done.focus(); }
-          else fail(m);
+          else fail(m, x.j && x.j.message);
         })
-        .catch(function(){ fail(m); })
+        .catch(function(e){ fail(m, 'conexión: ' + (e && e.message || e)); })
         .then(function(){ btn.disabled = false; btn.innerHTML = btnHTML; });
     });
   }

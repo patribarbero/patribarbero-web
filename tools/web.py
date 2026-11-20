@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261120c'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261120d'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -35,7 +35,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light only">
+<meta name="color-scheme" content="only light"><meta name="supported-color-schemes" content="light">
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{BASE}{path}">{rob}
@@ -104,6 +104,10 @@ COLLABS = [('zBPboLQZKAo', 'zBPboLQZKAo.jpg', 'Tips para vestir con estilo en ot
            ('gKLj2hae2ww', 'gKLj2hae2ww.jpg', 'Esto en la moda no es normal', 'Segunda integración en YouTube', 'logo_vivaia.svg', 'Vivaia'),
            ('pYXWRYBJd9s', 'pYXWRYBJd9s.jpg', 'Colorimetría con The Colour Nook', 'Taller contado en vídeo · abril 2026', 'logo_colournook.jpg', 'The Colour Nook'),
            ('CecPikzWLI8', 'CecPikzWLI8.jpg', 'Vlog del evento de lanzamiento', 'Evento · mayo 2024', 'logo_modibodi.svg', 'Modibodi')]
+# Ejemplos UGC por sector: (id de YouTube, miniatura, título, etiqueta, clase de etiqueta). Vacío = tarjeta «pídeme muestras»
+UGC_EX = [('moda', 'Moda', [(y, i, t, 'Contenido propio', 'own') for y, i, t, m in [('u0GktqmTMh8', 'oversized.jpg', 'Oversized y femenina', ''), ('MKhsAIKXquk', 'broches.jpg', 'Vuelven los broches', ''), ('wu2mG4YX1dI', 'abc.jpg', 'Elige A, B o C', '')]]),
+          ('belleza', 'Belleza', []), ('lifestyle', 'Lifestyle', []), ('alimentacion', 'Alimentación', []),
+          ('deporte', 'Deporte y fitness', []), ('viajes', 'Viajes', []), ('apps', 'Apps y servicios', [])]
 # Los más vistos en vídeo corto (la portada de Nike Shox llega cuando Patri la pase; mientras, tarjeta con el titular)
 TOP_SHORTS = [
     ('ig', 'https://www.instagram.com/reel/Df4_yVToCd5/', '', '¿Vuelven las Nike Shox?', 'Reel · 168 mil reproducciones en 2 días'),
@@ -318,18 +322,19 @@ ugc = f'''<section class="page-hero"><div class="wrap">
   <div class="ph-grid">
     <div><h1 class="T h1 rv">Contenido UGC</h1>
       <p class="lead rv">Vídeos para que <span class="hl">los publique tu marca</span> en sus redes o en sus anuncios: gancho desde el primer segundo, producto en contexto y un mensaje claro. No dependen de mis seguidores, sino de cómo está contado.</p>
-      <div class="ctas rv"><a class="btn p" href="/contacto/?tipo=ugc">Pedir contenido {ARR}</a><a class="btn s" href="#marcas">Marcas con las que he trabajado</a></div></div>
-    <div class="rv"><div class="chips" style="gap:10px"><span class="chip"><i></i>Moda</span><span class="chip"><i></i>Belleza</span><span class="chip"><i></i>Lifestyle</span><span class="chip"><i></i>Alimentación</span><span class="chip"><i></i>Apps y servicios</span><span class="chip dark">Vertical 9:16 listo para publicar</span></div></div>
+      <div class="ctas rv"><a class="btn p" href="/contacto/?tipo=ugc">Pedir contenido {ARR}</a><a class="btn s" href="#portfolio">Ver ejemplos</a></div></div>
+    <div class="rv"><div class="chips" style="gap:10px"><span class="chip"><i></i>Moda</span><span class="chip"><i></i>Belleza</span><span class="chip"><i></i>Lifestyle</span><span class="chip"><i></i>Alimentación</span><span class="chip"><i></i>Deporte y fitness</span><span class="chip"><i></i>Viajes</span><span class="chip"><i></i>Apps y servicios</span><span class="chip dark">Vertical 9:16 listo para publicar</span></div></div>
   </div>
 </div></section>
 
 <section class="sec tight" id="marcas"><div class="wrap">
-  <div class="rv card" style="padding:24px 26px"><p class="subh">Experiencia · He creado contenido UGC para</p><div class="logos"><img src="/img/logo_miravia.svg" alt="Miravia"><img src="/img/logo_modibodi.svg" alt="Modibodi"><img src="/img/logo_perfumerias.png" alt="Perfumerías.com" class="dk"><img src="/img/logo_eggo.jpg" alt="Eggo"><img src="/img/logo_impress.svg" alt="Impress"><img src="/img/logo_matchaflix.svg" alt="Matchaflix"><img src="/img/logo_matchaandco.svg" alt="Matcha &amp; Co" class="tall"><img src="/img/logo_acelero.jpg" alt="Acelero"></div></div>
+  <div class="rv card" style="padding:24px 26px"><p class="subh">Experiencia · He creado contenido UGC para</p><div class="logos"><img src="/img/logo_miravia.svg" alt="Miravia"><img src="/img/logo_modibodi.svg" alt="Modibodi"><img src="/img/logo_perfumerias.png" alt="Perfumerías.com" class="dk"><img src="/img/logo_eggo.jpg" alt="Eggo"><img src="/img/logo_impress.svg" alt="Impress"><img src="/img/logo_matchaflix.svg" alt="Matchaflix"><img src="/img/logo_matchaandco.svg" alt="Matcha &amp; Co" class="tall"><img src="/img/logo_acelero.jpg" alt="Acelero"><span class="wordmark" role="img" aria-label="Mooves Studio">MOOVES<small>studio</small></span></div></div>
 </div></section>
 
 <section class="sec tight" id="portfolio"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Ejemplos</p><h2 class="T h2 rv">Cómo grabo</h2></div><p class="lead rv">Cada pieza indica qué es, para que sepas exactamente qué estás viendo.</p></div>
-  <div class="grid3">{''.join('<div class="rv">' + vid(y, i, t, '<span class="tag own">Contenido propio</span>', True) + '</div>' for y, i, t, m in SHORTS)}</div>
+  <div class="sec-head"><div><p class="kicker rv">Ejemplos</p><h2 class="T h2 rv">Cómo grabo</h2></div><p class="lead rv">Elige un sector. Cada vídeo indica qué es, para que sepas exactamente qué estás viendo.</p></div>
+  <div class="tabs scroll" role="tablist" aria-label="Sector">{''.join(f'<button role="tab" aria-selected="{"true" if n == 0 else "false"}" aria-controls="s-{k}" id="ts-{k}">{lab}</button>' for n, (k, lab, ex) in enumerate(UGC_EX))}</div>
+  {''.join(f'<div id="s-{k}" role="tabpanel" aria-labelledby="ts-{k}"' + ('' if n == 0 else ' hidden') + '>' + ('<div class="grid4 shorts">' + ''.join(vid(y, i, t, f'<span class="tag {c}">{tg}</span>', True) for y, i, t, tg, c in ex) + '</div>' if ex else f'<div class="card soon"><p><b>Ejemplos de {lab.lower()}</b></p><p class="muted">¿Quieres ver cómo grabo para tu sector? Pídemelo y te envío muestras.</p><a class="btn s" href="/contacto/?tipo=ugc">Pedir muestras</a></div>') + '</div>' for n, (k, lab, ex) in enumerate(UGC_EX))}
 </div></section>
 
 <section class="sec tight"><div class="wrap">
@@ -389,7 +394,7 @@ redes = f'''<section class="page-hero"><div class="wrap">
   <div class="grid3">
     <div class="rv">{win('incluye', '<ul class="ticks"><li>Estrategia y calendario mensual</li><li>Diseño de publicaciones y edición de vídeo</li><li>Copys y hashtags</li><li>Programación y publicación</li><li>Stories según el plan</li><li>Informe mensual y ajustes</li></ul>')}</div>
     <div class="rv">{win('necesito de ti', '<ul class="ticks arrow"><li>Fotos y vídeos de tu negocio, o que pueda ir a grabarlos</li><li>Acceso a tus redes</li><li><span>Una persona de contacto<small>Con quien reunirme y que revise y apruebe los contenidos</small></span></li><li>Novedades y promociones con antelación</li></ul>')}</div>
-    <div class="rv">{win('no incluye', '<ul class="ticks no"><li><span>Desplazamientos para grabar<small>Si hay que ir a tu negocio a grabar, se presupuestan aparte</small></span></li><li><span>Publicidad de pago<small>Gestión opcional, aparte</small></span></li><li>Atención a mensajes directos</li><li>Cambios ilimitados</li></ul>')}</div>
+    <div class="rv">{win('no incluye', '<ul class="ticks no"><li><span>Desplazamientos para grabar<small>Si hay que ir a tu negocio a grabar, se presupuestan aparte</small></span></li><li><span>Publicidad de pago<small>Gestión opcional, aparte</small></span></li><li><span>Atención a mensajes directos<small>Se puede gestionar aparte</small></span></li><li>Cambios ilimitados</li></ul>')}</div>
   </div>
   <div class="rv card" style="padding:22px 24px;margin-top:22px;max-width:820px"><p><b>Con quién trabajas.</b> <span class="muted">Estudié Digital Business en ESIC, he trabajado en comunicación de marca en una empresa multinacional y en campañas con creadores en una agencia. Gestiono mis propias redes cada semana y aplico el mismo método a las de tu negocio. Trabajo con pocos negocios a la vez para dedicarles el tiempo que necesitan.</span></p></div>
 </div></section>
@@ -473,7 +478,7 @@ contacto = f'''<section class="page-hero"><div class="wrap">
         <button class="btn p" type="submit">Enviar mensaje {ARR}</button>
       </form>
       <div class="done" id="done" hidden tabindex="-1"><div class="seal"><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7" fill="none" stroke="#2B140C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2 class="h3">¡Mensaje enviado!</h2><p class="muted">Gracias. Te respondo en 24–48 h laborables al email que me has dejado.</p></div>
-      <div class="done" id="fail" hidden tabindex="-1"><h2 class="h3">No se ha podido enviar</h2><p class="muted">Algo ha fallado con la conexión. Puedes enviármelo desde tu correo, con el texto ya escrito:</p><a class="btn d" data-mail href="#">Abrir mi correo</a><button class="btn s" type="button" data-copy>Copiar el texto</button><p class="note"></p></div>
+      <div class="done" id="fail" hidden tabindex="-1"><h2 class="h3">No se ha podido enviar</h2><p class="muted">Algo ha fallado con la conexión. Puedes enviármelo desde tu correo, con el texto ya escrito:</p><a class="btn d" data-mail href="#">Abrir mi correo</a><button class="btn s" type="button" data-copy>Copiar el texto</button><p class="note"></p><p class="note why"></p></div>
     """)}</div>
   </div>
 </div></section>

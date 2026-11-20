@@ -18,7 +18,7 @@
   --sh:0 12px 32px rgba(43,20,12,.12); --sh-s:0 2px 10px rgba(43,20,12,.06);
   --f-t:'Anton','Anton-fb',Impact,sans-serif; --f-r:'Rubik','Rubik-fb',system-ui,sans-serif; --f-s:'Instrument Serif',Georgia,serif;
   --wrap:1200px; --gut:clamp(16px,4vw,32px);
-  color-scheme:light only;
+  color-scheme:only light;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
@@ -358,8 +358,8 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 @media (max-width:980px){.types{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:620px){.types{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .xp{display:flex;flex-direction:column;gap:10px}
-.xp-logo{height:46px;display:flex;align-items:center;background:var(--w);border-radius:var(--r-card);box-shadow:var(--sh-s);padding:8px 14px}
-.xp-logo img{max-height:28px;max-width:150px;width:auto;object-fit:contain}
+.xp-logo{height:36px;display:flex;align-items:center}
+.xp-logo img{max-height:30px;max-width:150px;width:auto;object-fit:contain;mix-blend-mode:multiply}
 .star{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px 32px;align-items:center;background:var(--w);border-radius:var(--r-win);box-shadow:var(--sh);padding:clamp(20px,3vw,32px);border-left:8px solid var(--fr)}
 .star-n .T{display:block;font-size:clamp(56px,7vw,92px);color:var(--fr)}
 .star-n small{font-weight:600}
@@ -368,6 +368,15 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .cutout{display:grid;place-items:end center;background:var(--ni);border-radius:var(--r-win);max-width:440px;aspect-ratio:4/5;overflow:hidden;position:relative}
 .cutout::before{content:"";position:absolute;inset:auto 0 0;height:9px;background:var(--rib)}
 .cutout img{height:96%;width:auto;filter:drop-shadow(0 18px 24px rgba(43,20,12,.16))}
+
+/* pestañas que se desplazan en horizontal si no caben */
+.tabs.scroll{display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs.scroll::-webkit-scrollbar{display:none}
+.tabs.scroll button{white-space:nowrap;flex:none}
+.soon{padding:26px;display:grid;gap:10px;justify-items:start;max-width:560px}
+.wordmark{font:400 22px/1 var(--f-t);letter-spacing:.06em;color:var(--ch);opacity:.75;display:inline-flex;align-items:baseline;gap:5px}
+.wordmark small{font:500 13px/1 var(--f-r);letter-spacing:.02em;text-transform:lowercase}
+.tag.own{white-space:nowrap}
 
 /* ===== móvil: todo más compacto ===== */
 @media (max-width:860px){
@@ -399,7 +408,6 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
   .hh .rib{width:80px;margin-top:14px}
   .hh .lead{margin-top:6px;font-size:16.5px}
   .hh .ctas{flex-wrap:nowrap;gap:8px}.hh .ctas .btn{flex:1 1 0;padding:0 10px;font-size:14.5px;white-space:nowrap}
-  .doors .fold{height:44px}
   .orb{--H:min(calc((100vw - 2*var(--gut) - 4px)*.5/.8),420px)}
   .orb-pause{right:0;bottom:2px;padding:7px 10px;font-size:12px}
   .hh .proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px}
@@ -409,14 +417,15 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
   /* carpetas: 2 filas pequeñas */
   .doors{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .doors .door{padding:10px 10px 12px;border-radius:16px}
-  .doors .fold{height:52px;margin-bottom:10px}
-  .doors .fold .tab{height:14px;border-radius:8px 8px 0 0}
-  .doors .fold .body{inset:8px 0 0 0;border-radius:10px}
-  .doors .fold .flap{inset:20px 0 0 0;border-radius:10px}
+  .doors .fold{height:auto;aspect-ratio:4/3;margin-bottom:10px}
+  .doors .fold .tab{height:18%;width:42%;border-radius:10px 10px 0 0}
+  .doors .fold .body{inset:11% 0 0 0;border-radius:12px}
+  .doors .fold .flap{inset:26% 0 0 0;border-radius:12px}
   .doors .door h3{font:700 15px/1.2 var(--f-r)}
   .doors .door p{display:none}
   .doors .door .go{font-size:13px;margin-top:6px}
   .doors.three{grid-template-columns:1fr}
+  .doors.three .fold{aspect-ratio:auto;height:110px}
   .doors.three .door p{display:block;font-size:14.5px}
   .doors.three .door h3{font:400 28px/.95 var(--f-t)}
   /* vídeos en 2 columnas para que se vea más de uno a la vez */
