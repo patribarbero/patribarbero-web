@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261121c'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261121d'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -276,7 +276,7 @@ colab = f'''<section class="page-hero"><div class="wrap">
     <div><h1 class="T h1 rv">Colabora en mis redes</h1>
       <p class="lead rv">Integro tu marca en mis vídeos como parte de la conversación: el producto entra en un look real y explico <span class="hl">por qué encaja</span>. Para una comunidad de mujeres que quiere vestir cómoda y mona.</p>
       <div class="ctas rv"><a class="btn p" href="/contacto/?tipo=colaboracion">Pedir propuesta {ARR}</a><a class="btn s" href="/estadisticas/">Ver estadísticas</a></div></div>
-    <div class="rv"><img class="photo" src="/img/broches.jpg" alt="Patri hablando a cámara con una chaqueta de rayas" style="aspect-ratio:4/5;max-width:420px;margin-left:auto;object-position:50% 30%" loading="lazy"></div>
+    <div class="rv">{win('colaboraciones publicadas', '<div class="mini-grid">' + ''.join(f'<span class="th"><img src="/img/{i}" alt="" loading="lazy"><img class="lg" src="/img/{lg}" alt="{al}"></span>' for y, i, ttl, m, lg, al in COLLABS) + '</div>')}</div>
   </div>
 </div></section>
 

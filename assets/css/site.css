@@ -76,16 +76,20 @@ p{margin:0}
 @media (max-width:980px){
   .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--le)}
   .links{position:fixed;top:var(--hdr,66px);left:0;right:0;bottom:0;margin:0;width:auto;height:calc(100dvh - var(--hdr,66px));z-index:39;flex-direction:column;align-items:stretch;gap:0;background:var(--le);padding:10px var(--gut) 40px;overflow:auto;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+  .links:not(.open){pointer-events:none}
   .links.open{opacity:1;visibility:visible}
   .links a,.links .dd{font:400 28px/1 var(--f-t);text-transform:uppercase;padding:14px 4px;border-bottom:1px solid var(--line);border-radius:0;text-align:left;width:100%}
   .links>li>a[aria-current=page]::after,.links .dd.cur::after{left:4px;right:auto;width:70px;bottom:8px}
   .dd{pointer-events:none;color:var(--gr)!important;font-size:16px!important;font-family:var(--f-r)!important;text-transform:none!important;font-weight:600!important;border-bottom:0!important;padding-bottom:6px!important}
   .dd span{display:none}
-  .sub{position:static;opacity:1;visibility:visible;transform:none;width:auto;box-shadow:none;background:transparent;padding:0 0 10px}
+  .sub{position:static;opacity:1;visibility:inherit;transform:none;width:auto;box-shadow:none;background:transparent;padding:0 0 10px}
   .sub::before{display:none}
   .sub a{font:600 19px/1.2 var(--f-r)!important;text-transform:none!important;padding:12px 4px!important;border-bottom:0!important}
   .sub a b{font-size:19px}.sub a small{font-size:14px}
   .sub .all{border-top:0;font-size:15px!important}
+  .links .dd.cur::after{display:none}
+  .sub a[aria-current=page]{background:transparent;padding-left:18px!important;position:relative}
+  .sub a[aria-current=page]::before{content:"";position:absolute;left:2px;top:12px;bottom:12px;width:9px;background:linear-gradient(90deg,var(--fr) 0 3px,transparent 3px 6px,var(--co) 6px 9px)}
   .menu{display:block}.bar>.btn{display:none}.m-only{display:block}
 }
 
@@ -167,7 +171,10 @@ main{display:block}
 .door .go{margin-top:auto;font-weight:600;font-size:15px;display:inline-flex;gap:8px;align-items:center}
 .door .go svg{width:16px;height:16px;transition:transform .2s}
 .door:hover .go svg{transform:translateX(4px)}
-.doors.three .fold{height:150px}
+.doors.three .fold{height:auto;aspect-ratio:16/10}
+.doors.three .fold .tab{height:16%;width:40%}
+.doors.three .fold .body{inset:9% 0 0 0}
+.doors.three .fold .flap{inset:24% 0 0 0}
 .doors.three .door h3{font:400 clamp(30px,3.2vw,40px)/.95 var(--f-t);text-transform:uppercase}
 
 /* PORTADA con texto orbital */
@@ -377,6 +384,12 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .legal-txt p{color:var(--gr);font-size:16px}.legal-txt a{color:var(--co)}
 @media (max-width:980px){.lang{margin-left:auto;margin-right:8px}.menu{margin-left:0;order:3}}
 
+/* mosaico de colaboraciones (Colabora en mis redes) */
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini-grid .th{position:relative;display:block;border-radius:12px;overflow:hidden}
+.mini-grid .th>img:first-child{width:100%;aspect-ratio:16/9;object-fit:cover}
+.mini-grid .lg{position:absolute;left:8px;bottom:8px;height:22px;width:auto;max-width:60%;background:var(--w);padding:4px 8px;border-radius:999px;object-fit:contain;box-shadow:var(--sh-s)}
+
 /* pestañas que se desplazan en horizontal si no caben */
 .tabs.scroll{display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .tabs.scroll::-webkit-scrollbar{display:none}
@@ -432,10 +445,13 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
   .doors .door h3{font:700 15px/1.2 var(--f-r)}
   .doors .door p{display:none}
   .doors .door .go{font-size:13px;margin-top:6px}
-  .doors.three{grid-template-columns:1fr}
-  .doors.three .fold{aspect-ratio:auto;height:110px}
-  .doors.three .door p{display:block;font-size:14.5px}
-  .doors.three .door h3{font:400 28px/.95 var(--f-t)}
+  /* Trabaja conmigo en móvil: carpeta pequeña a la izquierda y texto a la derecha */
+  .doors.three{grid-template-columns:1fr;gap:10px}
+  .doors.three .door{display:grid;grid-template-columns:104px minmax(0,1fr);grid-template-rows:auto auto auto;column-gap:14px;align-items:start;padding:12px}
+  .doors.three .fold{grid-row:1/4;aspect-ratio:4/3;height:auto;margin:0}
+  .doors.three .door h3{font:400 24px/.95 var(--f-t);margin-top:2px}
+  .doors.three .door p{display:block;font-size:14px;margin:4px 0 6px;line-height:1.35}
+  .doors.three .door .go{margin-top:0;font-size:13.5px}
   /* vídeos en 2 columnas para que se vea más de uno a la vez */
   .grid4,.shorts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .vid b{font-size:14.5px;margin-top:8px}

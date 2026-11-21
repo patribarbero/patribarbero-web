@@ -276,4 +276,5 @@ T = {
 'Tu consentimiento, que das al marcar la casilla del formulario o al escribirme, y la aplicación de medidas precontractuales cuando me pides una propuesta.': 'Your consent, which you give by ticking the form box or writing to me, and taking pre-contractual steps when you ask me for a proposal.',
 'Tus derechos': 'Your rights',
 'Última actualización: 21 de noviembre de 2026': 'Last updated: 21 November 2026',
+'colaboraciones publicadas': 'published collaborations',
 }
