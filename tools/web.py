@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261121b'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261121c'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -40,7 +40,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{BASE}{path}">{rob}
-<meta property="og:type" content="website"><meta property="og:site_name" content="Patri Barbero"><meta property="og:locale" content="es_ES">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Patri Barbero"><meta name="application-name" content="Patri Barbero"><meta name="apple-mobile-web-app-title" content="Patri Barbero"><meta property="og:locale" content="es_ES">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}"><meta property="og:url" content="{BASE}{path}">
 <meta property="og:image" content="{BASE}/img/og.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg?v=r13" type="image/svg+xml"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
@@ -48,6 +48,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 <link rel="preload" href="/assets/f/anton.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/f/rubik.woff2" as="font" type="font/woff2" crossorigin>{pre}
 <link rel="stylesheet" href="/assets/css/site.css?v={V}">
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebSite","name":"Patri Barbero","alternateName":"patribarbero.com","url":"https://patribarbero.com/"}}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -249,7 +250,7 @@ stats = f'''<section class="page-hero"><div class="wrap">
 
 {band('¿Lo vemos <em>juntas</em>?', 'Si estas cifras encajan con tu marca, cuéntame la campaña y te preparo una propuesta.', f'<a class="btn p" href="/colaboraciones/">Colabora en mis redes {ARR}</a><a class="btn s" href="/contacto/?tipo=colaboracion">Pedir propuesta</a>')}
 '''
-page('/estadisticas/', 'stats', 'Estadísticas y media kit · Patri Barbero', 'Estadísticas reales de YouTube, Instagram y TikTok de Patri Barbero: comunidad, audiencia y rendimiento, con fecha de actualización.', stats, STATS)
+page('/estadisticas/', 'stats', 'Estadísticas · Patri Barbero', 'Estadísticas reales de YouTube, Instagram y TikTok de Patri Barbero: comunidad, audiencia y rendimiento, con fecha de actualización.', stats, STATS)
 
 # =================================================== TRABAJA CONMIGO
 trab = f'''<section class="page-hero"><div class="wrap">
@@ -488,10 +489,31 @@ contacto = f'''<section class="page-hero"><div class="wrap">
 '''
 page('/contacto/', 'contacto', 'Contacto · Patri Barbero', 'Escríbeme para colaboraciones en mis redes, contenido UGC o gestión de redes. Respuesta en 24–48 h laborables.', contacto)
 
-# =================================================== LEGALES (pendientes de datos) y 404
-for p, t in [('/aviso-legal/', 'Aviso legal'), ('/privacidad/', 'Privacidad')]:
-    page(p, '', f'{t} · Patri Barbero', f'{t} de patribarbero.com.',
-         f'<section class="page-hero"><div class="wrap">{crumbs(("/", "Inicio"), ("", t))}<h1 class="T h1">{t}</h1><div class="card" style="padding:24px;margin-top:24px;max-width:760px"><p><b>Texto pendiente.</b> <span class="muted">Se publicará con los datos identificativos del titular de la web antes de abrirla al público.</span></p></div></div></section>', noindex=True)
+# =================================================== LEGALES
+TITULAR, LEGAL_MAIL = 'Victoria Patricia Barbero Moyá', EMAIL
+def legal_page(path, title, desc, blocks):
+    body = ''.join(f'<h2 class="h3" style="margin:30px 0 10px">{h}</h2>' + ''.join(f'<p style="margin-top:10px">{x}</p>' for x in ps) for h, ps in blocks)
+    page(path, '', f'{title} · Patri Barbero', desc,
+         f'<section class="page-hero"><div class="wrap">{crumbs(("/", "Inicio"), ("", title))}<h1 class="T h1">{title}</h1><div class="legal-txt card" style="padding:clamp(20px,3vw,32px);margin-top:24px;max-width:820px"><p class="note">Última actualización: 21 de noviembre de 2026</p>{body}</div></div></section>', noindex=True)
+
+legal_page('/aviso-legal/', 'Aviso legal', 'Aviso legal de patribarbero.com.', [
+  ('Titular de la web', [f'Titular: {TITULAR}, que actúa con el nombre profesional «Patri Barbero».', 'Domicilio: Madrid (España).', f'Email de contacto: <a href="mailto:{LEGAL_MAIL}">{LEGAL_MAIL}</a>.']),
+  ('Objeto', ['Esta web presenta la actividad profesional de Patri Barbero como creadora de contenido de moda y los servicios que ofrece a marcas y negocios: colaboraciones en sus redes, contenido UGC y gestión de redes sociales.']),
+  ('Propiedad intelectual', ['Los textos, fotografías, vídeos, diseños y logotipos de esta web pertenecen a su titular o se usan con permiso. No se pueden copiar, reproducir ni distribuir sin autorización por escrito.', 'Los nombres y logotipos de las marcas con las que se ha colaborado pertenecen a sus respectivos dueños y se muestran solo para indicar esos trabajos.']),
+  ('Responsabilidad', ['La titular procura que la información de la web sea correcta y esté actualizada, pero no garantiza que no contenga errores. Las cifras de redes sociales indican la fecha y la fuente de la que se han obtenido.', 'La web enlaza a otros sitios (YouTube, Instagram, TikTok y otros). La titular no se hace responsable de sus contenidos ni de sus políticas.']),
+  ('Ley aplicable', ['Esta web se rige por la legislación española.']),
+])
+
+legal_page('/privacidad/', 'Privacidad', 'Política de privacidad de patribarbero.com.', [
+  ('Quién trata tus datos', [f'Responsable: {TITULAR} («Patri Barbero»). Email: <a href="mailto:{LEGAL_MAIL}">{LEGAL_MAIL}</a>.']),
+  ('Qué datos recojo y para qué', ['Solo recojo los datos que me envías por el formulario de contacto o por email: nombre, email, marca o negocio y lo que me cuentes en el mensaje (por ejemplo, sector, ciudad, plazos o presupuesto).', 'Los uso únicamente para responderte y, si llegamos a trabajar juntas, para preparar y gestionar la propuesta o el encargo. No los uso para enviarte publicidad ni los vendo.']),
+  ('Base legal', ['Tu consentimiento, que das al marcar la casilla del formulario o al escribirme, y la aplicación de medidas precontractuales cuando me pides una propuesta.']),
+  ('Cuánto tiempo los guardo', ['El tiempo necesario para responderte y gestionar la relación. Si no llegamos a trabajar juntas, los borro en un plazo máximo de un año. Si hay un encargo, los guardo durante los plazos que exija la ley.']),
+  ('Quién más los ve', ['El formulario se envía a mi correo a través de FormSubmit (formsubmit.co), un servicio de terceros que solo hace llegar el mensaje. Recibo y guardo los mensajes en Gmail (Google). La web está alojada en Cloudflare. Estos proveedores pueden tratar datos fuera del Espacio Económico Europeo con las garantías que exige la normativa.', 'No cedo tus datos a nadie más, salvo obligación legal.']),
+  ('Cookies', ['Esta web no usa cookies propias, ni de análisis, ni de publicidad.', 'Los vídeos de YouTube solo se cargan si pulsas en ellos, y lo hacen desde youtube-nocookie.com. En ese momento, YouTube puede guardar información en tu navegador según su propia política.']),
+  ('Tus derechos', [f'Puedes pedirme acceder a tus datos, corregirlos, borrarlos, limitar su uso, oponerte a él o llevártelos, escribiendo a <a href="mailto:{LEGAL_MAIL}">{LEGAL_MAIL}</a>. También puedes retirar tu consentimiento cuando quieras.', 'Si crees que no he tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).']),
+  ('Menores', ['Si tienes menos de 14 años, no me envíes tus datos por el formulario.']),
+])
 page('/404.html', '', 'Página no encontrada · Patri Barbero', 'Esta página no existe.',
      f'<section class="page-hero"><div class="wrap"><p class="kicker">Error 404</p><h1 class="T h1">Esta talla<br>no la tenemos</h1><p class="lead" style="margin-top:20px">La página que buscas no existe o ha cambiado de sitio.</p><div class="ctas"><a class="btn p" href="/">Inicio {ARR}</a><a class="btn s" href="/estadisticas/">Estadísticas</a><a class="btn s" href="/trabaja-conmigo/">Trabaja conmigo</a><a class="btn s" href="/contacto/">Contacto</a></div></div></section>', noindex=True)
 
