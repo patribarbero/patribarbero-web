@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261122c'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261122d'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -27,6 +27,7 @@ def nav(key):
             + a('/sobre-mi/', 'Sobre mí', 'sobre')
             + '<li class="m-only"><a href="/contacto/"' + (' aria-current="page"' if key == 'contacto' else '') + '>Contacto</a></li>')
 
+DESK = ''
 PAGES = []
 def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''):
     rob = '<meta name="robots" content="noindex">' if noindex else ''
@@ -66,10 +67,12 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 <footer class="foot"><div class="wrap">
   <div><a class="logo" href="/">Patri <span>Barbero</span></a><p>Moda como identidad · Madrid<br><a href="mailto:{EMAIL}">{EMAIL}</a></p></div>
   <nav aria-label="Pie"><a href="/contenido/">Contenido</a><a href="/estadisticas/">Estadísticas</a><a href="/trabaja-conmigo/">Trabaja conmigo</a><a href="/colaboraciones/">Colabora en mis redes</a><a href="/ugc/">Contenido UGC</a><a href="/gestion-de-redes/">Gestión de redes</a><a href="/sobre-mi/">Sobre mí</a><a href="/contacto/">Contacto</a><a href="{YT}" target="_blank" rel="noopener">YouTube ↗</a></nav>
-  <div class="legal"><span>© 2026 Patri Barbero</span><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a><a href="{IG}" target="_blank" rel="noopener">Instagram</a><a href="{TT}" target="_blank" rel="noopener">TikTok</a></div>
+  <div class="legal"><span>© 2026 Patri Barbero</span><span class="hint">Pista: doble clic en mi nombre ✨</span><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a><a href="{IG}" target="_blank" rel="noopener">Instagram</a><a href="{TT}" target="_blank" rel="noopener">TikTok</a></div>
 </div></footer>
+{DESK}
 <dialog class="vd" id="vd" aria-label="Vídeo"><div class="box"><div class="frame"></div></div><button class="x" type="button">Cerrar ✕</button></dialog>
 <script src="/assets/js/site.js?v={V}" defer></script>
+<script src="/assets/js/fun.js?v={V}" defer></script>
 {scripts}
 </body>
 </html>
@@ -92,6 +95,9 @@ PEEK = {'/contenido/': ['yt4.jpg', 'oversized.jpg', 'yt3.jpg'], '/colaboraciones
 def peek(href):
     items = PEEK.get(href, [])
     return '<div class="peek">' + ''.join((f'<img src="/img/{x}" alt="" loading="lazy">' if x.endswith('.jpg') else '<span class="pk-note">' + x.split(' · ')[0] + '<b>' + x.split(' · ')[1] + '</b></span>') for x in items) + '</div>'
+import sys as _sys; _sys.path.insert(0, str(pathlib.Path(__file__).parent)); import fun
+fun.win_html = win
+
 def door(href, pat, title, text, go):
     return f'<a class="door rv" href="{href}"><div class="fold" aria-hidden="true"><div class="tab {pat}"></div><div class="body {pat}"></div>{peek(href)}<div class="flap {pat}"></div></div><h3>{title}</h3><p>{text}</p><span class="go">{go} {ARR}</span></a>'
 
@@ -135,6 +141,8 @@ SHORTS = [('u0GktqmTMh8', 'oversized.jpg', 'Oversized y femenina', 'Short · 35,
           ('wu2mG4YX1dI', 'abc.jpg', 'Elige A, B o C', 'Reel · formato interactivo')]
 LONG = [('yt1.jpg', 'Invierno: ¿qué zapatilla eres?'), ('yt2.jpg', '¿Cuáles? No depende solo de tu cara'), ('yt3.jpg', 'Viste bien en invierno sin repetir looks'), ('yt4.jpg', 'Tendencias de otoño')]
 
+DESK = fun.desk(TOP_SHORTS, [('Formación', 'Grado universitario en Digital Business · ESIC'), ('Experiencia', 'Comunicación de marca en una multinacional e influencer marketing en una agencia'), ('Ahora', 'Un vídeo largo cada domingo y vídeos cortos toda la semana'), ('Estilo', 'Sporty y femenina a la vez: cómoda y mona')])
+
 # =================================================== INICIO
 home = f'''<section class="home-hero"><div class="wrap hh">
   <div class="hh-txt">
@@ -165,6 +173,8 @@ home = f'''<section class="home-hero"><div class="wrap hh">
     <button class="orb-pause" type="button" aria-pressed="false">❚❚ Pausar</button>
   </div>
 </div></section>
+
+{fun.doll_section()}
 
 <section class="sec tight"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Empieza por aquí</p><h2 class="T h2 rv">¿Qué buscas?</h2></div><p class="lead rv">Elige una carpeta. Cada una te lleva a su página.</p></div>
@@ -205,7 +215,7 @@ cont = f'''<section class="page-hero"><div class="wrap">
 
 <section class="sec tight"><div class="wrap">
   <div class="tabs" role="tablist" aria-label="Plataforma"><button role="tab" aria-selected="true" aria-controls="p-yt" id="t-yt">YouTube</button><button role="tab" aria-selected="false" aria-controls="p-sh" id="t-sh">Reels, TikTok y Shorts</button></div>
-  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt">{win('youtube · qué vas a encontrar en el canal', '<p class="muted" style="margin-bottom:20px">Un vídeo largo cada domingo, de 10 a 20 minutos. Estos son los tipos de vídeo que hago:</p><div class="types">' + ''.join(f'<a class="type" href="{YT}/playlists" target="_blank" rel="noopener"><span class="th">' + (f'<img src="/img/{img}" alt="" loading="lazy">' if img else '<span class="sw" aria-hidden="true"><i style="background:var(--fr)"></i><i style="background:var(--co)"></i><i style="background:var(--ma)"></i><i style="background:var(--ch)"></i></span>') + f'</span><span class="chip">{lst}</span><b>{t}</b><small>{d}</small></a>' for lst, t, d, img in TYPES) + f'</div><p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ver el canal ↗</a></p>')}</div>
+  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt">{win('youtube · qué vas a encontrar en el canal', '<p class="muted" style="margin-bottom:20px">Un vídeo largo cada domingo, de 10 a 20 minutos. Abre el armario: estos son los tipos de vídeo que hago.</p>' + fun.closet(TYPES, YT) + f'<p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ver el canal ↗</a></p>')}</div>
   <div id="p-sh" role="tabpanel" aria-labelledby="t-sh" hidden>{win('vídeos cortos · los más vistos', '<div class="grid4 shorts">' + ''.join(short_card(*x) for x in TOP_SHORTS) + '</div><p class="note" style="margin-top:16px">Reproducciones en la plataforma donde se publicó cada uno. Subo los mismos vídeos a Instagram, TikTok y YouTube Shorts.</p>')}</div>
 </div></section>
 
