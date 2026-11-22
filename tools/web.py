@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261122g'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261122h'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
