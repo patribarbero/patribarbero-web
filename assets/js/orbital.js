@@ -1,6 +1,6 @@
 /* Texto orbital 3D · Patri Barbero (RIBETE 1.3)
    - Gira con JavaScript (igual en todos los navegadores).
-   - Con «reducir movimiento» activado, se queda quieto con la frase leíble de frente.
+   - Gira para todo el mundo (decisión de Patri, 22/11/2026). Con «reducir movimiento» gira más despacio y el botón de pausa sigue a mano.
    - Las letras se reparten según su ancho real ya ampliado por la perspectiva, para que no se monten. */
 (function(){
   var stage = document.querySelector('.orb'); if (!stage) return;
@@ -44,8 +44,8 @@
   var angle = null, dur = +(stage.dataset.dur || 26), last = null, paused = false, visible = true;
   function frame(t){
     if (angle !== null){
-      if (last !== null && !paused && visible && !reduce && !document.hidden) angle -= 360 * ((t - last) / 1000) / dur;
-      var tr = 'rotateY(' + (reduce ? still : angle).toFixed(3) + 'deg)';
+      if (last !== null && !paused && visible && !document.hidden) angle -= 360 * ((t - last) / 1000) / (reduce ? dur * 1.6 : dur);
+      var tr = 'rotateY(' + angle.toFixed(3) + 'deg)';
       F.style.transform = tr; B.style.transform = tr;
     }
     last = t; requestAnimationFrame(frame);
@@ -55,7 +55,7 @@
   });
 
   var btn = document.querySelector('.orb-pause');
-  function syncBtn(){ if (btn) btn.hidden = reduce; }
+  function syncBtn(){ if (btn) btn.hidden = false; }
   if (mq.addEventListener) mq.addEventListener('change', function(){ reduce = mq.matches; syncBtn(); });
   syncBtn();
   if (btn) btn.addEventListener('click', function(){ paused = !paused; btn.setAttribute('aria-pressed', paused); var en = document.documentElement.lang === 'en'; btn.textContent = paused ? (en ? '▶ Play' : '▶ Reanudar') : (en ? '❚❚ Pause' : '❚❚ Pausar'); });
