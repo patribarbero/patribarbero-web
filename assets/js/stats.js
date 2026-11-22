@@ -7,7 +7,15 @@
   function k1(n){ if (n < 1000) return nf.format(n); var v = Math.floor(n / 100) / 10; return EN ? String(v).replace(/\.0$/, '') + 'K' : String(v).replace('.', ',').replace(/,0$/, '') + ' mil'; }
   var F = { int: function(n){ return nf.format(n); }, k1: k1, pct0: function(n){ return Math.round(n) + (EN ? '%' : ' %'); }, pct1: function(n){ return EN ? n + '%' : String(n).replace('.', ',') + ' %'; } };
   function date(s, o){ return s ? new Date(s + 'T12:00:00').toLocaleDateString(LOC, o || {day:'numeric', month:'long', year:'numeric'}) : '—'; }
-  document.querySelectorAll('[data-n]').forEach(function(el){ var v = get(el.dataset.n); if (v != null) el.textContent = (el.dataset.pre || '') + (F[el.dataset.f] || F.int)(v); });
+  /* cifras que suben desde 0 cuando aparecen en pantalla */
+  function put(el, v){ el.textContent = (el.dataset.pre || '') + (F[el.dataset.f] || F.int)(v); }
+  var cio = 'IntersectionObserver' in window ? new IntersectionObserver(function(es){ es.forEach(function(e){
+    if (!e.isIntersecting) return; var el = e.target, v = +el.dataset.v, t0 = null, dec = el.dataset.f === 'pct1'; cio.unobserve(el);
+    requestAnimationFrame(function tick(t){ if (t0 === null) t0 = t; var k = Math.min(1, (t - t0) / 1300), ease = 1 - Math.pow(1 - k, 3), n = v * ease;
+      put(el, k < 1 ? (dec ? Math.round(n * 10) / 10 : Math.round(n)) : v); if (k < 1) requestAnimationFrame(tick); });
+  }); }, {threshold:.5}) : null;
+  document.querySelectorAll('[data-n]').forEach(function(el){ var v = get(el.dataset.n); if (v == null) return;
+    if (cio && typeof v === 'number' && v > 20){ el.dataset.v = v; put(el, 0); cio.observe(el); } else put(el, v); });
   document.querySelectorAll('[data-txt]').forEach(function(el){ var v = get(el.dataset.txt); if (v != null) el.textContent = v; });
   document.querySelectorAll('[data-date]').forEach(function(el){ el.textContent = date(get(el.dataset.date)); });
   document.querySelectorAll('[data-per]').forEach(function(el){

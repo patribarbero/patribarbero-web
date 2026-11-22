@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261122a'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261122b'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -87,8 +87,13 @@ def crumbs(*items):
 def win(title, inner, cls=''):
     return f'<div class="win {cls}"><div class="win-bar"><i></i><i></i><i></i><b>{title}</b></div><div class="win-rib"></div><div class="win-body">{inner}</div></div>'
 
+PEEK = {'/contenido/': ['yt4.jpg', 'oversized.jpg', 'yt3.jpg'], '/colaboraciones/': ['zBPboLQZKAo.jpg', 'pYXWRYBJd9s.jpg', 'CecPikzWLI8.jpg'],
+        '/ugc/': ['broches.jpg', 'abc.jpg', 'oversized.jpg'], '/gestion-de-redes/': ['lun · post', 'mié · reel', 'vie · stories']}
+def peek(href):
+    items = PEEK.get(href, [])
+    return '<div class="peek">' + ''.join((f'<img src="/img/{x}" alt="" loading="lazy">' if x.endswith('.jpg') else '<span class="pk-note">' + x.split(' · ')[0] + '<b>' + x.split(' · ')[1] + '</b></span>') for x in items) + '</div>'
 def door(href, pat, title, text, go):
-    return f'<a class="door rv" href="{href}"><div class="fold" aria-hidden="true"><div class="tab {pat}"></div><div class="body {pat}"></div><div class="flap {pat}"></div></div><h3>{title}</h3><p>{text}</p><span class="go">{go} {ARR}</span></a>'
+    return f'<a class="door rv" href="{href}"><div class="fold" aria-hidden="true"><div class="tab {pat}"></div><div class="body {pat}"></div>{peek(href)}<div class="flap {pat}"></div></div><h3>{title}</h3><p>{text}</p><span class="go">{go} {ARR}</span></a>'
 
 def vid(yt, img, title, meta='', vertical=False):
     v = ' v' if vertical else ''
@@ -152,8 +157,13 @@ home = f'''<section class="home-hero"><div class="wrap hh">
     <div class="orb" data-phrase="Moda como identidad" data-reps="2" data-dur="26" aria-hidden="true">
       <div class="floor"></div>
       <div class="scene back"><div class="tilt"><div class="ring-b"></div></div></div>
-      <img class="me" src="/img/patri-espejo-1100.webp" srcset="/img/patri-espejo-1100.webp 432w, /img/patri-espejo-1800.webp 708w" sizes="(max-width:860px) 30vw, 340px" alt="" width="708" height="1800" fetchpriority="high">
+      <div class="me-box"><img class="me" src="/img/patri-espejo-1100.webp" srcset="/img/patri-espejo-1100.webp 432w, /img/patri-espejo-1800.webp 708w" sizes="(max-width:860px) 30vw, 340px" alt="" width="708" height="1800" fetchpriority="high">
+      </div>
       <div class="scene front"><div class="tilt"><div class="ring-f"></div></div></div>
+      <div class="me-box sels">
+        <div class="sel" style="--x:5.5%;--y:53%;--w:48%;--h:20%"><i></i><span class="sel-chip">bolso bowling · el toque sporty</span></div>
+        <div class="sel" style="--x:19.5%;--y:44.3%;--w:53.5%;--h:6.8%"><i></i><span class="sel-chip">cinturón rojo · une el look</span></div>
+      </div>
     </div>
     <p class="sr">Moda como identidad. Patri frente al espejo con top blanco, pantalón negro y bolso rojo.</p>
     <button class="orb-pause" type="button" aria-pressed="false">❚❚ Pausar</button>

@@ -35,9 +35,25 @@
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && sub.classList.contains('open')){ set(false); dd.focus(); } });
   }
 
+  /* subrayados que se dibujan · carpetas que se abren solas una vez en móvil */
+  var touch = matchMedia('(hover:none)').matches;
+  if ('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(es){ es.forEach(function(e){
+      if (!e.isIntersecting) return; var el = e.target; io2.unobserve(el);
+      if (el.classList.contains('hl')) el.classList.add('on');
+      else { setTimeout(function(){ el.classList.add('peeked'); setTimeout(function(){ el.classList.remove('peeked'); }, 1600); }, 500 + (+el.dataset.i || 0) * 180); }
+    }); }, {threshold:.6});
+    document.querySelectorAll('.hl').forEach(function(el){ io2.observe(el); });
+    if (touch) document.querySelectorAll('.door').forEach(function(el, i){ el.dataset.i = i % 4; io2.observe(el); });
+  } else document.querySelectorAll('.hl').forEach(function(el){ el.classList.add('on'); });
+
+  /* selección exacta sobre la foto: se dibuja una prenda y luego otra */
+  var sels = document.querySelectorAll('.sel');
+  if (sels.length){ var si = 0; setTimeout(function step(){ sels.forEach(function(s, k){ s.classList.toggle('on', k === si); }); si = (si + 1) % (sels.length + 1); setTimeout(step, si === 0 ? 3800 : 3200); }, 1400); }
+
   /* aparición suave al hacer scroll */
   var rv = document.querySelectorAll('.rv');
-  if ('IntersectionObserver' in window && !RM){
+  if ('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, {rootMargin:'0px 0px -6% 0px'});
     rv.forEach(function(el){ io.observe(el); });
   } else rv.forEach(function(el){ el.classList.add('in'); });

@@ -44,7 +44,8 @@ button{font:inherit;color:inherit}
 .lead{font-size:clamp(19px,1.9vw,22px);line-height:1.45;max-width:46ch;margin:0}
 .muted{color:var(--gr)}
 p{margin:0}
-.hl{background:linear-gradient(transparent 58%,var(--ma) 58%,var(--ma) 92%,transparent 92%);padding:0 .08em}
+.hl{background:linear-gradient(transparent 58%,var(--ma) 58%,var(--ma) 92%,transparent 92%) no-repeat 0 0/0% 100%;padding:0 .08em;transition:background-size 1.1s cubic-bezier(.2,.7,.2,1) .35s}
+.hl.on,.no-js .hl{background-size:100% 100%}
 .rib{display:block;height:9px;width:120px;background:var(--rib)}
 .note{font-size:13.5px;color:var(--gr)}
 
@@ -161,7 +162,17 @@ main{display:block}
 .fold .tab{position:absolute;left:0;top:0;width:44%;height:26px;border-radius:12px 12px 0 0;filter:brightness(.92)}
 .fold .body{position:absolute;inset:14px 0 0 0;border-radius:14px}
 .fold .flap{position:absolute;inset:38px 0 0 0;border-radius:14px;transform-origin:bottom;transition:transform .3s;filter:brightness(1.05);box-shadow:0 -3px 8px rgba(0,0,0,.10)}
-.door:hover .flap,.door:focus-visible .flap{transform:perspective(320px) rotateX(34deg)}
+.door:hover .flap,.door:focus-visible .flap,.door.peeked .flap{transform:perspective(320px) rotateX(48deg)}
+.peek{position:absolute;left:8%;right:8%;top:10%;bottom:16%;z-index:1;pointer-events:none}
+.peek>*{position:absolute;bottom:0;width:42%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;box-shadow:0 4px 12px rgba(43,20,12,.22);transform:translateY(30%) rotate(var(--r));transition:transform .45s cubic-bezier(.2,.8,.2,1.2)}
+.peek>*:nth-child(1){left:2%;--r:-8deg}.peek>*:nth-child(2){left:29%;--r:2deg;z-index:1}.peek>*:nth-child(3){right:2%;--r:9deg}
+.door:hover .peek>*,.door:focus-visible .peek>*,.door.peeked .peek>*{transform:translateY(-22%) rotate(var(--r))}
+.door:hover .peek>*:nth-child(2),.door.peeked .peek>*:nth-child(2){transition-delay:.05s}.door:hover .peek>*:nth-child(3),.door.peeked .peek>*:nth-child(3){transition-delay:.1s}
+.fold .flap{z-index:2}
+.peek>.pk-note{width:34%}.peek>.pk-note:nth-child(1){left:0}.peek>.pk-note:nth-child(2){left:33%}.peek>.pk-note:nth-child(3){right:0}
+.pk-note{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:var(--w);color:var(--gr);font:600 10px/1.1 var(--f-r);text-align:center;padding:14px 2px 4px;text-transform:uppercase;letter-spacing:.04em}
+.pk-note b{color:var(--ch);font-size:12px;text-transform:none;letter-spacing:0}
+.pk-note::before{content:"";position:absolute;top:8px;left:50%;width:22px;height:4px;margin-left:-11px;border-radius:2px;background:var(--fr)}
 .vichy{background-color:var(--ni);background-image:repeating-linear-gradient(0deg,rgba(255,92,157,.55) 0 9px,transparent 9px 18px),repeating-linear-gradient(90deg,rgba(255,92,157,.55) 0 9px,transparent 9px 18px)}
 .lunares{background-color:var(--ch);background-image:radial-gradient(var(--ni) 3.2px,transparent 3.6px);background-size:16px 16px}
 .rayas{background-color:var(--le);background-image:repeating-linear-gradient(90deg,var(--co) 0 5px,transparent 5px 14px)}
@@ -190,7 +201,9 @@ main{display:block}
 @media (max-width:860px){.hh{grid-template-columns:1fr}.orb-wrap{order:-1;margin-top:-6px}}
 .orb-wrap{position:relative;display:grid;place-items:center}
 .orb{--H:min(80vh,104vw,840px);position:relative;height:var(--H);width:calc(var(--H)*.8);font-size:calc(var(--H)/100)}
-.orb .me{position:absolute;left:50%;bottom:0;height:94%;width:auto;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 1.4em 1.8em rgba(43,20,12,.14));pointer-events:none;user-select:none}
+.orb .me-box{position:absolute;left:50%;bottom:0;height:94%;aspect-ratio:708/1800;transform:translateX(-50%);z-index:2;pointer-events:none}
+.orb .me-box.sels{z-index:5}
+.orb .me{position:absolute;left:0;top:0;height:100%;width:100%;filter:drop-shadow(0 1.4em 1.8em rgba(43,20,12,.14));pointer-events:none;user-select:none}
 .orb .floor{position:absolute;left:24%;right:24%;bottom:.6em;height:4em;border-radius:50%;background:radial-gradient(closest-side,rgba(43,20,12,.16),transparent);z-index:0}
 .orb .scene{position:absolute;inset:0;perspective:calc(var(--H)*3.2);perspective-origin:50% 44%;pointer-events:none}
 .orb .back{z-index:1}.orb .front{z-index:3}
@@ -341,7 +354,7 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
 .no-js .rv{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
+
 
 /* ===== componentes nuevos ===== */
 .req{color:#C8243B;font-weight:700}
@@ -389,6 +402,15 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .mini-grid .th{position:relative;display:block;border-radius:12px;overflow:hidden}
 .mini-grid .th>img:first-child{width:100%;aspect-ratio:16/9;object-fit:cover}
 .mini-grid .lg{position:absolute;left:8px;bottom:8px;height:22px;width:auto;max-width:60%;background:var(--w);padding:4px 8px;border-radius:999px;object-fit:contain;box-shadow:var(--sh-s)}
+
+/* selección exacta sobre la foto (MOTION-02b) */
+.sel{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);z-index:4;opacity:0;transition:opacity .3s}
+.sel i{position:absolute;inset:0;border:2px solid var(--fr);border-radius:6px;clip-path:inset(0 100% 100% 0);transition:clip-path .7s cubic-bezier(.6,.1,.2,1)}
+.sel i::before,.sel i::after{content:"";position:absolute;width:7px;height:7px;background:var(--w);border:2px solid var(--fr);border-radius:2px}
+.sel i::before{left:-5px;top:-5px}.sel i::after{right:-5px;bottom:-5px}
+.sel-chip{position:absolute;left:0;top:100%;margin-top:8px;white-space:nowrap;background:var(--fr);color:var(--ch);font:600 calc(var(--H)*.019) var(--f-r);padding:.45em .8em;border-radius:999px;box-shadow:var(--sh-s);transform:translateY(6px);opacity:0;transition:opacity .3s .5s,transform .3s .5s}
+.sel.on{opacity:1}.sel.on i{clip-path:inset(0 0 0 0)}.sel.on .sel-chip{opacity:1;transform:none}
+@media (max-width:860px){.sel-chip{font-size:9.5px;white-space:normal;width:max-content;max-width:120px;line-height:1.25;padding:.4em .7em;left:auto;right:0}}
 
 /* pestañas que se desplazan en horizontal si no caben */
 .tabs.scroll{display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
