@@ -322,5 +322,7 @@ T = {
 'ficha.txt': 'profile.txt',
 'Muñequita que cambia de look': 'Doll that changes outfit',
 '100 % femenina': '100% feminine',
+'Bienvenida a mi escritorio. Aquí guardo lo que no cabe en el resto de la web.': 'Welcome to my desktop. This is where I keep what doesn’t fit on the rest of the site.',
+'Abre las carpetas y los archivos de la izquierda, arrastra las ventanas por su barra o cotillea la papelera.': 'Open the folders and files on the left, drag windows by their bar or have a nosy in the bin.',
 }
 KEEP |= {'post', 'reel', 'stories', 'TXT', 'UGC', 'patri os'}

@@ -96,7 +96,7 @@ def desk(top_shorts, ficha_items):
     return f'''<div class="desk" id="desk" hidden role="dialog" aria-modal="true" aria-label="Escritorio de Patri">
   <div class="dk-top"><b>patri os</b><span>moda como identidad</span><span class="dk-clock"></span><button class="dk-exit" type="button">Salir ✕</button></div>
   <div class="dk-icons">{ic}</div>
-  {w('dk-hola', 'hola.txt', '<p class="dk-big T">¡Me has encontrado!</p><p>Este es mi escritorio. Arrastra las ventanas, abre las carpetas o curiosea la papelera.</p>', '50%', '18%', '320px')}
+  {w('dk-hola', 'hola.txt', '<p class="dk-big T">¡Me has encontrado!</p><p>Bienvenida a mi escritorio. Aquí guardo lo que no cabe en el resto de la web.</p><p class="dk-tip">Abre las carpetas y los archivos de la izquierda, arrastra las ventanas por su barra o cotillea la papelera.</p>', '22%', '16%', '520px')}
   {w('dk-ficha', 'ficha.txt', f'<ul class="dk-ficha">{ficha}</ul>', '8%', '30%', '330px')}
   {w('dk-vids', 'lo más visto', f'<div class="dk-vids">{vids}</div>', '56%', '40%', '360px')}
   {w('dk-trash', 'papelera', '<p class="dk-big T">Tendencias sin filtro</p><p>Aquí acaba lo que no pasa mi filtro: lo 100 % gimnasio y lo que hace sufrir para ir mona. 🗑️</p>', '30%', '52%', '300px')}

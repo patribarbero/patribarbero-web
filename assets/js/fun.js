@@ -58,7 +58,7 @@
       w.hidden = false; front(w); w.classList.remove('pop'); void w.offsetWidth; w.classList.add('pop'); }
     function openDesk(){
       desk.hidden = false; document.body.style.overflow = 'hidden';
-      (small.matches ? ['dk-hola'] : ['dk-hola', 'dk-ficha', 'dk-vids']).forEach(function(id, i){ setTimeout(function(){ openWin(id); }, 120 + i * 140); });
+      setTimeout(function(){ openWin('dk-hola'); }, 150);   // al entrar solo se abre la bienvenida
       tick();
     }
     function closeDesk(){ desk.hidden = true; document.body.style.overflow = ''; desk.querySelectorAll('.dk-win').forEach(function(w){ w.hidden = true; }); }

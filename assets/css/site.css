@@ -158,15 +158,16 @@ main{display:block}
 @media (max-width:480px){.doors{grid-template-columns:1fr}}
 .door{display:flex;flex-direction:column;text-decoration:none;border-radius:var(--r-win);padding:18px 18px 22px;background:var(--w);box-shadow:var(--sh-s);transition:transform .25s,box-shadow .25s}
 .door:hover,.door:focus-visible{transform:translateY(-4px);box-shadow:var(--sh)}
-.fold{position:relative;height:118px;margin-bottom:18px}
+.fold{position:relative;aspect-ratio:4/3;margin-bottom:18px}
+.fold .tab{height:15%!important}.fold .body{inset:9% 0 0 0!important}.fold .flap{inset:24% 0 0 0!important}
 .fold .tab{position:absolute;left:0;top:0;width:44%;height:26px;border-radius:12px 12px 0 0;filter:brightness(.92)}
 .fold .body{position:absolute;inset:14px 0 0 0;border-radius:14px}
 .fold .flap{position:absolute;inset:38px 0 0 0;border-radius:14px;transform-origin:bottom;transition:transform .3s;filter:brightness(1.05);box-shadow:0 -3px 8px rgba(0,0,0,.10)}
 .door:hover .flap,.door:focus-visible .flap,.door.peeked .flap{transform:perspective(320px) rotateX(48deg)}
-.peek{position:absolute;left:8%;right:8%;top:10%;bottom:16%;z-index:1;pointer-events:none}
-.peek>*{position:absolute;bottom:0;width:42%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;box-shadow:0 4px 12px rgba(43,20,12,.22);transform:translateY(30%) rotate(var(--r));transition:transform .45s cubic-bezier(.2,.8,.2,1.2)}
+.peek{position:absolute;left:8%;right:8%;top:12%;bottom:0;z-index:1;pointer-events:none;clip-path:inset(-200% -30% 0 -30%)}
+.peek>*{position:absolute;bottom:0;width:42%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;box-shadow:0 4px 12px rgba(43,20,12,.22);transform:translateY(12%) rotate(var(--r));transition:transform .45s cubic-bezier(.2,.8,.2,1.2)}
 .peek>*:nth-child(1){left:2%;--r:-8deg}.peek>*:nth-child(2){left:29%;--r:2deg;z-index:1}.peek>*:nth-child(3){right:2%;--r:9deg}
-.door:hover .peek>*,.door:focus-visible .peek>*,.door.peeked .peek>*{transform:translateY(-22%) rotate(var(--r))}
+.door:hover .peek>*,.door:focus-visible .peek>*,.door.peeked .peek>*{transform:translateY(-38%) rotate(var(--r))}
 .door:hover .peek>*:nth-child(2),.door.peeked .peek>*:nth-child(2){transition-delay:.05s}.door:hover .peek>*:nth-child(3),.door.peeked .peek>*:nth-child(3){transition-delay:.1s}
 .fold .flap{z-index:2}
 .peek>.pk-note{width:34%}.peek>.pk-note:nth-child(1){left:0}.peek>.pk-note:nth-child(2){left:33%}.peek>.pk-note:nth-child(3){right:0}
@@ -571,6 +572,11 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .dk-bar b{margin-left:6px;font-weight:600}
 .dk-body{padding:18px}
 .dk-big{font-size:30px;margin-bottom:8px}
+#dk-hola .dk-body{padding:26px 28px}
+#dk-hola .dk-big{font-size:clamp(40px,5vw,64px);color:var(--fr);margin-bottom:14px}
+#dk-hola p{font-size:17px}
+.dk-tip{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:14.5px!important}
+#dk-hola{transform:none}
 .dk-body p{color:var(--gr);font-size:15px}
 .dk-ficha{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14.5px}
 .dk-ficha b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--gr)}
