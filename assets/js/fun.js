@@ -8,13 +8,13 @@
     var stage = dl.querySelector('.dl-stage'), range = dl.querySelector('input[type=range]'), steps = dl.querySelectorAll('.dl-step'), touched = false;
     function set(i){
       i = +i; stage.dataset.step = i;
-      stage.querySelectorAll('.pz').forEach(function(g){ g.classList.toggle('on', g.dataset.s.split(' ').indexOf(String(i)) > -1); });
+      stage.querySelectorAll('img').forEach(function(im){ var on = +im.dataset.i === i; im.classList.toggle('on', on); });
       steps.forEach(function(s){ s.hidden = +s.dataset.i !== i; });
       range.value = i; range.setAttribute('aria-valuetext', steps[i].querySelector('h3').textContent);
       range.style.setProperty('--p', (i / 4 * 100) + '%');
-      stage.classList.remove('pop'); void stage.offsetWidth; stage.classList.add('pop');
     }
     range.addEventListener('input', function(){ touched = true; set(range.value); });
+    stage.querySelectorAll('img').forEach(function(im){ im.loading = 'eager'; });
     set(2);
     // demostración: al aparecer recorre de un extremo a otro para que se vea que se puede tocar
     if ('IntersectionObserver' in window){

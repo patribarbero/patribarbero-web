@@ -58,9 +58,9 @@ STEPS = [  # título, texto, pasa el filtro
 def doll_section():
     steps = ''.join(f'<div class="dl-step" data-i="{i}"' + ('' if i == 2 else ' hidden') + f'><span class="chip {"on" if ok else ""}">{"Pasa mi filtro ✓" if ok else "Le falta el toque"}</span><h3 class="T">{t}</h3><p>{x}</p></div>' for i, (t, x, ok) in enumerate(STEPS))
     return f'''<section class="sec tight"><div class="wrap">
-  <div class="sec-head"><div><p class="kicker rv">Mi filtro, en juguete</p><h2 class="T h2 rv">Sporty ↔ femenina</h2></div><p class="lead rv">Así pienso cada look: ni 100 % deportivo ni 100 % femenino. Mueve la barra y mira qué pasa.</p></div>
+  <div class="sec-head"><div><p class="kicker rv">Mi filtro, en juguete</p><h2 class="T h2 rv">Sporty ↔ femenina</h2></div><p class="lead rv">Así pienso cada look: ni 100 % deportivo ni 100 % femenino. Mueve la barra y mira cómo cambia.</p></div>
   <div class="rv">{win_html('mi filtro · probador', f"""<div class="dl">
-    <div class="dl-stage" data-step="2">{DOLL}</div>
+    <div class="dl-stage" data-step="2">{''.join(f'<img src="/img/muneca/paso{i+1}-560.webp" srcset="/img/muneca/paso{i+1}-560.webp 560w, /img/muneca/paso{i+1}-1024.webp 1024w" sizes="(max-width:760px) 70vw, 420px" width="1024" height="1536" alt="{t}" data-i="{i}"' + (' class="on"' if i == 2 else '') + (' loading="lazy"' if i != 2 else '') + '>' for i, (t, x, ok) in enumerate(STEPS))}</div>
     <div class="dl-side">
       <div class="dl-txt" aria-live="polite">{steps}</div>
       <label class="dl-range"><span class="sr">Nivel de sporty a femenina</span><input type="range" min="0" max="4" step="1" value="2" aria-valuetext="Cómoda y mona"></label>

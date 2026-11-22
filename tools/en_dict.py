@@ -324,5 +324,6 @@ T = {
 '100 % femenina': '100% feminine',
 'Bienvenida a mi escritorio. Aquí guardo lo que no cabe en el resto de la web.': 'Welcome to my desktop. This is where I keep what doesn’t fit on the rest of the site.',
 'Abre las carpetas y los archivos de la izquierda, arrastra las ventanas por su barra o cotillea la papelera.': 'Open the folders and files on the left, drag windows by their bar or have a nosy in the bin.',
+'Así pienso cada look: ni 100 % deportivo ni 100 % femenino. Mueve la barra y mira cómo cambia.': 'This is how I think about every outfit: never 100% sporty, never 100% feminine. Move the slider and watch it change.',
 }
 KEEP |= {'post', 'reel', 'stories', 'TXT', 'UGC', 'patri os'}
