@@ -202,7 +202,6 @@ main{display:block}
 .orb-wrap{position:relative;display:grid;place-items:center}
 .orb{--H:min(80vh,104vw,840px);position:relative;height:var(--H);width:calc(var(--H)*.8);font-size:calc(var(--H)/100)}
 .orb .me-box{position:absolute;left:50%;bottom:0;height:94%;aspect-ratio:708/1800;transform:translateX(-50%);z-index:2;pointer-events:none}
-.orb .me-box.sels{z-index:5}
 .orb .me{position:absolute;left:0;top:0;height:100%;width:100%;filter:drop-shadow(0 1.4em 1.8em rgba(43,20,12,.14));pointer-events:none;user-select:none}
 .orb .floor{position:absolute;left:24%;right:24%;bottom:.6em;height:4em;border-radius:50%;background:radial-gradient(closest-side,rgba(43,20,12,.16),transparent);z-index:0}
 .orb .scene{position:absolute;inset:0;perspective:calc(var(--H)*3.2);perspective-origin:50% 44%;pointer-events:none}
@@ -402,15 +401,6 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
 .mini-grid .th{position:relative;display:block;border-radius:12px;overflow:hidden}
 .mini-grid .th>img:first-child{width:100%;aspect-ratio:16/9;object-fit:cover}
 .mini-grid .lg{position:absolute;left:8px;bottom:8px;height:22px;width:auto;max-width:60%;background:var(--w);padding:4px 8px;border-radius:999px;object-fit:contain;box-shadow:var(--sh-s)}
-
-/* selección exacta sobre la foto (MOTION-02b) */
-.sel{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);z-index:4;opacity:0;transition:opacity .3s}
-.sel i{position:absolute;inset:0;border:2px solid var(--fr);border-radius:6px;clip-path:inset(0 100% 100% 0);transition:clip-path .7s cubic-bezier(.6,.1,.2,1)}
-.sel i::before,.sel i::after{content:"";position:absolute;width:7px;height:7px;background:var(--w);border:2px solid var(--fr);border-radius:2px}
-.sel i::before{left:-5px;top:-5px}.sel i::after{right:-5px;bottom:-5px}
-.sel-chip{position:absolute;left:0;top:100%;margin-top:8px;white-space:nowrap;background:var(--fr);color:var(--ch);font:600 calc(var(--H)*.019) var(--f-r);padding:.45em .8em;border-radius:999px;box-shadow:var(--sh-s);transform:translateY(6px);opacity:0;transition:opacity .3s .5s,transform .3s .5s}
-.sel.on{opacity:1}.sel.on i{clip-path:inset(0 0 0 0)}.sel.on .sel-chip{opacity:1;transform:none}
-@media (max-width:860px){.sel-chip{font-size:9.5px;white-space:normal;width:max-content;max-width:120px;line-height:1.25;padding:.4em .7em;left:auto;right:0}}
 
 /* pestañas que se desplazan en horizontal si no caben */
 .tabs.scroll{display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}

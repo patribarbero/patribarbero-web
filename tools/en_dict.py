@@ -277,8 +277,6 @@ T = {
 'Tus derechos': 'Your rights',
 'Última actualización: 21 de noviembre de 2026': 'Last updated: 21 November 2026',
 'colaboraciones publicadas': 'published collaborations',
-'bolso bowling · el toque sporty': 'bowling bag · the sporty touch',
-'cinturón rojo · une el look': 'red belt · ties the look together',
 'lun · post': 'mon · post', 'mié · reel': 'wed · reel', 'vie · stories': 'fri · stories',
 'lun': 'mon', 'mié': 'wed', 'vie': 'fri',
 }

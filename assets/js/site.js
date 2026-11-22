@@ -47,10 +47,6 @@
     if (touch) document.querySelectorAll('.door').forEach(function(el, i){ el.dataset.i = i % 4; io2.observe(el); });
   } else document.querySelectorAll('.hl').forEach(function(el){ el.classList.add('on'); });
 
-  /* selección exacta sobre la foto: se dibuja una prenda y luego otra */
-  var sels = document.querySelectorAll('.sel');
-  if (sels.length){ var si = 0; setTimeout(function step(){ sels.forEach(function(s, k){ s.classList.toggle('on', k === si); }); si = (si + 1) % (sels.length + 1); setTimeout(step, si === 0 ? 3800 : 3200); }, 1400); }
-
   /* aparición suave al hacer scroll */
   var rv = document.querySelectorAll('.rv');
   if ('IntersectionObserver' in window){
