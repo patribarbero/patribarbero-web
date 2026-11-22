@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261122d'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261122e'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -174,7 +174,6 @@ home = f'''<section class="home-hero"><div class="wrap hh">
   </div>
 </div></section>
 
-{fun.doll_section()}
 
 <section class="sec tight"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Empieza por aquí</p><h2 class="T h2 rv">¿Qué buscas?</h2></div><p class="lead rv">Elige una carpeta. Cada una te lleva a su página.</p></div>
@@ -215,7 +214,7 @@ cont = f'''<section class="page-hero"><div class="wrap">
 
 <section class="sec tight"><div class="wrap">
   <div class="tabs" role="tablist" aria-label="Plataforma"><button role="tab" aria-selected="true" aria-controls="p-yt" id="t-yt">YouTube</button><button role="tab" aria-selected="false" aria-controls="p-sh" id="t-sh">Reels, TikTok y Shorts</button></div>
-  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt">{win('youtube · qué vas a encontrar en el canal', '<p class="muted" style="margin-bottom:20px">Un vídeo largo cada domingo, de 10 a 20 minutos. Abre el armario: estos son los tipos de vídeo que hago.</p>' + fun.closet(TYPES, YT) + f'<p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ver el canal ↗</a></p>')}</div>
+  <div id="p-yt" role="tabpanel" aria-labelledby="t-yt">{win('youtube · qué vas a encontrar en el canal', '<p class="muted" style="margin-bottom:20px">Un vídeo largo cada domingo, de 10 a 20 minutos. Estos son los tipos de vídeo que hago:</p><div class="types">' + ''.join(f'<a class="type" href="{YT}/playlists" target="_blank" rel="noopener"><span class="th">' + (f'<img src="/img/{img}" alt="" loading="lazy">' if img else '<span class="sw" aria-hidden="true"><i style="background:var(--fr)"></i><i style="background:var(--co)"></i><i style="background:var(--ma)"></i><i style="background:var(--ch)"></i></span>') + f'</span><span class="chip">{lst}</span><b>{t}</b><small>{d}</small></a>' for lst, t, d, img in TYPES) + f'</div><p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ver el canal ↗</a></p>')}</div>
   <div id="p-sh" role="tabpanel" aria-labelledby="t-sh" hidden>{win('vídeos cortos · los más vistos', '<div class="grid4 shorts">' + ''.join(short_card(*x) for x in TOP_SHORTS) + '</div><p class="note" style="margin-top:16px">Reproducciones en la plataforma donde se publicó cada uno. Subo los mismos vídeos a Instagram, TikTok y YouTube Shorts.</p>')}</div>
 </div></section>
 
