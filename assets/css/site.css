@@ -590,3 +590,8 @@ dialog.vd::backdrop{background:rgba(43,20,12,.86)}
   .dk-icons{z-index:999}
   .doll{width:min(52vw,210px)}
 }
+
+/* Inicio con 3 carpetas (27/11/2026) */
+.doors.home3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:860px){.doors.home3{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.doors.home3 .door{padding:8px 8px 10px}.doors.home3 .door h3{font-size:13.5px}.doors.home3 .door .go{font-size:12px}}
+@media (max-width:860px){.pk-note,.pk-note b{font-size:0}}

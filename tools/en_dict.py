@@ -325,5 +325,13 @@ T = {
 'Bienvenida a mi escritorio. Aquí guardo lo que no cabe en el resto de la web.': 'Welcome to my desktop. This is where I keep what doesn’t fit on the rest of the site.',
 'Abre las carpetas y los archivos de la izquierda, arrastra las ventanas por su barra o cotillea la papelera.': 'Open the folders and files on the left, drag windows by their bar or have a nosy in the bin.',
 'Así pienso cada look: ni 100 % deportivo ni 100 % femenino. Mueve la barra y mira cómo cambia.': 'This is how I think about every outfit: never 100% sporty, never 100% feminine. Move the slider and watch it change.',
+'Colabora conmigo': 'Work with me',
+'Creadora de contenido de moda: te enseño a vestirte sporty sin dejar de sentirte femenina. Contenido, estadísticas y colaboraciones con marcas en mis canales.': 'Fashion content creator: I show you how to dress sporty while still feeling feminine. Content, stats and brand collaborations on my channels.',
+'Escríbeme para colaboraciones en mis redes. Respuesta en 24–48 h laborables.': 'Write to me about collaborations on my channels. Reply within 24–48 working hours.',
+'Esta web presenta la actividad profesional de Patri Barbero como creadora de contenido de moda y sus colaboraciones con marcas en sus propios canales.': 'This website presents Patri Barbero’s professional work as a fashion content creator and her brand collaborations on her own channels.',
+'Integro marcas en mis vídeos de YouTube, Reels y TikTok como parte de la conversación. Mira cómo trabajo y mis cifras.': 'I weave brands into my YouTube videos, Reels and TikToks as part of the conversation. See how I work and my numbers.',
+'Mi comunidad en datos reales: audiencia y rendimiento.': 'My community in real data: audience and performance.',
+'Si quieres que tu marca aparezca en mis vídeos, escríbeme.': 'If you want your brand in my videos, write to me.',
+'vídeos': 'videos',
 }
-KEEP |= {'post', 'reel', 'stories', 'TXT', 'UGC', 'patri os'}
+KEEP |= {'Reels', 'Studio', 'post', 'reel', 'stories', 'TXT', 'UGC', 'patri os'}

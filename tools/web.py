@@ -7,7 +7,7 @@ BASE = 'https://patribarbero.com'
 _main = subprocess.run(['git', '-C', str(R), 'show', 'origin/main:index.html'], capture_output=True, text=True).stdout
 EMAIL = re.search(r'mailto:([^"?]+)', _main).group(1)
 SPRITE = re.search(r'<svg width="0".*?</svg>', _main, re.S).group(0)
-V = '20261122h'  # versión de los archivos (para que el navegador no use copias viejas)
+V = '20261127a'  # versión de los archivos (para que el navegador no use copias viejas)
 
 ARR = '<svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 PLAY = '<span class="pl" aria-hidden="true"><svg viewBox="0 0 10 12"><path fill="currentColor" d="M0 0l10 6-10 6z"/></svg></span>'
@@ -18,15 +18,13 @@ SERV = [('/colaboraciones/', 'Colabora en mis redes', 'Tu marca en mis vídeos d
 
 def nav(key):
     def a(h, t, k): return f'<li><a href="{h}"' + (' aria-current="page"' if k == key else '') + f'>{t}</a></li>'
-    sub = ''.join(f'<li><a href="{h}"' + (' aria-current="page"' if k == key else '') + f'><b>{t}</b><small>{d}</small></a></li>' for h, t, d, k in SERV)
-    cur = ' cur' if key in ('colab', 'ugc', 'redes', 'trabaja') else ''
     return ('<li class="m-only"><a href="/"' + (' aria-current="page"' if key == 'home' else '') + '>Inicio</a></li>'
             + a('/contenido/', 'Contenido', 'cont') + a('/estadisticas/', 'Estadísticas', 'stats')
-            + f'<li><button class="dd{cur}" type="button" aria-expanded="false" aria-controls="sub">Trabaja conmigo<span aria-hidden="true"></span></button>'
-            + f'<ul class="sub" id="sub">{sub}<li><a class="all" href="/trabaja-conmigo/"' + (' aria-current="page"' if key == 'trabaja' else '') + '>Ver las tres opciones</a></li></ul></li>'
+            + a('/colaboraciones/', 'Colabora conmigo', 'colab')
             + a('/sobre-mi/', 'Sobre mí', 'sobre')
             + '<li class="m-only"><a href="/contacto/"' + (' aria-current="page"' if key == 'contacto' else '') + '>Contacto</a></li>')
 
+B2B = False   # 27/11/2026: UGC y gestión de redes salen de esta web (web del negocio aparte)
 DESK = ''
 PAGES = []
 def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''):
@@ -66,7 +64,7 @@ def page(path, key, title, desc, body, scripts='', noindex=False, preload_img=''
 </main>
 <footer class="foot"><div class="wrap">
   <div><a class="logo" href="/">Patri <span>Barbero</span></a><p>Moda como identidad · Madrid<br><a href="mailto:{EMAIL}">{EMAIL}</a></p></div>
-  <nav aria-label="Pie"><a href="/contenido/">Contenido</a><a href="/estadisticas/">Estadísticas</a><a href="/trabaja-conmigo/">Trabaja conmigo</a><a href="/colaboraciones/">Colabora en mis redes</a><a href="/ugc/">Contenido UGC</a><a href="/gestion-de-redes/">Gestión de redes</a><a href="/sobre-mi/">Sobre mí</a><a href="/contacto/">Contacto</a><a href="{YT}" target="_blank" rel="noopener">YouTube ↗</a></nav>
+  <nav aria-label="Pie"><a href="/contenido/">Contenido</a><a href="/estadisticas/">Estadísticas</a><a href="/colaboraciones/">Colabora en mis redes</a><a href="/sobre-mi/">Sobre mí</a><a href="/contacto/">Contacto</a><a href="{YT}" target="_blank" rel="noopener">YouTube ↗</a></nav>
   <div class="legal"><span>© 2026 Patri Barbero</span><span class="hint">Pista: doble clic en mi nombre ✨</span><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Privacidad</a><a href="{IG}" target="_blank" rel="noopener">Instagram</a><a href="{TT}" target="_blank" rel="noopener">TikTok</a></div>
 </div></footer>
 {DESK}
@@ -91,7 +89,7 @@ def win(title, inner, cls=''):
     return f'<div class="win {cls}"><div class="win-bar"><i></i><i></i><i></i><b>{title}</b></div><div class="win-rib"></div><div class="win-body">{inner}</div></div>'
 
 PEEK = {'/contenido/': ['yt4.jpg', 'oversized.jpg', 'yt3.jpg'], '/colaboraciones/': ['zBPboLQZKAo.jpg', 'pYXWRYBJd9s.jpg', 'CecPikzWLI8.jpg'],
-        '/ugc/': ['broches.jpg', 'abc.jpg', 'oversized.jpg'], '/gestion-de-redes/': ['lun · post', 'mié · reel', 'vie · stories']}
+        '/estadisticas/': ['YouTube · Studio', 'Instagram · Reels', 'TikTok · vídeos']}
 def peek(href):
     items = PEEK.get(href, [])
     return '<div class="peek">' + ''.join((f'<img src="/img/{x}" alt="" loading="lazy">' if x.endswith('.jpg') else '<span class="pk-note">' + x.split(' · ')[0] + '<b>' + x.split(' · ')[1] + '</b></span>') for x in items) + '</div>'
@@ -153,7 +151,7 @@ home = f'''<section class="home-hero"><div class="wrap hh">
     </div>
     <div class="hh-more">
     <p class="lead rv">Te enseño a vestirte <span class="hl">sporty sin dejar de sentirte femenina</span>. Tendencias, cómo combinarlas y qué dicen de ti, en YouTube, Instagram y TikTok.</p>
-    <div class="ctas rv"><a class="btn p" href="/trabaja-conmigo/">Trabaja conmigo {ARR}</a><a class="btn s" href="/contenido/">Ver mi contenido</a></div>
+    <div class="ctas rv"><a class="btn p" href="/colaboraciones/">Colabora conmigo {ARR}</a><a class="btn s" href="/contenido/">Ver mi contenido</a></div>
     <div class="proof rv">
       <a href="/estadisticas/"><b data-n="youtube.suscriptores" data-f="k1">—</b><small>suscriptores en YouTube</small></a>
       <a href="/estadisticas/"><b data-n="youtube.vis" data-f="k1">—</b><small>visualizaciones en 28 días</small></a>
@@ -178,11 +176,10 @@ home = f'''<section class="home-hero"><div class="wrap hh">
 
 <section class="sec tight"><div class="wrap">
   <div class="sec-head"><div><p class="kicker rv">Empieza por aquí</p><h2 class="T h2 rv">¿Qué buscas?</h2></div><p class="lead rv">Elige una carpeta. Cada una te lleva a su página.</p></div>
-  <div class="doors">
+  <div class="doors home3">
     {door('/contenido/', 'rayas', 'Ver mi contenido', 'Vídeos de YouTube, Reels y TikTok sobre moda sporty y femenina.', 'Abrir')}
+    {door('/estadisticas/', 'mante', 'Estadísticas', 'Mi comunidad en datos reales: audiencia y rendimiento.', 'Abrir')}
     {door('/colaboraciones/', 'vichy', 'Colabora en mis redes', 'Tu marca dentro de mis vídeos, contada como parte de mi día a día.', 'Abrir')}
-    {door('/ugc/', 'lunares', 'Contenido UGC', 'Vídeos para las redes y los anuncios de tu marca.', 'Abrir')}
-    {door('/gestion-de-redes/', 'mante', 'Gestión de redes', 'Estrategia, contenido y publicación para tu negocio.', 'Abrir')}
   </div>
 </div></section>
 
@@ -191,10 +188,10 @@ home = f'''<section class="home-hero"><div class="wrap hh">
   <div class="rv">{win('youtube · patri barbero', '<div class="grid4">' + ''.join(f'<a class="vid" href="{YT}" target="_blank" rel="noopener"><span class="th"><img src="/img/{img}" alt="" loading="lazy">{PLAY}</span><b>{t}</b></a>' for img, t in LONG) + f'</div><p style="margin-top:22px"><a class="btn d" href="{YT}" target="_blank" rel="noopener">Ir al canal de YouTube ↗</a></p>')}</div>
 </div></section>
 
-{band('¿Tienes una <em>marca</em>?', 'Colaboraciones en mis redes, contenido UGC para tus canales o gestión de tus redes. Elige lo que necesitas.', f'<a class="btn p" href="/trabaja-conmigo/">Trabaja conmigo {ARR}</a><a class="btn s" href="/estadisticas/">Ver estadísticas</a>')}
+{band('¿Tienes una <em>marca</em>?', 'Integro marcas en mis vídeos de YouTube, Reels y TikTok como parte de la conversación. Mira cómo trabajo y mis cifras.', f'<a class="btn p" href="/colaboraciones/">Colabora conmigo {ARR}</a><a class="btn s" href="/estadisticas/">Ver estadísticas</a>')}
 '''
 page('/', 'home', 'Patri Barbero · Moda sporty y femenina en YouTube, Instagram y TikTok',
-     'Creadora de contenido de moda: te enseño a vestirte sporty sin dejar de sentirte femenina. Colaboraciones con marcas, contenido UGC y gestión de redes.',
+     'Creadora de contenido de moda: te enseño a vestirte sporty sin dejar de sentirte femenina. Contenido, estadísticas y colaboraciones con marcas en mis canales.',
      home, STATS + f'<script src="/assets/js/orbital.js?v={V}" defer></script>', preload_img='/img/patri-espejo-1100.webp')
 
 # =================================================== CONTENIDO
@@ -283,11 +280,11 @@ trab = f'''<section class="page-hero"><div class="wrap">
   <p class="rv" style="margin-top:30px;font-size:17px">¿No lo tienes claro? <a href="/contacto/" style="color:var(--co);font-weight:600">Escríbeme</a> y te digo qué te encaja.</p>
 </div></section>
 '''
-page('/trabaja-conmigo/', 'trabaja', 'Trabaja conmigo · Patri Barbero', 'Tres formas de trabajar con Patri Barbero: colaboraciones en sus redes, contenido UGC para tu marca y gestión de redes para negocios.', trab)
+if B2B: page('/trabaja-conmigo/', 'trabaja', 'Trabaja conmigo · Patri Barbero', 'Tres formas de trabajar con Patri Barbero: colaboraciones en sus redes, contenido UGC para tu marca y gestión de redes para negocios.', trab)
 
 # =================================================== COLABORA EN MIS REDES
 colab = f'''<section class="page-hero"><div class="wrap">
-  {crumbs(('/', 'Inicio'), ('/trabaja-conmigo/', 'Trabaja conmigo'), ('', 'Colabora en mis redes'))}
+  {crumbs(('/', 'Inicio'), ('', 'Colabora en mis redes'))}
   <div class="ph-grid">
     <div><h1 class="T h1 rv">Colabora en mis redes</h1>
       <p class="lead rv">Integro tu marca en mis vídeos como parte de la conversación: el producto entra en un look real y explico <span class="hl">por qué encaja</span>. Para una comunidad de mujeres que quiere vestir cómoda y mona.</p>
@@ -384,7 +381,7 @@ ugc = f'''<section class="page-hero"><div class="wrap">
 
 {band('Cuéntame tu <em>producto</em>', 'Con unos pocos datos te preparo una propuesta y un presupuesto cerrado.', f'<a class="btn p" href="/contacto/?tipo=ugc">Pedir contenido {ARR}</a>')}
 '''
-page('/ugc/', 'ugc', 'Contenido UGC para marcas · Patri Barbero', 'Vídeo UGC para las redes y anuncios de tu marca: formatos, ejemplos, proceso y derechos de uso claros. Moda, belleza, lifestyle, alimentación, apps y servicios.', ugc)
+if B2B: page('/ugc/', 'ugc', 'Contenido UGC para marcas · Patri Barbero', 'Vídeo UGC para las redes y anuncios de tu marca: formatos, ejemplos, proceso y derechos de uso claros. Moda, belleza, lifestyle, alimentación, apps y servicios.', ugc)
 
 # =================================================== GESTIÓN DE REDES
 redes = f'''<section class="page-hero"><div class="wrap">
@@ -421,7 +418,7 @@ redes = f'''<section class="page-hero"><div class="wrap">
 
 {band('¿Ponemos tus redes <em>en orden</em>?', 'Cuéntame tu negocio y te propongo un plan mensual a medida. Madrid y en remoto.', f'<a class="btn p" href="/contacto/?tipo=redes">Pedir presupuesto {ARR}</a>')}
 '''
-page('/gestion-de-redes/', 'redes', 'Gestión de redes sociales para negocios · Patri Barbero', 'Gestión de redes para pequeños negocios y marcas: estrategia, calendario, diseño, vídeo, copys, publicación e informe mensual. Madrid y en remoto.', redes)
+if B2B: page('/gestion-de-redes/', 'redes', 'Gestión de redes sociales para negocios · Patri Barbero', 'Gestión de redes para pequeños negocios y marcas: estrategia, calendario, diseño, vídeo, copys, publicación e informe mensual. Madrid y en remoto.', redes)
 
 # =================================================== SOBRE MÍ
 sobre = f'''<section class="page-hero"><div class="wrap">
@@ -450,7 +447,7 @@ sobre = f'''<section class="page-hero"><div class="wrap">
   <div class="rv" style="max-width:820px">{win('ficha · patri barbero', '<dl class="ficha"><div><dt>Formación</dt><dd>Grado universitario en Digital Business · ESIC</dd></div><div><dt>Formación</dt><dd>Diploma universitario en Herramientas Digitales y Multimedia</dd></div><div><dt>Comunicación</dt><dd>Comunicación de marca en una empresa multinacional</dd></div><div><dt>Agencia</dt><dd>Influencer marketing y campañas con creadores en una agencia</dd></div><div><dt>Creadora</dt><dd>Un vídeo largo en YouTube cada domingo y vídeos cortos varias veces por semana en Instagram, TikTok y YouTube Shorts</dd></div></dl>')}</div>
 </div></section>
 
-{band('¿Hablamos?', 'Para colaboraciones, contenido UGC o gestión de redes, escríbeme.', f'<a class="btn p" href="/contacto/">Contacto {ARR}</a><a class="btn s" href="/trabaja-conmigo/">Trabaja conmigo</a>')}
+{band('¿Hablamos?', 'Si quieres que tu marca aparezca en mis vídeos, escríbeme.', f'<a class="btn p" href="/contacto/">Contacto {ARR}</a><a class="btn s" href="/colaboraciones/">Colabora conmigo</a>')}
 '''
 page('/sobre-mi/', 'sobre', 'Sobre mí · Patri Barbero', 'Quién es Patri Barbero: creadora de contenido de moda sporty y femenina, graduada en Digital Business por ESIC, con experiencia en comunicación e influencer marketing.', sobre)
 
@@ -473,23 +470,12 @@ contacto = f'''<section class="page-hero"><div class="wrap">
         <p class="note legend-req"><b class="req">*</b> Campo obligatorio</p>
         <div class="fld" data-label="Me interesa"><span>Me interesa <b class="req" aria-hidden="true">*</b></span><div class="opts" role="radiogroup" aria-required="true">
           <label class="opt"><input type="radio" name="tipo" value="Colabora en mis redes" required data-msg="Elige qué te interesa."><span>Colabora en mis redes</span></label>
-          <label class="opt"><input type="radio" name="tipo" value="Contenido UGC"><span>Contenido UGC</span></label>
-          <label class="opt"><input type="radio" name="tipo" value="Gestión de redes"><span>Gestión de redes</span></label>
           <label class="opt"><input type="radio" name="tipo" value="Otra cosa"><span>Otra cosa</span></label></div></div>
         <div class="f2">{fld('Nombre', '<input type="text" name="nombre" required autocomplete="name" data-msg="Dime tu nombre.">', True)}{fld('Email', '<input type="email" name="email" required autocomplete="email" data-msg="Necesito un email válido para responderte.">', True)}</div>
         {fld('Marca, agencia o negocio', '<input type="text" name="empresa" required autocomplete="organization" data-msg="Dime el nombre de tu marca, agencia o negocio.">', True)}
         <div data-for="Colabora en mis redes" hidden class="form">
           <div class="f2">{fld('Plataformas', '<select name="plataformas"><option selected>Aún no lo sé</option><option>YouTube</option><option>Instagram</option><option>TikTok</option><option>Varias</option></select>')}{fld('Fecha de publicación', '<input type="text" name="fecha" placeholder="p. ej. 2.ª quincena de enero">')}</div>
           {fld('Presupuesto orientativo', '<select name="presupuesto"><option value="">Prefiero hablarlo</option><option>Menos de 300 €</option><option>300–700 €</option><option>700–1.500 €</option><option>Más de 1.500 €</option></select>')}
-        </div>
-        <div data-for="Contenido UGC" hidden class="form">
-          <div class="f2">{fld('Número de piezas', '<select name="piezas"><option selected>No lo sé aún</option><option>1</option><option>2–3</option><option>4–6</option><option>Más de 6</option></select>')}{fld('¿Dónde se usará?', '<select name="uso"><option selected>No lo sé aún</option><option>Redes de la marca</option><option>Anuncios</option><option>Las dos cosas</option><option>Web o tienda online</option></select>')}</div>
-          {fld('Plazo', '<input type="text" name="plazo" placeholder="p. ej. antes del 15 de diciembre">')}
-        </div>
-        <div data-for="Gestión de redes" hidden class="form">
-          <div class="f2">{fld('Sector', '<select name="sector" required data-msg="Elige el sector de tu negocio."><option value="" selected>—</option>' + SECT + '<option>Otro</option></select>', True)}{fld('Ciudad', '<input type="text" name="ciudad" required autocomplete="address-level2" placeholder="p. ej. Madrid" data-msg="Dime en qué ciudad está tu negocio.">', True)}</div>
-          <div data-otro hidden>{fld('¿Qué sector?', '<input type="text" name="sector_otro" required placeholder="Cuéntame a qué se dedica tu negocio" data-msg="Dime a qué se dedica tu negocio.">', True)}</div>
-          <div class="f2">{fld('Tus redes', '<input type="text" name="redes" placeholder="@tunegocio (si ya las tienes)">')}{fld('¿Tienes fotos y vídeos?', '<select name="materiales" required data-msg="Dime si tienes fotos y vídeos."><option value="" selected>—</option><option>Sí, te los paso</option><option>Algunos</option><option>No, necesito que se graben</option></select>', True)}</div>
         </div>
         {fld('Cuéntame', '<textarea name="mensaje" placeholder="Qué quieres conseguir, producto, fechas…"></textarea>')}
         <div class="hp" aria-hidden="true"><label>No rellenar <input name="web_site" tabindex="-1" autocomplete="off"></label></div>
@@ -503,7 +489,7 @@ contacto = f'''<section class="page-hero"><div class="wrap">
   </div>
 </div></section>
 '''
-page('/contacto/', 'contacto', 'Contacto · Patri Barbero', 'Escríbeme para colaboraciones en mis redes, contenido UGC o gestión de redes. Respuesta en 24–48 h laborables.', contacto)
+page('/contacto/', 'contacto', 'Contacto · Patri Barbero', 'Escríbeme para colaboraciones en mis redes. Respuesta en 24–48 h laborables.', contacto)
 
 # =================================================== LEGALES
 TITULAR, LEGAL_MAIL = 'Victoria Patricia Barbero Moyá', EMAIL
@@ -514,7 +500,7 @@ def legal_page(path, title, desc, blocks):
 
 legal_page('/aviso-legal/', 'Aviso legal', 'Aviso legal de patribarbero.com.', [
   ('Titular de la web', [f'Titular: {TITULAR}, que actúa con el nombre profesional «Patri Barbero».', 'Domicilio: Madrid (España).', f'Email de contacto: <a href="mailto:{LEGAL_MAIL}">{LEGAL_MAIL}</a>.']),
-  ('Objeto', ['Esta web presenta la actividad profesional de Patri Barbero como creadora de contenido de moda y los servicios que ofrece a marcas y negocios: colaboraciones en sus redes, contenido UGC y gestión de redes sociales.']),
+  ('Objeto', ['Esta web presenta la actividad profesional de Patri Barbero como creadora de contenido de moda y sus colaboraciones con marcas en sus propios canales.']),
   ('Propiedad intelectual', ['Los textos, fotografías, vídeos, diseños y logotipos de esta web pertenecen a su titular o se usan con permiso. No se pueden copiar, reproducir ni distribuir sin autorización por escrito.', 'Los nombres y logotipos de las marcas con las que se ha colaborado pertenecen a sus respectivos dueños y se muestran solo para indicar esos trabajos.']),
   ('Responsabilidad', ['La titular procura que la información de la web sea correcta y esté actualizada, pero no garantiza que no contenga errores. Las cifras de redes sociales indican la fecha y la fuente de la que se han obtenido.', 'La web enlaza a otros sitios (YouTube, Instagram, TikTok y otros). La titular no se hace responsable de sus contenidos ni de sus políticas.']),
   ('Ley aplicable', ['Esta web se rige por la legislación española.']),
@@ -531,15 +517,24 @@ legal_page('/privacidad/', 'Privacidad', 'Política de privacidad de patribarber
   ('Menores', ['Si tienes menos de 14 años, no me envíes tus datos por el formulario.']),
 ])
 page('/404.html', '', 'Página no encontrada · Patri Barbero', 'Esta página no existe.',
-     f'<section class="page-hero"><div class="wrap"><p class="kicker">Error 404</p><h1 class="T h1">Esta talla<br>no la tenemos</h1><p class="lead" style="margin-top:20px">La página que buscas no existe o ha cambiado de sitio.</p><div class="ctas"><a class="btn p" href="/">Inicio {ARR}</a><a class="btn s" href="/estadisticas/">Estadísticas</a><a class="btn s" href="/trabaja-conmigo/">Trabaja conmigo</a><a class="btn s" href="/contacto/">Contacto</a></div></div></section>', noindex=True)
+     f'<section class="page-hero"><div class="wrap"><p class="kicker">Error 404</p><h1 class="T h1">Esta talla<br>no la tenemos</h1><p class="lead" style="margin-top:20px">La página que buscas no existe o ha cambiado de sitio.</p><div class="ctas"><a class="btn p" href="/">Inicio {ARR}</a><a class="btn s" href="/estadisticas/">Estadísticas</a><a class="btn s" href="/colaboraciones/">Colabora conmigo</a><a class="btn s" href="/contacto/">Contacto</a></div></div></section>', noindex=True)
 
 # limpieza de la maqueta anterior
 for old in ('marcas',):
     shutil.rmtree(R / old, ignore_errors=True)
 (R / 'datos.js').write_text(subprocess.run(['git', '-C', str(R), 'show', 'origin/main:datos.js'], capture_output=True, text=True).stdout) if not (R / 'datos.js').exists() else None
-(R / '_redirects').write_text('\n'.join(['/media-kit /estadisticas/ 301', '/media-kit/ /estadisticas/ 301', '/marcas /trabaja-conmigo/ 301', '/marcas/ /trabaja-conmigo/ 301', '/marcas/ugc/ /ugc/ 301', '/influencer /colaboraciones/ 301', '/influencer/ /colaboraciones/ 301', '/colabora /colaboraciones/ 301', '/community-manager /gestion-de-redes/ 301', '/community-manager/ /gestion-de-redes/ 301', '']))
+(R / '_redirects').write_text('\n'.join([
+    '/media-kit /estadisticas/ 301', '/media-kit/ /estadisticas/ 301',
+    '/marcas /colaboraciones/ 301', '/marcas/ /colaboraciones/ 301', '/influencer /colaboraciones/ 301', '/influencer/ /colaboraciones/ 301', '/colabora /colaboraciones/ 301',
+    '/trabaja-conmigo /colaboraciones/ 301', '/trabaja-conmigo/ /colaboraciones/ 301', '/en/work-with-me /en/collaborations/ 301', '/en/work-with-me/ /en/collaborations/ 301',
+    # provisionales (302) hasta que exista la web del negocio; entonces 301 a sus páginas
+    '/ugc /colaboraciones/ 302', '/ugc/ /colaboraciones/ 302', '/marcas/ugc/ /colaboraciones/ 302', '/gestion-de-redes /colaboraciones/ 302', '/gestion-de-redes/ /colaboraciones/ 302',
+    '/community-manager /colaboraciones/ 302', '/community-manager/ /colaboraciones/ 302', '/en/ugc /en/collaborations/ 302', '/en/ugc/ /en/collaborations/ 302',
+    '/en/social-media-management /en/collaborations/ 302', '/en/social-media-management/ /en/collaborations/ 302', '']))
+for old in ('trabaja-conmigo', 'ugc', 'gestion-de-redes', 'en/work-with-me', 'en/ugc', 'en/social-media-management'):
+    shutil.rmtree(R / old, ignore_errors=True)
 (R / '_headers').write_text('/assets/f/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n/img/*\n  Cache-Control: public, max-age=2592000\n/datos.js\n  Cache-Control: public, max-age=300\n')
 (R / 'robots.txt').write_text('User-agent: *\nDisallow: /laboratorio/\nSitemap: https://patribarbero.com/sitemap.xml\n')
-(R / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{BASE}{p}</loc></url>\n' for p in ['/', '/contenido/', '/estadisticas/', '/trabaja-conmigo/', '/colaboraciones/', '/ugc/', '/gestion-de-redes/', '/sobre-mi/', '/contacto/', '/en/', '/en/content/', '/en/stats/', '/en/work-with-me/', '/en/collaborations/', '/en/ugc/', '/en/social-media-management/', '/en/about/', '/en/contact/']) + '</urlset>\n')
+(R / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{BASE}{p}</loc></url>\n' for p in ['/', '/contenido/', '/estadisticas/', '/colaboraciones/', '/sobre-mi/', '/contacto/', '/en/', '/en/content/', '/en/stats/', '/en/collaborations/', '/en/about/', '/en/contact/']) + '</urlset>\n')
 import sys; sys.path.insert(0, str(pathlib.Path(__file__).parent)); import en; en.build(PAGES, R)
 print('ok')

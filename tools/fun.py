@@ -88,7 +88,7 @@ def desk(top_shorts, ficha_items):
     ficha = ''.join(f'<li><b>{a}</b>{b}</li>' for a, b in ficha_items)
     def w(id_, title, body, x, y, wdt):
         return f'<section class="dk-win" id="{id_}" style="--x:{x};--y:{y};--ww:{wdt}" hidden><header class="dk-bar"><button class="dk-x" type="button" aria-label="Cerrar"></button><i></i><i></i><b>{title}</b></header><div class="win-rib"></div><div class="dk-body">{body}</div></section>'
-    icons = [('/contenido/', 'rayas', 'Contenido'), ('/colaboraciones/', 'vichy', 'Colabora'), ('/ugc/', 'lunares', 'UGC'), ('/gestion-de-redes/', 'mante', 'Gestión')]
+    icons = [('/contenido/', 'rayas', 'Contenido'), ('/estadisticas/', 'mante', 'Estadísticas'), ('/colaboraciones/', 'vichy', 'Colabora')]
     ic = ''.join(f'<a class="dk-ico" href="{h}"><span class="mini-fold {p}"></span><span>{t}</span></a>' for h, p, t in icons)
     ic += '<button class="dk-ico" type="button" data-open="dk-ficha"><span class="dk-file">TXT</span><span>ficha.txt</span></button>'
     ic += '<button class="dk-ico" type="button" data-open="dk-vids"><span class="dk-file vid">▶</span><span>lo más visto</span></button>'
